@@ -54,21 +54,30 @@ def p_header_unit_(p):
 
 def p_header_unit(p):
   """header_unit : syntax
-           | package"""
+           | package
+           | import
+           | option """
   p[0] = p[1]
 
 
 def p_syntax(p):
   """syntax : SYNTAX '=' LITERAL"""
   if p[3] != 'proto3':
-    raise ProtoGrammarError(
-      'grammar error at line {}: syntax must be proto3'.format(p.lineno))
-  p[0] = (HeaderType.SYNTAX, p[3])
+    raise ProtoGrammarError('grammar error at line {}: syntax must be proto3'.format(p.lineno))
+  p[0] = Header(HeaderType.SYNTAX, HeaderType.SYNTAX, p[3])
 
 
 def p_package(p):
   """package : PACKAGE IDENTIFIER"""
-  p[0] = (HeaderType.PACKAGE, p[2])
+  p[0] = Header(HeaderType.PACKAGE, HeaderType.PACKAGE, p[2])
+
+def p_import(p):
+  """import : IMPORT LITERAL"""
+  p[0] = Header(HeaderType.IMPORT, p[2], p[2])
+
+def p_option(p):
+  """option : OPTION IDENTIFIER '=' LITERAL"""
+  p[0] = Header(HeaderType.PACKAGE, p[2], p[4])
 
 
 def p_definition(p):
@@ -87,13 +96,13 @@ def p_definition_unit_(p):
 
 
 def p_definition_unit(p):
-  """definition_unit : service
-             | message"""
+  """definition_unit : message
+             | enum"""
   p[0] = p[1]
 
 
 def p_message(p):
-  """message : seen_message '{' field_seq '}'"""
+  """message : seen_message '{' msg_fields '}'"""
   message = Message(p[1])
   for index, field in enumerate(p[3]):
     optional, type_, name, number = field
@@ -134,8 +143,8 @@ def p_seen_message(p):
   p[0] = p[2]
 
 
-def p_field_seq(p):
-  """field_seq : field ';' field_seq
+def p_msg_fields(p):
+  """msg_fields : msg_field ';' msg_fields
          |"""
   if len(p) == 1:
     p[0] = []
@@ -143,19 +152,19 @@ def p_field_seq(p):
     p[0] = [p[1]] + p[3]
 
 
-def p_field(p):
-  """field : field_req field_type IDENTIFIER '=' INTCONSTANT"""
+def p_msg_field(p):
+  """msg_field : field_decoration field_type IDENTIFIER '=' INTCONSTANT"""
   p[0] = (p[1], p[2], p[3], p[5])
 
 
-def p_field_req(p):
-  """field_req : OPTIONAL
+def p_field_decoration(p):
+  """field_decoration : OPTIONAL
          | REPEATED
          |"""
   if len(p) == 2 and p[1] == 'repeated':
     p[0] = 'repeated'
   else:
-    p[0] = 'optional'
+    p[0] = ''
 
 
 def p_field_type(p):
