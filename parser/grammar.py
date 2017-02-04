@@ -1,35 +1,13 @@
 # -*- coding=utf8 -*-
 """语法解析"""
 from error import ProtoGrammarError
-from protoparser.objects import (
-  MessageField,
-  ServiceMethod,
-  MapField,
-  field_map,
-  Service,
-  Message,
-  Protobuf,
-)
-
-
-class FieldType(object):
-  """field类型"""
-  BASE = 1
-  MAP = 2
-  REF = 3
-
-
-class HeaderType(object):
-  """header类型"""
-  SYNTAX = 'syntax'
-  PACKAGE = 'package'
+from protodef.element import *
 
 
 def p_error(p):
   if p is None:
     raise ProtoGrammarError('grammar error at EOF')
-  raise ProtoGrammarError('grammar error: {} at line {}'.format(
-    p.value, p.lineno))
+  raise ProtoGrammarError('grammar error: {} at line {}'.format(p.value, p.lineno))
 
 
 def p_start(p):
@@ -46,9 +24,7 @@ def p_start(p):
   for item in p[2]:
     item_name = item.name
     if item_name in symbols:
-      raise ProtoGrammarError(
-        'grammar error: symbol {} is already defined at line {}'.format(
-          item_name, p.lineno))
+      raise ProtoGrammarError('grammar error: symbol {} is already defined at line {}'.format(item_name, p.lineno))
 
     if isinstance(item, Service):
       proto.services[item_name] = item
