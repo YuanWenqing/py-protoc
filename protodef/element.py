@@ -14,17 +14,23 @@ class Header:
     self.name = header_name
     self.value = header_value
 
+  def __str__(self):
+    return '%s: %s=%s' % (self.type, self.name, self.value)
+
 class Field:
   '''field基类'''
 
   def __init__(self, name, number):
     self.name = name
     self.number = number
-    self.comment = ''
+    self.comment = None
     self.index = None
 
   def isDeprecated(self):
     return self.comment != None and self.comment.find('@deprecated') >= 0
+
+  def __str__(self):
+    return '%d: %s=%d #%s' % (self.index, self.name, self.number, self.comment)
 
 class TypeKind:
   '''field type的类型'''
@@ -40,8 +46,15 @@ class FieldType:
     self.kind = type_kind
     self.pkg = type_pkg
     self.name = type_name
+
     self.key_type = None
     self.value_type = None
+
+  def __str__(self):
+    if self.pkg:
+      return '%s[%s]' % (self.name, self.kind)
+    else:
+      return '%s.%s[%s]' % (self.pkg, self.name, self.kind)
 
 class MessageField(Field):
   '''message中的field定义'''
@@ -57,6 +70,15 @@ class MessageField(Field):
   def isRepeated(self):
     return 'repeated' in self.decorations
 
+  def __str__(self):
+    s = self.index + ':'
+    if len(self.decorations) > 0:
+      s = s + (' %s' % self.decorations)
+    s = s + (' %s %s=%d' % (self.type, self.name, self.number))
+    if self.comment:
+      s = s + (' # %s' % self.comment)
+    return s
+
 class EnumField(Field):
   '''enum中的field定义'''
 
@@ -68,13 +90,27 @@ class DataDef:
     self.proto = None
     self.name = name
     self.fields = []
-    self.comment = ''
+    self.comment = None
 
   def addField(self, field):
     self.fields.append(field)
 
   def isDeprecated(self):
     return self.comment != None and self.comment.find('@deprecated') >= 0
+
+  def __str__(self):
+    s = '%s %s {' % (type(self), self.name)
+    first = True
+    for field in self.fields:
+      if first:
+        first = False
+      else:
+        s = s + ', '
+      s = s + field.__str__()
+    s = s + '}'
+    if self.comment:
+      s = s + (' # %s' % self.comment)
+    return s
 
 class Message(DataDef):
   '''protobuf中的message'''
@@ -123,3 +159,28 @@ class Protobuf:
 
   def getDataDef(self, data_name):
     return self.datadefs[data_name]
+
+  def __str__(self):
+    s = self.filepath
+    if len(self.headers) > 0:
+      s = '%s Header%s' % (s, self.__arr2str(self.headers))
+    if len(self.imports) > 0:
+      s = '%s Import%s' % (s, self.__arr2str(self.imports))
+    if len(self.options) > 0:
+      s = '%s Option%s' % (s, self.__arr2str(self.options))
+    if len(self.messages) > 0:
+      s = '%s Message%s' % (s, self.__arr2str(self.messages))
+    if len(self.enums) > 0:
+      s = '%s Enum%s' % (s, self.__arr2str(self.enums))
+    return s
+
+  def __arr2str(self, arr):
+    s = '['
+    first = True
+    for item in arr:
+      if first:
+        first = False
+      else:
+        s = s + ', '
+      s = s + item.__str__()
+    s = s + ']'
