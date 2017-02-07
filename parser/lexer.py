@@ -31,10 +31,10 @@ keywords = (
   'bool',
   'string',
   'bytes',
-  'map',
-  'service',
-  'rpc',
-  'returns'
+  # 'map',
+  # 'service',
+  # 'rpc',
+  # 'returns'
 )
 
 tokens = (
