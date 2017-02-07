@@ -3,7 +3,7 @@
 
 from error import ProtoLexerError
 
-literals = '.;,={}<>[]()'
+literals = '.,={}<>[]()'
 
 # packed singular oneof等暂不支持
 keywords = (
@@ -41,7 +41,8 @@ tokens = (
   'INTCONSTANT',
   'LITERAL',
   'IDENTIFIER',
-  'SINGLE_COMMENT'
+  'SINGLE_COMMENT',
+  'LINE_END'
 ) + tuple(map(lambda kw: kw.upper(), keywords))
 
 t_ignore = ' \t\r'
@@ -51,12 +52,22 @@ def t_error(t):
   raise ProtoLexerError('illegal token {} at line {}'.format(
     t.value, t.lineno))
 
+
 def t_SINGLE_COMMENT(t):
-  r'\/\/[^\n]*\n'
+  r'\/\/[^\n]*'
   t.value = t.value[2:].strip()
-  t.lexer.lineno += 1
+  #t.lexer.lineno += 1
   return t
 
+
+def t_LINE_END(t):
+  r'\;[^\n]*'
+  pos = t.value.find('//')
+  if pos >= 0:
+    t.value = t.value[pos+2:].strip()
+  else:
+    t.value = None
+  return t
 
 def t_newline(t):
   r'\n+'

@@ -3,7 +3,6 @@
 from error import ProtoGrammarError
 from protodef.element import *
 
-
 def p_error(p):
   if p is None:
     raise ProtoGrammarError('grammar error at EOF')
@@ -24,9 +23,11 @@ def p_start(p):
 
 def p_comment(p):
   '''comment : SINGLE_COMMENT comment
-        | '''
+        | SINGLE_COMMENT '''
   if len(p) == 1:
     p[0] = None
+  elif len(p) == 2:
+    p[0] = p[1]
   else:
     comment = concat_comment(p[1], p[2])
     comment = comment.strip()
@@ -36,17 +37,20 @@ def p_comment(p):
       p[0] = comment
 
 def p_header(p):
-  """header : header_unit_ header
-        |"""
+  """header : header header_unit_
+        | header_unit_"""
   if len(p) == 1:
     p[0] = []
+  elif len(p) == 2:
+    p[0] = [p[1]]
   else:
-    p[0] = [p[1]] + p[2]
+    #p[0] = [p[1]] + p[2]
+    p[0] = p[1] + [p[2]]
 
 
 def p_header_unit_(p):
-  """header_unit_ : comment header_unit ';'
-        | header_unit ';' """
+  """header_unit_ : comment header_unit LINE_END
+        | header_unit LINE_END """
   if len(p) == 4:
     p[0] = p[2]
   else:
@@ -83,11 +87,13 @@ def p_option(p):
 
 def p_definition(p):
   """definition : definition definition_unit_
-          |"""
+          | definition_unit_"""
   if len(p) == 1:
     p[0] = []
+  elif len(p) == 2:
+    p[0] = [p[1]]
   else:
-    p[0] = [p[2]] + p[1]
+    p[0] = p[1] + [p[2]]
 
 
 def p_definition_unit_(p):
@@ -132,7 +138,7 @@ def p_msg_field_(p):
   p[0] = field
 
 def p_msg_field(p):
-  """msg_field : field_decoration field_type IDENTIFIER '=' INTCONSTANT tail"""
+  """msg_field : field_decoration field_type IDENTIFIER '=' INTCONSTANT LINE_END"""
   field = MessageField(p[2], p[3], p[5])
   if p[1]:
     field.addDecoration(p[1])
@@ -204,15 +210,6 @@ def p_base_type(p):
 #   p[0] = FieldType(TypeKind.MAP, p[1], p[3], p[5])
 
 
-def p_tail(p):
-  '''tail : ';'
-          | ';' SINGLE_COMMENT '''
-  if len(p) == 2 or len(p[2]) == 0:
-    p[0] = None
-  else:
-    p[0] = p[2]
-
-
 def p_enum(p):
   """enum : ENUM IDENTIFIER '{' enum_fields '}'"""
   enum = Enum(p[2])
@@ -223,16 +220,16 @@ def p_enum(p):
 
 
 def p_enum_fields(p):
-  """enum_fields : enum_field ';' enum_fields
+  """enum_fields : enum_field enum_fields
          |"""
   if len(p) == 1:
     p[0] = []
   else:
-    p[0] = [p[1]] + p[3]
+    p[0] = [p[1]] + p[2]
 
 
 def p_enum_field(p):
-  """enum_field : IDENTIFIER '=' INTCONSTANT"""
+  """enum_field : IDENTIFIER '=' INTCONSTANT LINE_END"""
   p[0] = EnumField(p[1], p[2])
 
 
