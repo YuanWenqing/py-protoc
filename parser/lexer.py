@@ -41,6 +41,8 @@ tokens = (
   'INTCONSTANT',
   'LITERAL',
   'IDENTIFIER',
+  'SINGLE_COMMENT',
+  'MULTI_COMMENT'
 ) + tuple(map(lambda kw: kw.upper(), keywords))
 
 t_ignore = ' \t\r'
@@ -56,8 +58,10 @@ def t_newline(t):
   t.lexer.lineno += len(t.value)
 
 
-def t_COMMENT(t):
+def t_SINGLE_COMMENT(t):
   r'\/\/[^\n]*'
+  t.value = t.value[2:].strip()
+  return t
 
 
 def t_HEXCONSTANT(t):

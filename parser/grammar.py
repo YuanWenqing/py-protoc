@@ -22,6 +22,23 @@ def p_start(p):
   p[0] = proto
 
 
+def p_comment(p):
+  '''comment : SINGLE_COMMENT comment
+        | '''
+  if len(p) == 1:
+    p[0] = None
+  else:
+    comment = ''
+    if p[1]:
+      comment = p[1]
+    if p[2]:
+      comment = comment + '\n' + p[2]
+    comment = comment.strip()
+    if len(comment) == 0:
+      p[0] = None
+    else:
+      p[0] = comment
+
 def p_header(p):
   """header : header_unit_ header
         |"""
@@ -32,9 +49,9 @@ def p_header(p):
 
 
 def p_header_unit_(p):
-  """header_unit_ : header_unit ';'
-          | header_unit"""
-  p[0] = p[1]
+  """header_unit_ : comment header_unit ';'
+          | comment header_unit"""
+  p[0] = p[2]
 
 
 def p_header_unit(p):
@@ -75,9 +92,11 @@ def p_definition(p):
 
 
 def p_definition_unit_(p):
-  """definition_unit_ : definition_unit ';'
-            | definition_unit"""
-  p[0] = p[1]
+  """definition_unit_ : comment definition_unit ';'
+            | comment definition_unit"""
+  data_def = p[2]
+  data_def.comment = p[1]
+  p[0] = data_def
 
 
 def p_definition_unit(p):
@@ -96,19 +115,21 @@ def p_message(p):
 
 
 def p_msg_fields(p):
-  """msg_fields : msg_field ';' msg_fields
+  """msg_fields : msg_field msg_fields
          |"""
   if len(p) == 1:
     p[0] = []
   else:
-    p[0] = [p[1]] + p[3]
+    p[0] = [p[1]] + p[2]
 
 
 def p_msg_field(p):
-  """msg_field : field_decoration field_type IDENTIFIER '=' INTCONSTANT"""
+  """msg_field : field_decoration field_type IDENTIFIER '=' INTCONSTANT tail"""
   field = MessageField(p[2], p[3], p[5])
   if p[1]:
     field.addDecoration(p[1])
+  if p[6]:
+    field.comment = p[6]
   p[0] = field
 
 
@@ -174,6 +195,15 @@ def p_base_type(p):
 #     raise ProtoGrammarError(
 #       'grammar error at line {}: key type cannot be bytes'.format(p.lineno))
 #   p[0] = FieldType(TypeKind.MAP, p[1], p[3], p[5])
+
+
+def p_tail(p):
+  '''tail : ';'
+          | ';' comment '''
+  if len(p) == 2 or len(p[2]) == 0:
+    p[0] = None
+  else:
+    p[0] = p[2]
 
 
 def p_enum(p):
