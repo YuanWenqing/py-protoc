@@ -76,7 +76,7 @@ class MessageField(Field):
       s = s + (' %s' % self.decorations)
     s = s + (' %s %s=%d' % (self.type, self.name, self.number))
     if self.comment:
-      s = s + (' # %s' % self.comment.replace('\n', '\\n'))
+      s = s + (' #%s' % self.comment.replace('\n', '\\n'))
     return s
 
 class EnumField(Field):
@@ -99,7 +99,10 @@ class DataDef:
     return self.comment != None and self.comment.find('@deprecated') >= 0
 
   def __str__(self):
-    s = '%s %s {' % (self.__class__.__name__, self.name)
+    if self.comment:
+      s = '%s %s(#%s) {' % (self.__class__.__name__, self.name, self.comment.replace('\n', '\\n'))
+    else:
+      s = '%s %s {' % (self.__class__.__name__, self.name)
     first = True
     for field in self.fields:
       if first:
@@ -108,8 +111,6 @@ class DataDef:
         s = s + ', '
       s = s + field.__str__()
     s = s + '}'
-    if self.comment:
-      s = s + (' # %s' % self.comment)
     return s
 
 class Message(DataDef):

@@ -124,7 +124,7 @@ def p_message(p):
 
 def p_msg_fields(p):
   """msg_fields : msg_field_ msg_fields
-         |"""
+         | """
   if len(p) == 1:
     p[0] = []
   else:
@@ -132,17 +132,22 @@ def p_msg_fields(p):
 
 
 def p_msg_field_(p):
-  '''msg_field_ : comment msg_field'''
-  field = p[2]
-  field.comment = concat_comment(p[1], field.comment)
+  '''msg_field_ : comment msg_field LINE_END
+          | msg_field LINE_END'''
+  if len(p) == 4:
+    field = p[2]
+    field.comment = concat_comment(p[1], p[3])
+  else:
+    field = p[1]
+    field.comment = p[2]
   p[0] = field
 
+
 def p_msg_field(p):
-  """msg_field : field_decoration field_type IDENTIFIER '=' INTCONSTANT LINE_END"""
+  """msg_field : field_decoration field_type IDENTIFIER '=' INTCONSTANT"""
   field = MessageField(p[2], p[3], p[5])
   if p[1]:
     field.addDecoration(p[1])
-  field.comment = concat_comment(field.comment, p[6])
   p[0] = field
 
 
@@ -220,16 +225,27 @@ def p_enum(p):
 
 
 def p_enum_fields(p):
-  """enum_fields : enum_field enum_fields
-         |"""
+  """enum_fields : enum_field_ enum_fields
+         | enum_field_"""
   if len(p) == 1:
     p[0] = []
   else:
     p[0] = [p[1]] + p[2]
 
 
+def p_enum_field_(p):
+  '''enum_field_ : comment enum_field LINE_END
+          | enum_field LINE_END'''
+  if len(p) == 4:
+    field = p[2]
+    field.comment = concat_comment(p[1], p[3])
+  else:
+    field = p[1]
+    field.comment = p[2]
+  p[0] = field
+
 def p_enum_field(p):
-  """enum_field : IDENTIFIER '=' INTCONSTANT LINE_END"""
+  """enum_field : IDENTIFIER '=' INTCONSTANT"""
   p[0] = EnumField(p[1], p[2])
 
 

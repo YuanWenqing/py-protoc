@@ -31,97 +31,101 @@ Rule 21    definition_unit -> enum
 Rule 22    message -> MESSAGE IDENTIFIER { msg_fields }
 Rule 23    msg_fields -> msg_field_ msg_fields
 Rule 24    msg_fields -> <empty>
-Rule 25    msg_field_ -> comment msg_field
-Rule 26    msg_field -> field_decoration field_type IDENTIFIER = INTCONSTANT LINE_END
-Rule 27    field_decoration -> OPTIONAL
-Rule 28    field_decoration -> REPEATED
-Rule 29    field_decoration -> <empty>
-Rule 30    field_type -> ref_type
-Rule 31    field_type -> definition_type
-Rule 32    ref_type -> IDENTIFIER
-Rule 33    ref_type -> IDENTIFIER . IDENTIFIER
-Rule 34    definition_type -> base_type
-Rule 35    base_type -> BOOL
-Rule 36    base_type -> STRING
-Rule 37    base_type -> BYTES
-Rule 38    base_type -> DOUBLE
-Rule 39    base_type -> FLOAT
-Rule 40    base_type -> INT32
-Rule 41    base_type -> INT64
-Rule 42    base_type -> UINT32
-Rule 43    base_type -> UINT64
-Rule 44    base_type -> SINT32
-Rule 45    base_type -> SINT64
-Rule 46    base_type -> FIXED32
-Rule 47    base_type -> FIXED64
-Rule 48    base_type -> SFIXED32
-Rule 49    base_type -> SFIXED64
-Rule 50    enum -> ENUM IDENTIFIER { enum_fields }
-Rule 51    enum_fields -> enum_field enum_fields
-Rule 52    enum_fields -> <empty>
-Rule 53    enum_field -> IDENTIFIER = INTCONSTANT LINE_END
+Rule 25    msg_field_ -> comment msg_field LINE_END
+Rule 26    msg_field_ -> msg_field LINE_END
+Rule 27    msg_field -> field_decoration field_type IDENTIFIER = INTCONSTANT
+Rule 28    field_decoration -> OPTIONAL
+Rule 29    field_decoration -> REPEATED
+Rule 30    field_decoration -> <empty>
+Rule 31    field_type -> ref_type
+Rule 32    field_type -> definition_type
+Rule 33    ref_type -> IDENTIFIER
+Rule 34    ref_type -> IDENTIFIER . IDENTIFIER
+Rule 35    definition_type -> base_type
+Rule 36    base_type -> BOOL
+Rule 37    base_type -> STRING
+Rule 38    base_type -> BYTES
+Rule 39    base_type -> DOUBLE
+Rule 40    base_type -> FLOAT
+Rule 41    base_type -> INT32
+Rule 42    base_type -> INT64
+Rule 43    base_type -> UINT32
+Rule 44    base_type -> UINT64
+Rule 45    base_type -> SINT32
+Rule 46    base_type -> SINT64
+Rule 47    base_type -> FIXED32
+Rule 48    base_type -> FIXED64
+Rule 49    base_type -> SFIXED32
+Rule 50    base_type -> SFIXED64
+Rule 51    enum -> ENUM IDENTIFIER { enum_fields }
+Rule 52    enum_fields -> enum_field_ enum_fields
+Rule 53    enum_fields -> enum_field_
+Rule 54    enum_field_ -> comment enum_field LINE_END
+Rule 55    enum_field_ -> enum_field LINE_END
+Rule 56    enum_field -> IDENTIFIER = INTCONSTANT
 
 Terminals, with rules where they appear
 
-.                    : 33
-=                    : 12 15 26 53
-BOOL                 : 35
-BYTES                : 37
-DOUBLE               : 38
-ENUM                 : 50
-FIXED32              : 46
-FIXED64              : 47
-FLOAT                : 39
-IDENTIFIER           : 13 15 22 26 32 33 33 50 53
+.                    : 34
+=                    : 12 15 27 56
+BOOL                 : 36
+BYTES                : 38
+DOUBLE               : 39
+ENUM                 : 51
+FIXED32              : 47
+FIXED64              : 48
+FLOAT                : 40
+IDENTIFIER           : 13 15 22 27 33 34 34 51 56
 IMPORT               : 14
-INT32                : 40
-INT64                : 41
-INTCONSTANT          : 26 53
-LINE_END             : 6 7 26 53
+INT32                : 41
+INT64                : 42
+INTCONSTANT          : 27 56
+LINE_END             : 6 7 25 26 54 55
 LITERAL              : 12 14 15
 MESSAGE              : 22
 OPTION               : 15
-OPTIONAL             : 27
+OPTIONAL             : 28
 PACKAGE              : 13
-REPEATED             : 28
+REPEATED             : 29
 RESERVED             : 
-SFIXED32             : 48
-SFIXED64             : 49
+SFIXED32             : 49
+SFIXED64             : 50
 SINGLE_COMMENT       : 2 3
-SINT32               : 44
-SINT64               : 45
-STRING               : 36
+SINT32               : 45
+SINT64               : 46
+STRING               : 37
 SYNTAX               : 12
-UINT32               : 42
-UINT64               : 43
+UINT32               : 43
+UINT64               : 44
 error                : 
-{                    : 22 50
-}                    : 22 50
+{                    : 22 51
+}                    : 22 51
 
 Nonterminals, with rules where they appear
 
-base_type            : 34
-comment              : 2 6 18 25
+base_type            : 35
+comment              : 2 6 18 25 54
 definition           : 1 16
-definition_type      : 31
+definition_type      : 32
 definition_unit      : 18 19
 definition_unit_     : 16 17
 enum                 : 21
-enum_field           : 51
-enum_fields          : 50 51
-field_decoration     : 26
-field_type           : 26
+enum_field           : 54 55
+enum_field_          : 52 53
+enum_fields          : 51 52
+field_decoration     : 27
+field_type           : 27
 header               : 1 4
 header_unit          : 6 7
 header_unit_         : 4 5
 import               : 10
 message              : 20
-msg_field            : 25
+msg_field            : 25 26
 msg_field_           : 23
 msg_fields           : 22 23
 option               : 11
 package              : 9
-ref_type             : 30
+ref_type             : 31
 start                : 0
 syntax               : 8
 
@@ -229,7 +233,7 @@ state 5
     (14) import -> . IMPORT LITERAL
     (15) option -> . OPTION IDENTIFIER = LITERAL
     (22) message -> . MESSAGE IDENTIFIER { msg_fields }
-    (50) enum -> . ENUM IDENTIFIER { enum_fields }
+    (51) enum -> . ENUM IDENTIFIER { enum_fields }
 
     SINGLE_COMMENT  shift and go to state 9
     SYNTAX          shift and go to state 13
@@ -286,6 +290,7 @@ state 9
     (2) comment -> . SINGLE_COMMENT comment
     (3) comment -> . SINGLE_COMMENT
 
+    IDENTIFIER      reduce using rule 3 (comment -> SINGLE_COMMENT .)
     SYNTAX          reduce using rule 3 (comment -> SINGLE_COMMENT .)
     PACKAGE         reduce using rule 3 (comment -> SINGLE_COMMENT .)
     IMPORT          reduce using rule 3 (comment -> SINGLE_COMMENT .)
@@ -294,7 +299,6 @@ state 9
     ENUM            reduce using rule 3 (comment -> SINGLE_COMMENT .)
     OPTIONAL        reduce using rule 3 (comment -> SINGLE_COMMENT .)
     REPEATED        reduce using rule 3 (comment -> SINGLE_COMMENT .)
-    IDENTIFIER      reduce using rule 3 (comment -> SINGLE_COMMENT .)
     BOOL            reduce using rule 3 (comment -> SINGLE_COMMENT .)
     STRING          reduce using rule 3 (comment -> SINGLE_COMMENT .)
     BYTES           reduce using rule 3 (comment -> SINGLE_COMMENT .)
@@ -383,7 +387,7 @@ state 17
     (14) import -> . IMPORT LITERAL
     (15) option -> . OPTION IDENTIFIER = LITERAL
     (22) message -> . MESSAGE IDENTIFIER { msg_fields }
-    (50) enum -> . ENUM IDENTIFIER { enum_fields }
+    (51) enum -> . ENUM IDENTIFIER { enum_fields }
 
     SYNTAX          shift and go to state 13
     PACKAGE         shift and go to state 14
@@ -423,7 +427,7 @@ state 19
 
 state 20
 
-    (50) enum -> ENUM . IDENTIFIER { enum_fields }
+    (51) enum -> ENUM . IDENTIFIER { enum_fields }
 
     IDENTIFIER      shift and go to state 33
 
@@ -449,7 +453,7 @@ state 22
     (20) definition_unit -> . message
     (21) definition_unit -> . enum
     (22) message -> . MESSAGE IDENTIFIER { msg_fields }
-    (50) enum -> . ENUM IDENTIFIER { enum_fields }
+    (51) enum -> . ENUM IDENTIFIER { enum_fields }
 
     $end            reduce using rule 1 (start -> header definition .)
     SINGLE_COMMENT  shift and go to state 9
@@ -503,6 +507,7 @@ state 27
 
     (2) comment -> SINGLE_COMMENT comment .
 
+    IDENTIFIER      reduce using rule 2 (comment -> SINGLE_COMMENT comment .)
     SYNTAX          reduce using rule 2 (comment -> SINGLE_COMMENT comment .)
     PACKAGE         reduce using rule 2 (comment -> SINGLE_COMMENT comment .)
     IMPORT          reduce using rule 2 (comment -> SINGLE_COMMENT comment .)
@@ -511,7 +516,6 @@ state 27
     ENUM            reduce using rule 2 (comment -> SINGLE_COMMENT comment .)
     OPTIONAL        reduce using rule 2 (comment -> SINGLE_COMMENT comment .)
     REPEATED        reduce using rule 2 (comment -> SINGLE_COMMENT comment .)
-    IDENTIFIER      reduce using rule 2 (comment -> SINGLE_COMMENT comment .)
     BOOL            reduce using rule 2 (comment -> SINGLE_COMMENT comment .)
     STRING          reduce using rule 2 (comment -> SINGLE_COMMENT comment .)
     BYTES           reduce using rule 2 (comment -> SINGLE_COMMENT comment .)
@@ -575,7 +579,7 @@ state 32
 
 state 33
 
-    (50) enum -> ENUM IDENTIFIER . { enum_fields }
+    (51) enum -> ENUM IDENTIFIER . { enum_fields }
 
     {               shift and go to state 39
 
@@ -586,7 +590,7 @@ state 34
     (20) definition_unit -> . message
     (21) definition_unit -> . enum
     (22) message -> . MESSAGE IDENTIFIER { msg_fields }
-    (50) enum -> . ENUM IDENTIFIER { enum_fields }
+    (51) enum -> . ENUM IDENTIFIER { enum_fields }
 
     MESSAGE         shift and go to state 24
     ENUM            shift and go to state 20
@@ -628,32 +632,63 @@ state 38
 
 state 39
 
-    (50) enum -> ENUM IDENTIFIER { . enum_fields }
-    (51) enum_fields -> . enum_field enum_fields
-    (52) enum_fields -> .
-    (53) enum_field -> . IDENTIFIER = INTCONSTANT LINE_END
+    (51) enum -> ENUM IDENTIFIER { . enum_fields }
+    (52) enum_fields -> . enum_field_ enum_fields
+    (53) enum_fields -> . enum_field_
+    (54) enum_field_ -> . comment enum_field LINE_END
+    (55) enum_field_ -> . enum_field LINE_END
+    (2) comment -> . SINGLE_COMMENT comment
+    (3) comment -> . SINGLE_COMMENT
+    (56) enum_field -> . IDENTIFIER = INTCONSTANT
 
-    }               reduce using rule 52 (enum_fields -> .)
-    IDENTIFIER      shift and go to state 43
+    SINGLE_COMMENT  shift and go to state 9
+    IDENTIFIER      shift and go to state 45
 
-    enum_fields                    shift and go to state 44
-    enum_field                     shift and go to state 42
+    comment                        shift and go to state 42
+    enum_fields                    shift and go to state 46
+    enum_field                     shift and go to state 43
+    enum_field_                    shift and go to state 44
 
 state 40
 
     (22) message -> MESSAGE IDENTIFIER { . msg_fields }
     (23) msg_fields -> . msg_field_ msg_fields
     (24) msg_fields -> .
-    (25) msg_field_ -> . comment msg_field
+    (25) msg_field_ -> . comment msg_field LINE_END
+    (26) msg_field_ -> . msg_field LINE_END
     (2) comment -> . SINGLE_COMMENT comment
     (3) comment -> . SINGLE_COMMENT
+    (27) msg_field -> . field_decoration field_type IDENTIFIER = INTCONSTANT
+    (28) field_decoration -> . OPTIONAL
+    (29) field_decoration -> . REPEATED
+    (30) field_decoration -> .
 
     }               reduce using rule 24 (msg_fields -> .)
     SINGLE_COMMENT  shift and go to state 9
+    OPTIONAL        shift and go to state 51
+    REPEATED        shift and go to state 49
+    IDENTIFIER      reduce using rule 30 (field_decoration -> .)
+    BOOL            reduce using rule 30 (field_decoration -> .)
+    STRING          reduce using rule 30 (field_decoration -> .)
+    BYTES           reduce using rule 30 (field_decoration -> .)
+    DOUBLE          reduce using rule 30 (field_decoration -> .)
+    FLOAT           reduce using rule 30 (field_decoration -> .)
+    INT32           reduce using rule 30 (field_decoration -> .)
+    INT64           reduce using rule 30 (field_decoration -> .)
+    UINT32          reduce using rule 30 (field_decoration -> .)
+    UINT64          reduce using rule 30 (field_decoration -> .)
+    SINT32          reduce using rule 30 (field_decoration -> .)
+    SINT64          reduce using rule 30 (field_decoration -> .)
+    FIXED32         reduce using rule 30 (field_decoration -> .)
+    FIXED64         reduce using rule 30 (field_decoration -> .)
+    SFIXED32        reduce using rule 30 (field_decoration -> .)
+    SFIXED64        reduce using rule 30 (field_decoration -> .)
 
-    comment                        shift and go to state 45
-    msg_field_                     shift and go to state 47
-    msg_fields                     shift and go to state 46
+    comment                        shift and go to state 47
+    msg_field                      shift and go to state 50
+    msg_fields                     shift and go to state 52
+    msg_field_                     shift and go to state 53
+    field_decoration               shift and go to state 48
 
 state 41
 
@@ -664,207 +699,446 @@ state 41
 
 state 42
 
-    (51) enum_fields -> enum_field . enum_fields
-    (51) enum_fields -> . enum_field enum_fields
-    (52) enum_fields -> .
-    (53) enum_field -> . IDENTIFIER = INTCONSTANT LINE_END
+    (54) enum_field_ -> comment . enum_field LINE_END
+    (56) enum_field -> . IDENTIFIER = INTCONSTANT
 
-    }               reduce using rule 52 (enum_fields -> .)
-    IDENTIFIER      shift and go to state 43
+    IDENTIFIER      shift and go to state 45
 
-    enum_fields                    shift and go to state 48
-    enum_field                     shift and go to state 42
+    enum_field                     shift and go to state 54
 
 state 43
 
-    (53) enum_field -> IDENTIFIER . = INTCONSTANT LINE_END
+    (55) enum_field_ -> enum_field . LINE_END
 
-    =               shift and go to state 49
+    LINE_END        shift and go to state 55
 
 
 state 44
 
-    (50) enum -> ENUM IDENTIFIER { enum_fields . }
+    (52) enum_fields -> enum_field_ . enum_fields
+    (53) enum_fields -> enum_field_ .
+    (52) enum_fields -> . enum_field_ enum_fields
+    (53) enum_fields -> . enum_field_
+    (54) enum_field_ -> . comment enum_field LINE_END
+    (55) enum_field_ -> . enum_field LINE_END
+    (2) comment -> . SINGLE_COMMENT comment
+    (3) comment -> . SINGLE_COMMENT
+    (56) enum_field -> . IDENTIFIER = INTCONSTANT
 
-    }               shift and go to state 50
+    }               reduce using rule 53 (enum_fields -> enum_field_ .)
+    SINGLE_COMMENT  shift and go to state 9
+    IDENTIFIER      shift and go to state 45
 
+    comment                        shift and go to state 42
+    enum_fields                    shift and go to state 56
+    enum_field                     shift and go to state 43
+    enum_field_                    shift and go to state 44
 
 state 45
 
-    (25) msg_field_ -> comment . msg_field
-    (26) msg_field -> . field_decoration field_type IDENTIFIER = INTCONSTANT LINE_END
-    (27) field_decoration -> . OPTIONAL
-    (28) field_decoration -> . REPEATED
-    (29) field_decoration -> .
+    (56) enum_field -> IDENTIFIER . = INTCONSTANT
 
-    OPTIONAL        shift and go to state 53
-    REPEATED        shift and go to state 51
-    IDENTIFIER      reduce using rule 29 (field_decoration -> .)
-    BOOL            reduce using rule 29 (field_decoration -> .)
-    STRING          reduce using rule 29 (field_decoration -> .)
-    BYTES           reduce using rule 29 (field_decoration -> .)
-    DOUBLE          reduce using rule 29 (field_decoration -> .)
-    FLOAT           reduce using rule 29 (field_decoration -> .)
-    INT32           reduce using rule 29 (field_decoration -> .)
-    INT64           reduce using rule 29 (field_decoration -> .)
-    UINT32          reduce using rule 29 (field_decoration -> .)
-    UINT64          reduce using rule 29 (field_decoration -> .)
-    SINT32          reduce using rule 29 (field_decoration -> .)
-    SINT64          reduce using rule 29 (field_decoration -> .)
-    FIXED32         reduce using rule 29 (field_decoration -> .)
-    FIXED64         reduce using rule 29 (field_decoration -> .)
-    SFIXED32        reduce using rule 29 (field_decoration -> .)
-    SFIXED64        reduce using rule 29 (field_decoration -> .)
+    =               shift and go to state 57
 
-    msg_field                      shift and go to state 52
-    field_decoration               shift and go to state 54
 
 state 46
 
-    (22) message -> MESSAGE IDENTIFIER { msg_fields . }
+    (51) enum -> ENUM IDENTIFIER { enum_fields . }
 
-    }               shift and go to state 55
+    }               shift and go to state 58
 
 
 state 47
 
-    (23) msg_fields -> msg_field_ . msg_fields
-    (23) msg_fields -> . msg_field_ msg_fields
-    (24) msg_fields -> .
-    (25) msg_field_ -> . comment msg_field
-    (2) comment -> . SINGLE_COMMENT comment
-    (3) comment -> . SINGLE_COMMENT
+    (25) msg_field_ -> comment . msg_field LINE_END
+    (27) msg_field -> . field_decoration field_type IDENTIFIER = INTCONSTANT
+    (28) field_decoration -> . OPTIONAL
+    (29) field_decoration -> . REPEATED
+    (30) field_decoration -> .
 
-    }               reduce using rule 24 (msg_fields -> .)
-    SINGLE_COMMENT  shift and go to state 9
+    OPTIONAL        shift and go to state 51
+    REPEATED        shift and go to state 49
+    IDENTIFIER      reduce using rule 30 (field_decoration -> .)
+    BOOL            reduce using rule 30 (field_decoration -> .)
+    STRING          reduce using rule 30 (field_decoration -> .)
+    BYTES           reduce using rule 30 (field_decoration -> .)
+    DOUBLE          reduce using rule 30 (field_decoration -> .)
+    FLOAT           reduce using rule 30 (field_decoration -> .)
+    INT32           reduce using rule 30 (field_decoration -> .)
+    INT64           reduce using rule 30 (field_decoration -> .)
+    UINT32          reduce using rule 30 (field_decoration -> .)
+    UINT64          reduce using rule 30 (field_decoration -> .)
+    SINT32          reduce using rule 30 (field_decoration -> .)
+    SINT64          reduce using rule 30 (field_decoration -> .)
+    FIXED32         reduce using rule 30 (field_decoration -> .)
+    FIXED64         reduce using rule 30 (field_decoration -> .)
+    SFIXED32        reduce using rule 30 (field_decoration -> .)
+    SFIXED64        reduce using rule 30 (field_decoration -> .)
 
-    comment                        shift and go to state 45
-    msg_field_                     shift and go to state 47
-    msg_fields                     shift and go to state 56
+    msg_field                      shift and go to state 59
+    field_decoration               shift and go to state 48
 
 state 48
 
-    (51) enum_fields -> enum_field enum_fields .
+    (27) msg_field -> field_decoration . field_type IDENTIFIER = INTCONSTANT
+    (31) field_type -> . ref_type
+    (32) field_type -> . definition_type
+    (33) ref_type -> . IDENTIFIER
+    (34) ref_type -> . IDENTIFIER . IDENTIFIER
+    (35) definition_type -> . base_type
+    (36) base_type -> . BOOL
+    (37) base_type -> . STRING
+    (38) base_type -> . BYTES
+    (39) base_type -> . DOUBLE
+    (40) base_type -> . FLOAT
+    (41) base_type -> . INT32
+    (42) base_type -> . INT64
+    (43) base_type -> . UINT32
+    (44) base_type -> . UINT64
+    (45) base_type -> . SINT32
+    (46) base_type -> . SINT64
+    (47) base_type -> . FIXED32
+    (48) base_type -> . FIXED64
+    (49) base_type -> . SFIXED32
+    (50) base_type -> . SFIXED64
 
-    }               reduce using rule 51 (enum_fields -> enum_field enum_fields .)
+    IDENTIFIER      shift and go to state 66
+    BOOL            shift and go to state 79
+    STRING          shift and go to state 69
+    BYTES           shift and go to state 71
+    DOUBLE          shift and go to state 76
+    FLOAT           shift and go to state 77
+    INT32           shift and go to state 70
+    INT64           shift and go to state 73
+    UINT32          shift and go to state 67
+    UINT64          shift and go to state 74
+    SINT32          shift and go to state 68
+    SINT64          shift and go to state 75
+    FIXED32         shift and go to state 60
+    FIXED64         shift and go to state 63
+    SFIXED32        shift and go to state 78
+    SFIXED64        shift and go to state 64
 
+    field_type                     shift and go to state 61
+    ref_type                       shift and go to state 65
+    base_type                      shift and go to state 62
+    definition_type                shift and go to state 72
 
 state 49
 
-    (53) enum_field -> IDENTIFIER = . INTCONSTANT LINE_END
+    (29) field_decoration -> REPEATED .
 
-    INTCONSTANT     shift and go to state 57
+    IDENTIFIER      reduce using rule 29 (field_decoration -> REPEATED .)
+    BOOL            reduce using rule 29 (field_decoration -> REPEATED .)
+    STRING          reduce using rule 29 (field_decoration -> REPEATED .)
+    BYTES           reduce using rule 29 (field_decoration -> REPEATED .)
+    DOUBLE          reduce using rule 29 (field_decoration -> REPEATED .)
+    FLOAT           reduce using rule 29 (field_decoration -> REPEATED .)
+    INT32           reduce using rule 29 (field_decoration -> REPEATED .)
+    INT64           reduce using rule 29 (field_decoration -> REPEATED .)
+    UINT32          reduce using rule 29 (field_decoration -> REPEATED .)
+    UINT64          reduce using rule 29 (field_decoration -> REPEATED .)
+    SINT32          reduce using rule 29 (field_decoration -> REPEATED .)
+    SINT64          reduce using rule 29 (field_decoration -> REPEATED .)
+    FIXED32         reduce using rule 29 (field_decoration -> REPEATED .)
+    FIXED64         reduce using rule 29 (field_decoration -> REPEATED .)
+    SFIXED32        reduce using rule 29 (field_decoration -> REPEATED .)
+    SFIXED64        reduce using rule 29 (field_decoration -> REPEATED .)
 
 
 state 50
 
-    (50) enum -> ENUM IDENTIFIER { enum_fields } .
+    (26) msg_field_ -> msg_field . LINE_END
 
-    SINGLE_COMMENT  reduce using rule 50 (enum -> ENUM IDENTIFIER { enum_fields } .)
-    MESSAGE         reduce using rule 50 (enum -> ENUM IDENTIFIER { enum_fields } .)
-    ENUM            reduce using rule 50 (enum -> ENUM IDENTIFIER { enum_fields } .)
-    $end            reduce using rule 50 (enum -> ENUM IDENTIFIER { enum_fields } .)
+    LINE_END        shift and go to state 80
 
 
 state 51
 
-    (28) field_decoration -> REPEATED .
+    (28) field_decoration -> OPTIONAL .
 
-    IDENTIFIER      reduce using rule 28 (field_decoration -> REPEATED .)
-    BOOL            reduce using rule 28 (field_decoration -> REPEATED .)
-    STRING          reduce using rule 28 (field_decoration -> REPEATED .)
-    BYTES           reduce using rule 28 (field_decoration -> REPEATED .)
-    DOUBLE          reduce using rule 28 (field_decoration -> REPEATED .)
-    FLOAT           reduce using rule 28 (field_decoration -> REPEATED .)
-    INT32           reduce using rule 28 (field_decoration -> REPEATED .)
-    INT64           reduce using rule 28 (field_decoration -> REPEATED .)
-    UINT32          reduce using rule 28 (field_decoration -> REPEATED .)
-    UINT64          reduce using rule 28 (field_decoration -> REPEATED .)
-    SINT32          reduce using rule 28 (field_decoration -> REPEATED .)
-    SINT64          reduce using rule 28 (field_decoration -> REPEATED .)
-    FIXED32         reduce using rule 28 (field_decoration -> REPEATED .)
-    FIXED64         reduce using rule 28 (field_decoration -> REPEATED .)
-    SFIXED32        reduce using rule 28 (field_decoration -> REPEATED .)
-    SFIXED64        reduce using rule 28 (field_decoration -> REPEATED .)
+    IDENTIFIER      reduce using rule 28 (field_decoration -> OPTIONAL .)
+    BOOL            reduce using rule 28 (field_decoration -> OPTIONAL .)
+    STRING          reduce using rule 28 (field_decoration -> OPTIONAL .)
+    BYTES           reduce using rule 28 (field_decoration -> OPTIONAL .)
+    DOUBLE          reduce using rule 28 (field_decoration -> OPTIONAL .)
+    FLOAT           reduce using rule 28 (field_decoration -> OPTIONAL .)
+    INT32           reduce using rule 28 (field_decoration -> OPTIONAL .)
+    INT64           reduce using rule 28 (field_decoration -> OPTIONAL .)
+    UINT32          reduce using rule 28 (field_decoration -> OPTIONAL .)
+    UINT64          reduce using rule 28 (field_decoration -> OPTIONAL .)
+    SINT32          reduce using rule 28 (field_decoration -> OPTIONAL .)
+    SINT64          reduce using rule 28 (field_decoration -> OPTIONAL .)
+    FIXED32         reduce using rule 28 (field_decoration -> OPTIONAL .)
+    FIXED64         reduce using rule 28 (field_decoration -> OPTIONAL .)
+    SFIXED32        reduce using rule 28 (field_decoration -> OPTIONAL .)
+    SFIXED64        reduce using rule 28 (field_decoration -> OPTIONAL .)
 
 
 state 52
 
-    (25) msg_field_ -> comment msg_field .
+    (22) message -> MESSAGE IDENTIFIER { msg_fields . }
 
-    SINGLE_COMMENT  reduce using rule 25 (msg_field_ -> comment msg_field .)
-    }               reduce using rule 25 (msg_field_ -> comment msg_field .)
+    }               shift and go to state 81
 
 
 state 53
 
-    (27) field_decoration -> OPTIONAL .
+    (23) msg_fields -> msg_field_ . msg_fields
+    (23) msg_fields -> . msg_field_ msg_fields
+    (24) msg_fields -> .
+    (25) msg_field_ -> . comment msg_field LINE_END
+    (26) msg_field_ -> . msg_field LINE_END
+    (2) comment -> . SINGLE_COMMENT comment
+    (3) comment -> . SINGLE_COMMENT
+    (27) msg_field -> . field_decoration field_type IDENTIFIER = INTCONSTANT
+    (28) field_decoration -> . OPTIONAL
+    (29) field_decoration -> . REPEATED
+    (30) field_decoration -> .
 
-    IDENTIFIER      reduce using rule 27 (field_decoration -> OPTIONAL .)
-    BOOL            reduce using rule 27 (field_decoration -> OPTIONAL .)
-    STRING          reduce using rule 27 (field_decoration -> OPTIONAL .)
-    BYTES           reduce using rule 27 (field_decoration -> OPTIONAL .)
-    DOUBLE          reduce using rule 27 (field_decoration -> OPTIONAL .)
-    FLOAT           reduce using rule 27 (field_decoration -> OPTIONAL .)
-    INT32           reduce using rule 27 (field_decoration -> OPTIONAL .)
-    INT64           reduce using rule 27 (field_decoration -> OPTIONAL .)
-    UINT32          reduce using rule 27 (field_decoration -> OPTIONAL .)
-    UINT64          reduce using rule 27 (field_decoration -> OPTIONAL .)
-    SINT32          reduce using rule 27 (field_decoration -> OPTIONAL .)
-    SINT64          reduce using rule 27 (field_decoration -> OPTIONAL .)
-    FIXED32         reduce using rule 27 (field_decoration -> OPTIONAL .)
-    FIXED64         reduce using rule 27 (field_decoration -> OPTIONAL .)
-    SFIXED32        reduce using rule 27 (field_decoration -> OPTIONAL .)
-    SFIXED64        reduce using rule 27 (field_decoration -> OPTIONAL .)
+    }               reduce using rule 24 (msg_fields -> .)
+    SINGLE_COMMENT  shift and go to state 9
+    OPTIONAL        shift and go to state 51
+    REPEATED        shift and go to state 49
+    IDENTIFIER      reduce using rule 30 (field_decoration -> .)
+    BOOL            reduce using rule 30 (field_decoration -> .)
+    STRING          reduce using rule 30 (field_decoration -> .)
+    BYTES           reduce using rule 30 (field_decoration -> .)
+    DOUBLE          reduce using rule 30 (field_decoration -> .)
+    FLOAT           reduce using rule 30 (field_decoration -> .)
+    INT32           reduce using rule 30 (field_decoration -> .)
+    INT64           reduce using rule 30 (field_decoration -> .)
+    UINT32          reduce using rule 30 (field_decoration -> .)
+    UINT64          reduce using rule 30 (field_decoration -> .)
+    SINT32          reduce using rule 30 (field_decoration -> .)
+    SINT64          reduce using rule 30 (field_decoration -> .)
+    FIXED32         reduce using rule 30 (field_decoration -> .)
+    FIXED64         reduce using rule 30 (field_decoration -> .)
+    SFIXED32        reduce using rule 30 (field_decoration -> .)
+    SFIXED64        reduce using rule 30 (field_decoration -> .)
 
+    comment                        shift and go to state 47
+    msg_field                      shift and go to state 50
+    msg_fields                     shift and go to state 82
+    msg_field_                     shift and go to state 53
+    field_decoration               shift and go to state 48
 
 state 54
 
-    (26) msg_field -> field_decoration . field_type IDENTIFIER = INTCONSTANT LINE_END
-    (30) field_type -> . ref_type
-    (31) field_type -> . definition_type
-    (32) ref_type -> . IDENTIFIER
-    (33) ref_type -> . IDENTIFIER . IDENTIFIER
-    (34) definition_type -> . base_type
-    (35) base_type -> . BOOL
-    (36) base_type -> . STRING
-    (37) base_type -> . BYTES
-    (38) base_type -> . DOUBLE
-    (39) base_type -> . FLOAT
-    (40) base_type -> . INT32
-    (41) base_type -> . INT64
-    (42) base_type -> . UINT32
-    (43) base_type -> . UINT64
-    (44) base_type -> . SINT32
-    (45) base_type -> . SINT64
-    (46) base_type -> . FIXED32
-    (47) base_type -> . FIXED64
-    (48) base_type -> . SFIXED32
-    (49) base_type -> . SFIXED64
+    (54) enum_field_ -> comment enum_field . LINE_END
 
-    IDENTIFIER      shift and go to state 64
-    BOOL            shift and go to state 77
-    STRING          shift and go to state 67
-    BYTES           shift and go to state 69
-    DOUBLE          shift and go to state 74
-    FLOAT           shift and go to state 75
-    INT32           shift and go to state 68
-    INT64           shift and go to state 71
-    UINT32          shift and go to state 65
-    UINT64          shift and go to state 72
-    SINT32          shift and go to state 66
-    SINT64          shift and go to state 73
-    FIXED32         shift and go to state 58
-    FIXED64         shift and go to state 61
-    SFIXED32        shift and go to state 76
-    SFIXED64        shift and go to state 62
+    LINE_END        shift and go to state 83
 
-    field_type                     shift and go to state 59
-    ref_type                       shift and go to state 63
-    base_type                      shift and go to state 60
-    definition_type                shift and go to state 70
 
 state 55
+
+    (55) enum_field_ -> enum_field LINE_END .
+
+    SINGLE_COMMENT  reduce using rule 55 (enum_field_ -> enum_field LINE_END .)
+    IDENTIFIER      reduce using rule 55 (enum_field_ -> enum_field LINE_END .)
+    }               reduce using rule 55 (enum_field_ -> enum_field LINE_END .)
+
+
+state 56
+
+    (52) enum_fields -> enum_field_ enum_fields .
+
+    }               reduce using rule 52 (enum_fields -> enum_field_ enum_fields .)
+
+
+state 57
+
+    (56) enum_field -> IDENTIFIER = . INTCONSTANT
+
+    INTCONSTANT     shift and go to state 84
+
+
+state 58
+
+    (51) enum -> ENUM IDENTIFIER { enum_fields } .
+
+    SINGLE_COMMENT  reduce using rule 51 (enum -> ENUM IDENTIFIER { enum_fields } .)
+    MESSAGE         reduce using rule 51 (enum -> ENUM IDENTIFIER { enum_fields } .)
+    ENUM            reduce using rule 51 (enum -> ENUM IDENTIFIER { enum_fields } .)
+    $end            reduce using rule 51 (enum -> ENUM IDENTIFIER { enum_fields } .)
+
+
+state 59
+
+    (25) msg_field_ -> comment msg_field . LINE_END
+
+    LINE_END        shift and go to state 85
+
+
+state 60
+
+    (47) base_type -> FIXED32 .
+
+    IDENTIFIER      reduce using rule 47 (base_type -> FIXED32 .)
+
+
+state 61
+
+    (27) msg_field -> field_decoration field_type . IDENTIFIER = INTCONSTANT
+
+    IDENTIFIER      shift and go to state 86
+
+
+state 62
+
+    (35) definition_type -> base_type .
+
+    IDENTIFIER      reduce using rule 35 (definition_type -> base_type .)
+
+
+state 63
+
+    (48) base_type -> FIXED64 .
+
+    IDENTIFIER      reduce using rule 48 (base_type -> FIXED64 .)
+
+
+state 64
+
+    (50) base_type -> SFIXED64 .
+
+    IDENTIFIER      reduce using rule 50 (base_type -> SFIXED64 .)
+
+
+state 65
+
+    (31) field_type -> ref_type .
+
+    IDENTIFIER      reduce using rule 31 (field_type -> ref_type .)
+
+
+state 66
+
+    (33) ref_type -> IDENTIFIER .
+    (34) ref_type -> IDENTIFIER . . IDENTIFIER
+
+    IDENTIFIER      reduce using rule 33 (ref_type -> IDENTIFIER .)
+    .               shift and go to state 87
+
+
+state 67
+
+    (43) base_type -> UINT32 .
+
+    IDENTIFIER      reduce using rule 43 (base_type -> UINT32 .)
+
+
+state 68
+
+    (45) base_type -> SINT32 .
+
+    IDENTIFIER      reduce using rule 45 (base_type -> SINT32 .)
+
+
+state 69
+
+    (37) base_type -> STRING .
+
+    IDENTIFIER      reduce using rule 37 (base_type -> STRING .)
+
+
+state 70
+
+    (41) base_type -> INT32 .
+
+    IDENTIFIER      reduce using rule 41 (base_type -> INT32 .)
+
+
+state 71
+
+    (38) base_type -> BYTES .
+
+    IDENTIFIER      reduce using rule 38 (base_type -> BYTES .)
+
+
+state 72
+
+    (32) field_type -> definition_type .
+
+    IDENTIFIER      reduce using rule 32 (field_type -> definition_type .)
+
+
+state 73
+
+    (42) base_type -> INT64 .
+
+    IDENTIFIER      reduce using rule 42 (base_type -> INT64 .)
+
+
+state 74
+
+    (44) base_type -> UINT64 .
+
+    IDENTIFIER      reduce using rule 44 (base_type -> UINT64 .)
+
+
+state 75
+
+    (46) base_type -> SINT64 .
+
+    IDENTIFIER      reduce using rule 46 (base_type -> SINT64 .)
+
+
+state 76
+
+    (39) base_type -> DOUBLE .
+
+    IDENTIFIER      reduce using rule 39 (base_type -> DOUBLE .)
+
+
+state 77
+
+    (40) base_type -> FLOAT .
+
+    IDENTIFIER      reduce using rule 40 (base_type -> FLOAT .)
+
+
+state 78
+
+    (49) base_type -> SFIXED32 .
+
+    IDENTIFIER      reduce using rule 49 (base_type -> SFIXED32 .)
+
+
+state 79
+
+    (36) base_type -> BOOL .
+
+    IDENTIFIER      reduce using rule 36 (base_type -> BOOL .)
+
+
+state 80
+
+    (26) msg_field_ -> msg_field LINE_END .
+
+    SINGLE_COMMENT  reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    OPTIONAL        reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    REPEATED        reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    IDENTIFIER      reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    BOOL            reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    STRING          reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    BYTES           reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    DOUBLE          reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    FLOAT           reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    INT32           reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    INT64           reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    UINT32          reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    UINT64          reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    SINT32          reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    SINT64          reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    FIXED32         reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    FIXED64         reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    SFIXED32        reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    SFIXED64        reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+    }               reduce using rule 26 (msg_field_ -> msg_field LINE_END .)
+
+
+state 81
 
     (22) message -> MESSAGE IDENTIFIER { msg_fields } .
 
@@ -874,209 +1148,86 @@ state 55
     $end            reduce using rule 22 (message -> MESSAGE IDENTIFIER { msg_fields } .)
 
 
-state 56
+state 82
 
     (23) msg_fields -> msg_field_ msg_fields .
 
     }               reduce using rule 23 (msg_fields -> msg_field_ msg_fields .)
 
 
-state 57
-
-    (53) enum_field -> IDENTIFIER = INTCONSTANT . LINE_END
-
-    LINE_END        shift and go to state 78
-
-
-state 58
-
-    (46) base_type -> FIXED32 .
-
-    IDENTIFIER      reduce using rule 46 (base_type -> FIXED32 .)
-
-
-state 59
-
-    (26) msg_field -> field_decoration field_type . IDENTIFIER = INTCONSTANT LINE_END
-
-    IDENTIFIER      shift and go to state 79
-
-
-state 60
-
-    (34) definition_type -> base_type .
-
-    IDENTIFIER      reduce using rule 34 (definition_type -> base_type .)
-
-
-state 61
-
-    (47) base_type -> FIXED64 .
-
-    IDENTIFIER      reduce using rule 47 (base_type -> FIXED64 .)
-
-
-state 62
-
-    (49) base_type -> SFIXED64 .
-
-    IDENTIFIER      reduce using rule 49 (base_type -> SFIXED64 .)
-
-
-state 63
-
-    (30) field_type -> ref_type .
-
-    IDENTIFIER      reduce using rule 30 (field_type -> ref_type .)
-
-
-state 64
-
-    (32) ref_type -> IDENTIFIER .
-    (33) ref_type -> IDENTIFIER . . IDENTIFIER
-
-    IDENTIFIER      reduce using rule 32 (ref_type -> IDENTIFIER .)
-    .               shift and go to state 80
-
-
-state 65
-
-    (42) base_type -> UINT32 .
-
-    IDENTIFIER      reduce using rule 42 (base_type -> UINT32 .)
-
-
-state 66
-
-    (44) base_type -> SINT32 .
-
-    IDENTIFIER      reduce using rule 44 (base_type -> SINT32 .)
-
-
-state 67
-
-    (36) base_type -> STRING .
-
-    IDENTIFIER      reduce using rule 36 (base_type -> STRING .)
-
-
-state 68
-
-    (40) base_type -> INT32 .
-
-    IDENTIFIER      reduce using rule 40 (base_type -> INT32 .)
-
-
-state 69
-
-    (37) base_type -> BYTES .
-
-    IDENTIFIER      reduce using rule 37 (base_type -> BYTES .)
-
-
-state 70
-
-    (31) field_type -> definition_type .
-
-    IDENTIFIER      reduce using rule 31 (field_type -> definition_type .)
-
-
-state 71
-
-    (41) base_type -> INT64 .
-
-    IDENTIFIER      reduce using rule 41 (base_type -> INT64 .)
-
-
-state 72
-
-    (43) base_type -> UINT64 .
-
-    IDENTIFIER      reduce using rule 43 (base_type -> UINT64 .)
-
-
-state 73
-
-    (45) base_type -> SINT64 .
-
-    IDENTIFIER      reduce using rule 45 (base_type -> SINT64 .)
-
-
-state 74
-
-    (38) base_type -> DOUBLE .
-
-    IDENTIFIER      reduce using rule 38 (base_type -> DOUBLE .)
-
-
-state 75
-
-    (39) base_type -> FLOAT .
-
-    IDENTIFIER      reduce using rule 39 (base_type -> FLOAT .)
-
-
-state 76
-
-    (48) base_type -> SFIXED32 .
-
-    IDENTIFIER      reduce using rule 48 (base_type -> SFIXED32 .)
-
-
-state 77
-
-    (35) base_type -> BOOL .
-
-    IDENTIFIER      reduce using rule 35 (base_type -> BOOL .)
-
-
-state 78
-
-    (53) enum_field -> IDENTIFIER = INTCONSTANT LINE_END .
-
-    IDENTIFIER      reduce using rule 53 (enum_field -> IDENTIFIER = INTCONSTANT LINE_END .)
-    }               reduce using rule 53 (enum_field -> IDENTIFIER = INTCONSTANT LINE_END .)
-
-
-state 79
-
-    (26) msg_field -> field_decoration field_type IDENTIFIER . = INTCONSTANT LINE_END
-
-    =               shift and go to state 81
-
-
-state 80
-
-    (33) ref_type -> IDENTIFIER . . IDENTIFIER
-
-    IDENTIFIER      shift and go to state 82
-
-
-state 81
-
-    (26) msg_field -> field_decoration field_type IDENTIFIER = . INTCONSTANT LINE_END
-
-    INTCONSTANT     shift and go to state 83
-
-
-state 82
-
-    (33) ref_type -> IDENTIFIER . IDENTIFIER .
-
-    IDENTIFIER      reduce using rule 33 (ref_type -> IDENTIFIER . IDENTIFIER .)
-
-
 state 83
 
-    (26) msg_field -> field_decoration field_type IDENTIFIER = INTCONSTANT . LINE_END
+    (54) enum_field_ -> comment enum_field LINE_END .
 
-    LINE_END        shift and go to state 84
+    SINGLE_COMMENT  reduce using rule 54 (enum_field_ -> comment enum_field LINE_END .)
+    IDENTIFIER      reduce using rule 54 (enum_field_ -> comment enum_field LINE_END .)
+    }               reduce using rule 54 (enum_field_ -> comment enum_field LINE_END .)
 
 
 state 84
 
-    (26) msg_field -> field_decoration field_type IDENTIFIER = INTCONSTANT LINE_END .
+    (56) enum_field -> IDENTIFIER = INTCONSTANT .
 
-    SINGLE_COMMENT  reduce using rule 26 (msg_field -> field_decoration field_type IDENTIFIER = INTCONSTANT LINE_END .)
-    }               reduce using rule 26 (msg_field -> field_decoration field_type IDENTIFIER = INTCONSTANT LINE_END .)
+    LINE_END        reduce using rule 56 (enum_field -> IDENTIFIER = INTCONSTANT .)
+
+
+state 85
+
+    (25) msg_field_ -> comment msg_field LINE_END .
+
+    SINGLE_COMMENT  reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    OPTIONAL        reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    REPEATED        reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    IDENTIFIER      reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    BOOL            reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    STRING          reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    BYTES           reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    DOUBLE          reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    FLOAT           reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    INT32           reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    INT64           reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    UINT32          reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    UINT64          reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    SINT32          reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    SINT64          reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    FIXED32         reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    FIXED64         reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    SFIXED32        reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    SFIXED64        reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+    }               reduce using rule 25 (msg_field_ -> comment msg_field LINE_END .)
+
+
+state 86
+
+    (27) msg_field -> field_decoration field_type IDENTIFIER . = INTCONSTANT
+
+    =               shift and go to state 88
+
+
+state 87
+
+    (34) ref_type -> IDENTIFIER . . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 89
+
+
+state 88
+
+    (27) msg_field -> field_decoration field_type IDENTIFIER = . INTCONSTANT
+
+    INTCONSTANT     shift and go to state 90
+
+
+state 89
+
+    (34) ref_type -> IDENTIFIER . IDENTIFIER .
+
+    IDENTIFIER      reduce using rule 34 (ref_type -> IDENTIFIER . IDENTIFIER .)
+
+
+state 90
+
+    (27) msg_field -> field_decoration field_type IDENTIFIER = INTCONSTANT .
+
+    LINE_END        reduce using rule 27 (msg_field -> field_decoration field_type IDENTIFIER = INTCONSTANT .)
 

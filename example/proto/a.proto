@@ -11,7 +11,8 @@ option java_package = "com.pyprotoc.proto.data";
 // java_outer_classname
 option java_outer_classname = "AModel";
 
-// a
+// a1
+// a2
 message A {
     // str前的注释
     string str = 1;
