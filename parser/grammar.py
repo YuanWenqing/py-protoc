@@ -226,7 +226,7 @@ def p_enum(p):
 
 def p_enum_fields(p):
   """enum_fields : enum_field_ enum_fields
-         | enum_field_"""
+         | """
   if len(p) == 1:
     p[0] = []
   else:
@@ -246,7 +246,7 @@ def p_enum_field_(p):
 
 def p_enum_field(p):
   """enum_field : IDENTIFIER '=' INTCONSTANT"""
-  p[0] = EnumField(p[1], p[2])
+  p[0] = EnumField(p[1], p[3])
 
 
 # def p_service(p):

@@ -30,7 +30,10 @@ class Field:
     return self.comment != None and self.comment.find('@deprecated') >= 0
 
   def __str__(self):
-    return '%d: %s=%d #%s' % (self.index, self.name, self.number, self.comment.replace('\n', '\\n'))
+    s = '%d: %s=%d' % (self.index, self.name, self.number)
+    if self.comment:
+      s = '%s #%s' % (s, self.comment.replace('\n', '\\n'))
+    return s
 
 class TypeKind:
   '''field type的类型'''

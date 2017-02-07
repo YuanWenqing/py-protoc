@@ -59,7 +59,7 @@ Rule 49    base_type -> SFIXED32
 Rule 50    base_type -> SFIXED64
 Rule 51    enum -> ENUM IDENTIFIER { enum_fields }
 Rule 52    enum_fields -> enum_field_ enum_fields
-Rule 53    enum_fields -> enum_field_
+Rule 53    enum_fields -> <empty>
 Rule 54    enum_field_ -> comment enum_field LINE_END
 Rule 55    enum_field_ -> enum_field LINE_END
 Rule 56    enum_field -> IDENTIFIER = INTCONSTANT
@@ -111,7 +111,7 @@ definition_unit      : 18 19
 definition_unit_     : 16 17
 enum                 : 21
 enum_field           : 54 55
-enum_field_          : 52 53
+enum_field_          : 52
 enum_fields          : 51 52
 field_decoration     : 27
 field_type           : 27
@@ -634,13 +634,14 @@ state 39
 
     (51) enum -> ENUM IDENTIFIER { . enum_fields }
     (52) enum_fields -> . enum_field_ enum_fields
-    (53) enum_fields -> . enum_field_
+    (53) enum_fields -> .
     (54) enum_field_ -> . comment enum_field LINE_END
     (55) enum_field_ -> . enum_field LINE_END
     (2) comment -> . SINGLE_COMMENT comment
     (3) comment -> . SINGLE_COMMENT
     (56) enum_field -> . IDENTIFIER = INTCONSTANT
 
+    }               reduce using rule 53 (enum_fields -> .)
     SINGLE_COMMENT  shift and go to state 9
     IDENTIFIER      shift and go to state 45
 
@@ -716,16 +717,15 @@ state 43
 state 44
 
     (52) enum_fields -> enum_field_ . enum_fields
-    (53) enum_fields -> enum_field_ .
     (52) enum_fields -> . enum_field_ enum_fields
-    (53) enum_fields -> . enum_field_
+    (53) enum_fields -> .
     (54) enum_field_ -> . comment enum_field LINE_END
     (55) enum_field_ -> . enum_field LINE_END
     (2) comment -> . SINGLE_COMMENT comment
     (3) comment -> . SINGLE_COMMENT
     (56) enum_field -> . IDENTIFIER = INTCONSTANT
 
-    }               reduce using rule 53 (enum_fields -> enum_field_ .)
+    }               reduce using rule 53 (enum_fields -> .)
     SINGLE_COMMENT  shift and go to state 9
     IDENTIFIER      shift and go to state 45
 

@@ -6,6 +6,7 @@ option java_package = "com.pyprotoc.proto.data";
 option java_outer_classname = "BModel";
 
 enum B {
-  B0 = 0;
-  B1 = 1;
+  // b0 before
+  B0 = 0; // b0 after
+  B1 = 1; // b1 after
 }
