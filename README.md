@@ -11,6 +11,7 @@ tuqc曾在Google工作过，且protobuf有配套的grpc协议，所以我们使�
 
 _备注：_
  1. 我不是很推荐使用ibatis等orm框架：一方面protobuf在这方面没有成熟框架；另外在大的业务线里sql语句多，管理起来比较麻烦。
+ 1. 仅支持对protobuf的语法做部分错误检查，因为在使用py-protoc之前，我们会先使用原生protoc为java后端编译，从而保证在py-protoc中语法没有问题。
 
 ## 支持
 在我们的项目中，我们需要为java后端、ios、android、web提供统一的数据结构定义。
