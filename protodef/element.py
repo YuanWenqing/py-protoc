@@ -35,9 +35,9 @@ class Field:
 class TypeKind:
   '''field type的类型'''
 
-  BASE = 1 # protobuf基本类型
-  REF = 2 # 自定义的引用类型
-  MAP = 3 # map
+  BASE = 'base' # protobuf基本类型
+  REF = 'ref' # 自定义的引用类型
+  MAP = 'map' # map
 
 class FieldType:
   '''field的type'''
@@ -71,7 +71,7 @@ class MessageField(Field):
     return 'repeated' in self.decorations
 
   def __str__(self):
-    s = self.index + ':'
+    s = '%d:' % self.index
     if len(self.decorations) > 0:
       s = s + (' %s' % self.decorations)
     s = s + (' %s %s=%d' % (self.type, self.name, self.number))
@@ -99,7 +99,7 @@ class DataDef:
     return self.comment != None and self.comment.find('@deprecated') >= 0
 
   def __str__(self):
-    s = '%s %s {' % (type(self), self.name)
+    s = '%s %s {' % (self.__class__.__name__, self.name)
     first = True
     for field in self.fields:
       if first:
@@ -123,7 +123,7 @@ class Enum(DataDef):
 class Protobuf:
   '''proto文件'''
   def __init__(self):
-    self.filepath = None
+    self.proto_file = None
     self.headers = {}
     self.imports = {}
     self.options = {}
@@ -161,17 +161,17 @@ class Protobuf:
     return self.datadefs[data_name]
 
   def __str__(self):
-    s = self.filepath
+    s = self.proto_file
     if len(self.headers) > 0:
-      s = '%s Header%s' % (s, self.__arr2str(self.headers))
+      s = '%s\n>>>>> Header <<<<<\n%s' % (s, self.__arr2str(self.headers.values()))
     if len(self.imports) > 0:
-      s = '%s Import%s' % (s, self.__arr2str(self.imports))
+      s = '%s\n>>>>> Import <<<<<\n%s' % (s, self.__arr2str(self.imports.values()))
     if len(self.options) > 0:
-      s = '%s Option%s' % (s, self.__arr2str(self.options))
+      s = '%s\n>>>>> Option <<<<<\n%s' % (s, self.__arr2str(self.options.values()))
     if len(self.messages) > 0:
-      s = '%s Message%s' % (s, self.__arr2str(self.messages))
+      s = '%s\n>>>>> Message <<<<<\n%s' % (s, self.__arr2str(self.messages))
     if len(self.enums) > 0:
-      s = '%s Enum%s' % (s, self.__arr2str(self.enums))
+      s = '%s\n>>>>> Enum <<<<<\n%s' % (s, self.__arr2str(self.enums))
     return s
 
   def __arr2str(self, arr):
@@ -182,5 +182,6 @@ class Protobuf:
         first = False
       else:
         s = s + ', '
-      s = s + item.__str__()
-    s = s + ']'
+      s = s + '\n  ' + item.__str__()
+    s = s + '\n]'
+    return s
