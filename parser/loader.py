@@ -12,7 +12,6 @@ if rootdir not in sys.path:
 # import for ply(must)
 from lexer import *
 from grammar import *
-from protodef.element import *
 
 def load(proto_dir, proto_file):
   if not proto_file.endswith('.proto'):
@@ -28,6 +27,7 @@ def load(proto_dir, proto_file):
   lexer.lineno = 1
   proto = parser.parse(data)
   proto.proto_file = proto_file
+  proto.filepath = filepath
   return proto
 
 if __name__ == '__main__':

@@ -124,6 +124,8 @@ class Protobuf:
   '''proto文件'''
   def __init__(self):
     self.proto_file = None
+    self.filepath = None
+
     self.headers = {}
     self.imports = {}
     self.options = {}
@@ -161,7 +163,7 @@ class Protobuf:
     return self.datadefs[data_name]
 
   def __str__(self):
-    s = self.proto_file
+    s = '%s(%s)' % (self.proto_file, self.filepath)
     if len(self.headers) > 0:
       s = '%s\n>>>>> Header <<<<<\n%s' % (s, self.__arr2str(self.headers.values()))
     if len(self.imports) > 0:
