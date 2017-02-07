@@ -1,0 +1,11 @@
+syntax = "proto3";
+package b;
+
+
+option java_package = "com.pyprotoc.proto.data";
+option java_outer_classname = "BModel";
+
+enum B {
+  B0 = 0;
+  B1 = 1;
+}

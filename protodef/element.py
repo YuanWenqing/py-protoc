@@ -30,7 +30,7 @@ class Field:
     return self.comment != None and self.comment.find('@deprecated') >= 0
 
   def __str__(self):
-    return '%d: %s=%d #%s' % (self.index, self.name, self.number, self.comment)
+    return '%d: %s=%d #%s' % (self.index, self.name, self.number, self.comment.replace('\n', '\\n'))
 
 class TypeKind:
   '''field type的类型'''
@@ -76,7 +76,7 @@ class MessageField(Field):
       s = s + (' %s' % self.decorations)
     s = s + (' %s %s=%d' % (self.type, self.name, self.number))
     if self.comment:
-      s = s + (' # %s' % self.comment)
+      s = s + (' # %s' % self.comment.replace('\n', '\\n'))
     return s
 
 class EnumField(Field):
@@ -187,3 +187,10 @@ class Protobuf:
       s = s + '\n  ' + item.__str__()
     s = s + '\n]'
     return s
+
+def concat_comment(c1, c2):
+  if not c1:
+    return c2
+  if not c2:
+    return c1
+  return '%s\n%s' % (c1, c2)

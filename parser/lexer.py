@@ -41,8 +41,7 @@ tokens = (
   'INTCONSTANT',
   'LITERAL',
   'IDENTIFIER',
-  'SINGLE_COMMENT',
-  'MULTI_COMMENT'
+  'SINGLE_COMMENT'
 ) + tuple(map(lambda kw: kw.upper(), keywords))
 
 t_ignore = ' \t\r'
@@ -52,16 +51,16 @@ def t_error(t):
   raise ProtoLexerError('illegal token {} at line {}'.format(
     t.value, t.lineno))
 
+def t_SINGLE_COMMENT(t):
+  r'\/\/[^\n]*\n'
+  t.value = t.value[2:].strip()
+  t.lexer.lineno += 1
+  return t
+
 
 def t_newline(t):
   r'\n+'
   t.lexer.lineno += len(t.value)
-
-
-def t_SINGLE_COMMENT(t):
-  r'\/\/[^\n]*'
-  t.value = t.value[2:].strip()
-  return t
 
 
 def t_HEXCONSTANT(t):

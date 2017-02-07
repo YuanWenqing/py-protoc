@@ -28,11 +28,7 @@ def p_comment(p):
   if len(p) == 1:
     p[0] = None
   else:
-    comment = ''
-    if p[1]:
-      comment = p[1]
-    if p[2]:
-      comment = comment + '\n' + p[2]
+    comment = concat_comment(p[1], p[2])
     comment = comment.strip()
     if len(comment) == 0:
       p[0] = None
@@ -50,8 +46,11 @@ def p_header(p):
 
 def p_header_unit_(p):
   """header_unit_ : comment header_unit ';'
-          | comment header_unit"""
-  p[0] = p[2]
+        | header_unit ';' """
+  if len(p) == 4:
+    p[0] = p[2]
+  else:
+    p[0] = p[1]
 
 
 def p_header_unit(p):
@@ -92,10 +91,13 @@ def p_definition(p):
 
 
 def p_definition_unit_(p):
-  """definition_unit_ : comment definition_unit ';'
-            | comment definition_unit"""
-  data_def = p[2]
-  data_def.comment = p[1]
+  """definition_unit_ : comment definition_unit
+          | definition_unit"""
+  if len(p) == 3:
+    data_def = p[2]
+    data_def.comment = p[1]
+  else:
+    data_def = p[1]
   p[0] = data_def
 
 
@@ -115,7 +117,7 @@ def p_message(p):
 
 
 def p_msg_fields(p):
-  """msg_fields : msg_field msg_fields
+  """msg_fields : msg_field_ msg_fields
          |"""
   if len(p) == 1:
     p[0] = []
@@ -123,13 +125,18 @@ def p_msg_fields(p):
     p[0] = [p[1]] + p[2]
 
 
+def p_msg_field_(p):
+  '''msg_field_ : comment msg_field'''
+  field = p[2]
+  field.comment = concat_comment(p[1], field.comment)
+  p[0] = field
+
 def p_msg_field(p):
   """msg_field : field_decoration field_type IDENTIFIER '=' INTCONSTANT tail"""
   field = MessageField(p[2], p[3], p[5])
   if p[1]:
     field.addDecoration(p[1])
-  if p[6]:
-    field.comment = p[6]
+  field.comment = concat_comment(field.comment, p[6])
   p[0] = field
 
 
@@ -199,7 +206,7 @@ def p_base_type(p):
 
 def p_tail(p):
   '''tail : ';'
-          | ';' comment '''
+          | ';' SINGLE_COMMENT '''
   if len(p) == 2 or len(p[2]) == 0:
     p[0] = None
   else:
@@ -207,7 +214,7 @@ def p_tail(p):
 
 
 def p_enum(p):
-  """enum : ENUM IDENTIFIER '{' msg_fields '}'"""
+  """enum : ENUM IDENTIFIER '{' enum_fields '}'"""
   enum = Enum(p[2])
   for index, field in enumerate(p[4]):
     field.index = index

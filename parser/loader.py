@@ -21,8 +21,8 @@ def load(proto_dir, proto_file):
     data = pf.read()
   logging.basicConfig(level=logging.ERROR)
   errlog = logging.getLogger()
-  lexer = lex.lex(nowarn=True)
-  parser = yacc.yacc(debug=False, write_tables=0, errorlog=errlog)
+  lexer = lex.lex(nowarn=True, debug=False)
+  parser = yacc.yacc(debug=True, write_tables=0, errorlog=errlog)
 
   lexer.lineno = 1
   proto = parser.parse(data)

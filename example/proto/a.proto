@@ -1,0 +1,30 @@
+// syntax
+syntax = "proto3";
+// package
+package a;
+
+// import
+import "b.proto";
+
+// java_package
+option java_package = "com.pyprotoc.proto.data";
+// java_outer_classname
+option java_outer_classname = "AModel";
+
+message A {
+    // str前的注释
+    string str = 1;
+    int32 int_32 = 2; // int32后的注释
+    // int64前的注释1
+    int64 int_64 = 3; //int64后的注释2
+    float float_ = 4;
+    double double_ = 5;
+    bool bool_ = 6;
+    b.B b = 7;
+    AA aa = 8;
+}
+
+message AA {
+    string id = 1;
+}
+
