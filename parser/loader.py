@@ -1,7 +1,6 @@
 # coding: utf8
 
 import os, sys
-from optparse import OptionParser
 from ply import lex, yacc
 import logging
 
@@ -30,19 +29,3 @@ def load(proto_dir, proto_file):
   proto.filepath = filepath
   return proto
 
-if __name__ == '__main__':
-  parser = OptionParser()
-  parser.add_option("-r", "--root", dest="proto_dir", help="root proto dir", metavar="DIR")
-  parser.add_option("-f", "--file", dest="proto_file", help="input proto file", metavar="FILE")
-
-  options, args = parser.parse_args()
-
-  if not options.proto_dir:
-    parser.print_help()
-    parser.error('no proto dir')
-  if not options.proto_file:
-    parser.print_help()
-    parser.error('no proto file')
-
-  proto = load(options.proto_dir, options.proto_file)
-  print proto
