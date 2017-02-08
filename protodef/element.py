@@ -45,19 +45,16 @@ class TypeKind:
 class FieldType:
   '''field的type'''
 
-  def __init__(self, type_kind, type_pkg, type_name, key_type=None, value_type=None):
+  def __init__(self, type_kind, type_name, key_type=None, value_type=None):
     self.kind = type_kind
-    self.pkg = type_pkg
     self.name = type_name
+    self.ref = None
 
     self.key_type = None
     self.value_type = None
 
   def __str__(self):
-    if self.pkg:
-      return '%s[%s]' % (self.name, self.kind)
-    else:
-      return '%s.%s[%s]' % (self.pkg, self.name, self.kind)
+    return '%s[%s]' % (self.name, self.kind)
 
 class MessageField(Field):
   '''message中的field定义'''
@@ -151,6 +148,9 @@ class Protobuf:
 
   def getOption(self, option_name):
     return self.options[option_name]
+
+  def getJavaPkg(self):
+    return self.getOption('java_package')
 
   def addDataDef(self, data_def):
     self.datadefs[data_def.name] = data_def

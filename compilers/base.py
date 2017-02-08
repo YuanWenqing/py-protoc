@@ -41,52 +41,35 @@ class Compiler:
       if msg.isDeprecated():
         continue
       self.writer.onDataDef(msg)
-      self.compileMsg(msg)
+      self.compileMsg(msg, self.__filterValidFields(msg))
     for enum in proto.enums:
       if enum.isDeprecated():
         continue
       self.writer.onDataDef(enum)
-      self.compileMsg(enum)
+      self.compileMsg(enum, self.__filterValidFields(enum))
 
-  def compileMsg(self, msg):
-    self.beforeMsg(msg)
-    for field in self.fields:
+  def __filterValidFields(self, data_def):
+    fields = []
+    for field in data_def.fields:
       if field.isDeprecated():
         continue
-      self.compileMsgField(field)
-    self.afterMsg(msg)
+      fields.append(field)
+    return fields
 
-  def beforeMsg(self, msg):
+  def compileMsg(self, msg, fields):
     pass
 
-  def afterMsg(self, msg):
-    pass
-
-  def compileMsgField(self, field):
-    pass
-
-  def compileEnum(self, enum):
-    self.beforeEnum(enum)
-    for field in self.fields:
-      if field.isDeprecated():
-        continue
-      self.compileEnumField(field)
-    self.afterEnum(enum)
-
-  def beforeEnum(self, enum):
-    pass
-
-  def afterEnum(self, enum):
-    pass
-
-  def compileEnumField(self, field):
+  def compileEnum(self, enum, fields):
     pass
 
 class TypeResolver:
   '''处理type的映射和默认值'''
 
   def resolveType(self, field):
+    '''处理field的type，返回`(type_text, default_value_text)`'''
     pass
 
-  def defaultValue(self, field):
+  def resolveBaseType(self, base_type):
+    '''处理protobuf中的base type，返回`(type_text, default_value_text)`'''
     pass
+

@@ -171,9 +171,9 @@ def p_ref_type(p):
   """ref_type : IDENTIFIER
           |  IDENTIFIER '.' IDENTIFIER """
   if len(p) == 2:
-    p[0] = FieldType(TypeKind.REF, None, p[1])
+    p[0] = FieldType(TypeKind.REF, p[1])
   else:
-    p[0] = FieldType(TypeKind.REF, p[1], p[3])
+    p[0] = FieldType(TypeKind.REF, p[1] + '.' + p[3])
 
 
 def p_definition_type(p):
@@ -198,7 +198,7 @@ def p_base_type(p):
          | FIXED64
          | SFIXED32
          | SFIXED64"""
-  p[0] = FieldType(TypeKind.BASE, None, p[1])
+  p[0] = FieldType(TypeKind.BASE, p[1])
 
 
 # def p_container_type(p):
