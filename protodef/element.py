@@ -154,11 +154,11 @@ class Protobuf:
 
   def addDataDef(self, data_def):
     self.datadefs[data_def.name] = data_def
-    pkg = self.getHeader(HeaderKind.PACKAGE)
+    pkg = self.getHeader(HeaderKind.PACKAGE).value
     if isinstance(data_def, Message):
       for field in data_def.fields:
-        if not field.type.pkg:
-          field.type.pkg = pkg
+        if '.' not in field.type.name:
+          field.type.name = pkg + '.' + field.type.name
       self.messages.append(data_def)
     else:
       self.enums.append(data_def)

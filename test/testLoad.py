@@ -8,7 +8,7 @@ rootdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if rootdir not in sys.path:
   sys.path.append(rootdir)
 
-from parser import loader
+from parse import loader
 
 if __name__ == '__main__':
   optParser = OptionParser()
