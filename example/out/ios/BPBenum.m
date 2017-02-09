@@ -1,9 +1,8 @@
 // generated from sub/b.proto by py-protoc, NEVER CHANGE!!
 
-#import <Foundation/Foundation.h>
-#import "BB.h"
+#import "BPBenum.h"
 
-BB BBValueOf(NSString *text) {
+BPBenum BPBenumValueOf(NSString *text) {
   if (text) {
     if ([text isEqualToString:@"B0"])
       return B0;
@@ -13,7 +12,7 @@ BB BBValueOf(NSString *text) {
   return -1;
 }
 
-NSString* BBDescription(BB value) {
+NSString* BPBenumDescription(BPBenum value) {
   switch (value) {
     case B0:
       return @"B0";

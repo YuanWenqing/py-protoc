@@ -2,7 +2,7 @@
 
 #import "XG_BaseModel.h"
 
-@interface AAA : XG_BaseModel
+@interface APAmsg2 : XG_BaseModel
 @property(nonatomic, strong) NSString * id;
 @end
 

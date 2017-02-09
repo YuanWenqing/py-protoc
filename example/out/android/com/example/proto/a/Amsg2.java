@@ -2,6 +2,7 @@
 
 package com.example.proto.a;
 
-public class AA {
+public class Amsg2 {
   public String id = "";
 }
+

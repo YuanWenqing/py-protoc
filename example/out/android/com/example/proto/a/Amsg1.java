@@ -6,7 +6,7 @@ package com.example.proto.a;
 a1
 a2
  */
-public class A {
+public class Amsg1 {
   /**
 str前的注释
    */
@@ -23,6 +23,9 @@ int64后的注释2
   public float float_ = 0F;
   public double double_ = 0;
   public boolean bool_ = false;
-  public int b = 0;
-  public com.example.proto.a.AA aa = null;
+  public int b_enum = 0;
+  public com.example.proto.a.Amsg2 amsg2 = null;
+  public java.util.List<com.example.proto.a.Amsg2> amsg2_list = null;
+  public java.util.List<String> str_list = null;
 }
+

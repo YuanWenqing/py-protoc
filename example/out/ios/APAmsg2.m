@@ -1,7 +1,7 @@
 // generated from a.proto by py-protoc, NEVER CHANGE!!
 
-#import "AAA.h"
+#import "APAmsg2.h"
 
-@implementation AAA
+@implementation APAmsg2
 @end
 

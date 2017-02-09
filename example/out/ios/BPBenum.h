@@ -12,8 +12,8 @@ b0 after
 b1 after
    */
   B1 = 1
-} BB;
+} BPBenum;
 
-BB BBValueOf(NSString *text);
-NSString* BBDescription(BB value);
+BPBenum BPBenumValueOf(NSString *text);
+NSString* BPBenumDescription(BPBenum value);
 

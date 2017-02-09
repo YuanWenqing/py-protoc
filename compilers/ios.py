@@ -93,10 +93,10 @@ class IosMCompiler(IosCompiler):
     if len(repeated_ref_fields) > 0:
       self.writer.writeline("+ (NSDictionary *)modelContainerPropertyGenericClass {")
       self.writer.writeline("  return @{")
-      for i, field in enumverate(repeated_ref_fields):
+      for i, field in enumerate(repeated_ref_fields):
         type_name = canonical_name(field.type.ref)
         line = '''    @"%s" : [%s class]''' % (field.name, type_name)
-        if i < len(kvlist) - 1:
+        if i < len(repeated_ref_fields) - 1:
           line = line + ','
         self.writer.writeline(line)
       self.writer.writeline("  };")

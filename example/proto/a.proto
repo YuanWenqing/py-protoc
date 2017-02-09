@@ -1,7 +1,7 @@
 // syntax
 syntax = "proto3";
 // package
-package a;
+package ap;
 
 // import
 import "sub/b.proto";
@@ -13,7 +13,7 @@ option java_outer_classname = "AModel";
 
 // a1
 // a2
-message A {
+message Amsg1 {
     // str前的注释
     string str = 1;
     int32 int_32 = 2; // int32后的注释
@@ -22,11 +22,13 @@ message A {
     float float_ = 4;
     double double_ = 5;
     bool bool_ = 6;
-    b.B b = 7;
-    AA aa = 8;
+    bp.Benum b_enum = 7;
+    Amsg2 amsg2 = 8;
+    repeated Amsg2 amsg2_list = 9;
+    repeated string str_list = 10;
 }
 
-message AA {
+message Amsg2 {
     string id = 1;
 }
 

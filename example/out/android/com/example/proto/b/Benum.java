@@ -2,7 +2,7 @@
 
 package com.example.proto.b;
 
-public enum B {
+public enum Benum {
   /**
 b0 before
 b0 after
@@ -13,7 +13,7 @@ b1 after
    */
   B1(1);
 
-  public static final B valueOf(int value) {
+  public static final Benum valueOf(int value) {
     switch (value) {
       case 0: return B0;
       case 1: return B1;
@@ -25,6 +25,7 @@ b1 after
 
   public int getValue() { return this.value; }
 
-  private B(int value) { this.value = value; }
+  private Benum(int value) { this.value = value; }
 
 }
+
