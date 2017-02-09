@@ -172,7 +172,10 @@ class IosResolver(TypeResolver):
   def resolveType(self, field):
     '''处理field的type，返回`(type_text, ref)`'''
     field_type = field.type
-    if field_type.kind == TypeKind.BASE:
+    if field.isRepeated():
+      type_name = 'NSMutableArray'
+      ref = 'strong'
+    elif field_type.kind == TypeKind.BASE:
       type_name, ref = self.resolveBaseType(field_type.name)
     else:
       data_def = field_type.ref

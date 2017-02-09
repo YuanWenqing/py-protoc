@@ -11,7 +11,6 @@ from compilers.ios import *
 
 if __name__ == '__main__':
   proto_dir = os.path.join(rootdir, 'example/proto')
-  proto_file = 'a.proto'
   out_dir = os.path.join(rootdir, 'example/out/ios')
 
   resolver = IosResolver()
