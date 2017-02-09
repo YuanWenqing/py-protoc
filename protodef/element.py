@@ -25,6 +25,7 @@ class Field:
     self.number = number
     self.comment = None
     self.index = None
+    self.data_def = None
 
   def isDeprecated(self):
     return self.comment != None and self.comment.find('@deprecated') >= 0
@@ -94,6 +95,7 @@ class DataDef:
 
   def addField(self, field):
     self.fields.append(field)
+    field.data_def = self
 
   def isDeprecated(self):
     return self.comment != None and self.comment.find('@deprecated') >= 0
