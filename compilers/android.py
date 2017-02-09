@@ -111,4 +111,12 @@ class AndroidResolver(TypeResolver):
     '''处理protobuf中的base type到指定语言的映射'''
     return AndroidResolver.BASE_TYPE_MAP[base_type]
 
+class AndroidWriter(Writer):
+  '''每个data_def一个文件'''
+
+  def onDataDef(self, data_def):
+    subpath = data_def.proto.getJavaPkg().replace('.', os.path.sep)
+    path = os.path.join(self.out_dir, subpath, data_def.name + self.file_ext)
+    self._prepare(path, data_def.proto)
+
 

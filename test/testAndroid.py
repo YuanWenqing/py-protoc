@@ -8,14 +8,13 @@ if rootdir not in sys.path:
   sys.path.append(rootdir)
 
 from compilers.android import *
-from compilers.writer import *
 
 if __name__ == '__main__':
   proto_dir = os.path.join(rootdir, 'example/proto')
   proto_file = 'a.proto'
   out_dir = os.path.join(rootdir, 'example/out/android')
 
-  writer = SDPFWriter(out_dir, '.java')
+  writer = AndroidWriter(out_dir, '.java')
   resolver = AndroidResolver()
   compiler = AndroidCompiler(proto_dir, writer, resolver)
   compiler.compileDir('.')
