@@ -14,7 +14,12 @@ if __name__ == '__main__':
   proto_file = 'a.proto'
   out_dir = os.path.join(rootdir, 'example/out/ios')
 
-  writer = IosWriter(out_dir, '.h')
   resolver = IosResolver()
-  h_compiler = IosHCompiler(proto_dir, writer, resolver)
+
+  h_writer = IosWriter(out_dir, '.h')
+  h_compiler = IosHCompiler(proto_dir, h_writer, resolver)
   h_compiler.compileDir('.')
+
+  m_writer = IosWriter(out_dir, '.m')
+  m_compiler = IosMCompiler(proto_dir, m_writer, resolver)
+  m_compiler.compileDir('.')

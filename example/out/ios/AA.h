@@ -4,6 +4,10 @@
 @class BB;
 @class AAA;
 
+/**
+a1
+a2
+ */
 @interface AA : XG_BaseModel
 /**
 str前的注释
