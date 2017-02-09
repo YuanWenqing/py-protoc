@@ -9,7 +9,7 @@ if rootdir not in sys.path:
 from parse.loader import *
 
 class Compiler:
-  '''所有编译writer的基类'''
+  '''所有编译Compiler的基类'''
   def __init__(self, proto_dir, writer, type_resolver):
     self.proto_dir = proto_dir
     self.writer = writer
