@@ -150,12 +150,15 @@ class Protobuf:
   def getOption(self, option_name):
     return self.options[option_name]
 
+  def getProtoPkg(self):
+    return self.getHeader(HeaderKind.PACKAGE).value
+
   def getJavaPkg(self):
     return self.getOption('java_package').value
 
   def addDataDef(self, data_def):
     data_name = data_def.name
-    pkg = self.getHeader(HeaderKind.PACKAGE).value
+    pkg = self.getProtoPkg()
     data_name = pkg + '.' + data_name
     self.datadefs[data_name] = data_def
     if isinstance(data_def, Message):

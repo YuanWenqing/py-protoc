@@ -21,6 +21,7 @@ class AndroidCompiler(Compiler):
 
   def afterMsg(self, msg):
     self.writer.writeline('}')
+    self.writer.writeline()
 
   def compileMsgField(self, field):
     if field.comment:
@@ -71,6 +72,7 @@ class AndroidCompiler(Compiler):
     self.writer.writeline('  private %s(int value) { this.value = value; }' % enum.name)
     self.writer.writeline()
     self.writer.writeline('}')
+    self.writer.writeline()
 
 class AndroidResolver(TypeResolver):
   BASE_TYPE_MAP = {
