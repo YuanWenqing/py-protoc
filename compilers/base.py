@@ -6,7 +6,7 @@ rootdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if rootdir not in sys.path:
   sys.path.append(rootdir)
 
-from parser.loader import *
+from parse.loader import *
 
 class Compiler:
   '''所有编译writer的基类'''
@@ -37,6 +37,7 @@ class Compiler:
 
   def compileFile(self, f):
     proto = load(self.proto_dir, f)
+    resolve(proto)
     for msg in proto.messages:
       if msg.isDeprecated():
         continue

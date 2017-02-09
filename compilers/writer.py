@@ -18,14 +18,14 @@ class Writer:
     self.close()
     pass
 
-  def __open(self, path):
+  def _open(self, path):
     self.close()
     d = os.path.dirname(path)
     if not os.path.exists(d):
       os.makedirs(d)
     self.outf = file(path, 'w')
 
-  def __writeHeader(self, proto):
+  def _writeHeader(self, proto):
     if not proto:
       return
     self.outf.write('// generated from %s by py-protoc, NEVER CHANGE!!\n\n' % proto.proto_file)
@@ -53,6 +53,6 @@ class SDPFWriter(Writer):
 
   def onDataDef(self, data_def):
     path = os.path.join(self.out_dir, data_def.name) + self.file_ext
-    self.__open(path)
-    self.__writeHeader(data_def.proto)
+    self._open(path)
+    self._writeHeader(data_def.proto)
 
