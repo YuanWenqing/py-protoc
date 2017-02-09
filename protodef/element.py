@@ -151,7 +151,7 @@ class Protobuf:
     return self.options[option_name]
 
   def getJavaPkg(self):
-    return self.getOption('java_package')
+    return self.getOption('java_package').value
 
   def addDataDef(self, data_def):
     data_name = data_def.name
@@ -160,7 +160,7 @@ class Protobuf:
     self.datadefs[data_name] = data_def
     if isinstance(data_def, Message):
       for field in data_def.fields:
-        if '.' not in field.type.name:
+        if field.type.kind == TypeKind.REF and '.' not in field.type.name:
           field.type.name = pkg + '.' + field.type.name
       self.messages.append(data_def)
     else:

@@ -28,8 +28,7 @@ class AndroidCompiler(Compiler):
       self.writer.writeline('  /**')
       self.writer.writeline(field.comment)
       self.writer.writeline('   */')
-    field_type = self.type_resolver.resolveType(field)
-    default_value = self.type_resolver.defaultValue(field)
+    field_type, default_value = self.type_resolver.resolveType(field)
     self.writer.writeline('  public %s %s = %s;' % (field_type, field.name, default_value))
 
   def compileEnum(self, enum, fields):
