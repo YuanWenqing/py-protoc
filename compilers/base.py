@@ -30,12 +30,14 @@ class Compiler:
 
   def compileDir(self, d):
     path = os.path.join(self.proto_dir, d)
+    path = os.path.normpath(path)
     arr = []
     for f in os.listdir(path):
       arr.append(os.path.join(d, f))
     self.compile(arr)
 
   def compileFile(self, f):
+    f = os.path.normpath(f)
     proto = load(self.proto_dir, f)
     resolve(proto)
     for msg in proto.messages:
@@ -47,7 +49,7 @@ class Compiler:
       if enum.isDeprecated():
         continue
       self.writer.onDataDef(enum)
-      self.compileMsg(enum, self.__filterValidFields(enum))
+      self.compileEnum(enum, self.__filterValidFields(enum))
 
   def __filterValidFields(self, data_def):
     fields = []

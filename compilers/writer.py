@@ -31,9 +31,9 @@ class Writer:
     self.outf.write('// generated from %s by py-protoc, NEVER CHANGE!!\n\n' % proto.proto_file)
 
   def writeline(self, line=None):
-    if not line:
-      return
-    self.outf.write(line + '\n')
+    if line:
+      self.outf.write(line)
+    self.outf.write('\n')
 
   def close(self):
     if self.outf:

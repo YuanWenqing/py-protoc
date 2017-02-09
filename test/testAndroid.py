@@ -18,4 +18,4 @@ if __name__ == '__main__':
   writer = SDPFWriter(out_dir, '.java')
   resolver = AndroidResolver()
   compiler = AndroidCompiler(proto_dir, writer, resolver)
-  compiler.compileFile(proto_file)
+  compiler.compileDir('.')

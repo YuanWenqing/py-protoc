@@ -1,6 +1,7 @@
 // generated from a.proto by py-protoc, NEVER CHANGE!!
 
-package com.pyprotoc.proto.data;
+package com.example.proto.a;
+
 /**
 a1
 a2
@@ -23,5 +24,5 @@ int64后的注释2
   public double double_ = 0;
   public boolean bool_ = false;
   public int b = 0;
-  public com.pyprotoc.proto.data.AA aa = null;
+  public com.example.proto.a.AA aa = null;
 }

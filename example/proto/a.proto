@@ -4,10 +4,10 @@ syntax = "proto3";
 package a;
 
 // import
-import "b.proto";
+import "sub/b.proto";
 
 // java_package
-option java_package = "com.pyprotoc.proto.data";
+option java_package = "com.example.proto.a";
 // java_outer_classname
 option java_outer_classname = "AModel";
 
