@@ -11,7 +11,8 @@ a2
 @implementation APAmsg1
 + (NSDictionary *)modelContainerPropertyGenericClass {
   return @{
-    @"amsg2_list" : [APAmsg2 class]
+    @"amsg2_list" : [APAmsg2 class],
+    @"benum_list" : [BPBenum class]
   };
 }
 @end

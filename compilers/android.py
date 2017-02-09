@@ -83,7 +83,7 @@ class AndroidResolver(TypeResolver):
     'float': ('float', '0F'),
     'double': ('double', '0')
   }
-  BOX_Map = {
+  BOX_MAP = {
     'long': 'Long',
     'int': 'Integer',
     'String': 'String',
@@ -104,6 +104,8 @@ class AndroidResolver(TypeResolver):
         type_name = data_def.proto.getJavaPkg() + "." + data_def.name
         default_value = 'null'
     if field.isRepeated():
+      if type_name in AndroidResolver.BOX_MAP:
+        type_name = AndroidResolver.BOX_MAP[type_name]
       type_name = 'java.util.List<%s>' % type_name
       default_value = 'null'
     return (type_name, default_value)

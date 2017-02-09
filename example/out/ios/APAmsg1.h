@@ -29,5 +29,6 @@ int64后的注释2
 @property(nonatomic, strong) APAmsg2 * amsg2;
 @property(nonatomic, strong) NSMutableArray * amsg2_list;
 @property(nonatomic, strong) NSMutableArray * str_list;
+@property(nonatomic, strong) NSMutableArray * benum_list;
 @end
 

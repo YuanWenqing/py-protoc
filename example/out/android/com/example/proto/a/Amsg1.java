@@ -27,5 +27,6 @@ int64后的注释2
   public com.example.proto.a.Amsg2 amsg2 = null;
   public java.util.List<com.example.proto.a.Amsg2> amsg2_list = null;
   public java.util.List<String> str_list = null;
+  public java.util.List<Integer> benum_list = null;
 }
 
