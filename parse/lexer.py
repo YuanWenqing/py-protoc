@@ -42,6 +42,8 @@ tokens = (
   'LITERAL',
   'IDENTIFIER',
   'SINGLE_COMMENT',
+  'MULTI_COMMENT',
+  'RESERVED_LINE',
   'LINE_END'
 ) + tuple(map(lambda kw: kw.upper(), keywords))
 
@@ -58,6 +60,14 @@ def t_SINGLE_COMMENT(t):
   t.value = t.value[2:].strip()
   #t.lexer.lineno += 1
   return t
+
+
+def t_MULTI_COMMENT(t):
+  r'\/\*.*\*\/'
+
+
+def t_RESERVED_LINE(t):
+  r'reserved [\d, ]+;[^\n]*'
 
 
 def t_LINE_END(t):
