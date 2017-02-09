@@ -124,8 +124,8 @@ class Enum(DataDef):
 class Protobuf:
   '''proto文件'''
   def __init__(self):
+    self.proto_dir = None
     self.proto_file = None
-    self.filepath = None
 
     self.headers = {}
     self.imports = {}
@@ -134,6 +134,7 @@ class Protobuf:
     self.messages = []
     self.enums = []
     self.datadefs = {}
+    self.imported_defs = {}
 
   def addHeader(self, header):
     if header.type == HeaderKind.IMPORT:
@@ -153,8 +154,10 @@ class Protobuf:
     return self.getOption('java_package')
 
   def addDataDef(self, data_def):
-    self.datadefs[data_def.name] = data_def
+    data_name = data_def.name
     pkg = self.getHeader(HeaderKind.PACKAGE).value
+    data_name = pkg + '.' + data_name
+    self.datadefs[data_name] = data_def
     if isinstance(data_def, Message):
       for field in data_def.fields:
         if '.' not in field.type.name:
@@ -167,7 +170,7 @@ class Protobuf:
     return self.datadefs[data_name]
 
   def __str__(self):
-    s = '%s(%s)' % (self.proto_file, self.filepath)
+    s = '%s in %s' % (self.proto_file, self.proto_dir)
     if len(self.headers) > 0:
       s = '%s\n>>>>> Header <<<<<\n%s' % (s, self.__arr2str(self.headers.values()))
     if len(self.imports) > 0:

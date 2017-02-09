@@ -26,3 +26,7 @@ if __name__ == '__main__':
 
   proto = loader.load(options.proto_dir, options.proto_file)
   print proto
+  loader.resolve(proto)
+  print 'imported:'
+  for k in proto.imported_defs:
+    print '%s: %s' % (k, proto.imported_defs[k])

@@ -8,6 +8,7 @@ rootdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if rootdir not in sys.path:
   sys.path.append(rootdir)
 
+from protodef.element import *
 # import for ply(must)
 from lexer import *
 from grammar import *
@@ -25,7 +26,20 @@ def load(proto_dir, proto_file):
 
   lexer.lineno = 1
   proto = parser.parse(data)
+  proto.proto_dir = proto_dir
   proto.proto_file = proto_file
-  proto.filepath = filepath
   return proto
 
+def resolve(proto):
+  '''处理import和field中的引用类型'''
+  for item in proto.imports:
+    import_proto = load(proto.proto_dir, item)
+    resolve(import_proto)
+    proto.datadefs.update(import_proto.datadefs)
+    proto.imported_defs.update(import_proto.datadefs)
+  for msg in proto.messages:
+    for field in msg.fields:
+      if field.type.kind == TypeKind.REF:
+        if field.type.name not in proto.datadefs:
+          raise Exception('Message %s: unresolved type %s in `%s`' % (msg.name, field.type.name, field))
+        field.type.ref = proto.datadefs[field.type.name]
