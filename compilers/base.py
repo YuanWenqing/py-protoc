@@ -40,6 +40,7 @@ class Compiler:
     f = os.path.normpath(f)
     proto = load(self.proto_dir, f)
     resolve(proto)
+    self.writer.onProto(proto)
     for msg in proto.messages:
       if msg.isDeprecated():
         continue
@@ -114,3 +115,6 @@ class TypeResolver:
     '''处理protobuf中的base type，返回`(type_text, default_value_text)`'''
     pass
 
+def canonical_name(data_def):
+  pkg = data_def.proto.getProtoPkg()
+  return pkg.upper() + data_def.name

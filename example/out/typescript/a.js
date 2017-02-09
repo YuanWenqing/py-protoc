@@ -1,0 +1,33 @@
+// generated from a.proto by py-protoc, NEVER CHANGE!!
+
+/**
+a1
+a2
+ */
+export interface Amsg1 {
+  /**
+str前的注释
+   */
+  str = string;
+  /**
+int32后的注释
+   */
+  int_32 = number;
+  /**
+int64前的注释1
+int64后的注释2
+   */
+  int_64 = number;
+  float_ = number;
+  double_ = number;
+  bool_ = boolean;
+  b_enum = number;
+  amsg2 = APAmsg2;
+  amsg2_list = Array<APAmsg2>;
+  str_list = Array<string>;
+}
+
+export interface Amsg2 {
+  id = string;
+}
+

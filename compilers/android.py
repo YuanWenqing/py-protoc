@@ -95,18 +95,18 @@ class AndroidResolver(TypeResolver):
   def resolveType(self, field):
     field_type = field.type
     if field_type.kind == TypeKind.BASE:
-      field_type, default_value = self.resolveBaseType(field_type.name)
+      type_name, default_value = self.resolveBaseType(field_type.name)
     else:
       data_def = field_type.ref
       if isinstance(data_def, Enum):
-        field_type, default_value = self.resolveBaseType('int32')
+        type_name, default_value = self.resolveBaseType('int32')
       else:
-        field_type = data_def.proto.getJavaPkg() + "." + data_def.name
+        type_name = data_def.proto.getJavaPkg() + "." + data_def.name
         default_value = 'null'
     if field.isRepeated():
-      field_type = 'java.util.List<%s>' % field_type
+      type_name = 'java.util.List<%s>' % type_name
       default_value = 'null'
-    return (field_type, default_value)
+    return (type_name, default_value)
 
   def resolveBaseType(self, base_type):
     '''处理protobuf中的base type到指定语言的映射'''

@@ -198,7 +198,3 @@ class IosWriter(Writer):
     filename = canonical_name(data_def)
     path = os.path.join(self.out_dir, filename + self.file_ext)
     self._prepare(path, data_def.proto)
-
-def canonical_name(data_def):
-  pkg = data_def.proto.getProtoPkg()
-  return pkg.upper() + data_def.name
