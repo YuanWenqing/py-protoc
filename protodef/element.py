@@ -128,6 +128,7 @@ class Protobuf:
   def __init__(self):
     self.proto_dir = None
     self.proto_file = None
+    self.proto_pkg = None
 
     self.headers = {}
     self.imports = {}
@@ -145,6 +146,8 @@ class Protobuf:
       self.options[header.name] = header
     else:
       self.headers[header.name] = header
+      if header.name == HeaderKind.PACKAGE:
+        self.proto_pkg = header.value
 
   def getHeader(self, header_name):
     return self.headers[header_name]
@@ -152,15 +155,12 @@ class Protobuf:
   def getOption(self, option_name):
     return self.options[option_name]
 
-  def getProtoPkg(self):
-    return self.getHeader(HeaderKind.PACKAGE).value
-
   def getJavaPkg(self):
     return self.getOption('java_package').value
 
   def addDataDef(self, data_def):
     data_name = data_def.name
-    pkg = self.getProtoPkg()
+    pkg = self.proto_pkg
     data_name = pkg + '.' + data_name
     self.datadefs[data_name] = data_def
     if isinstance(data_def, Message):

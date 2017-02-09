@@ -4,6 +4,14 @@ from base import *
 
 class TsCompiler(Compiler):
 
+  def compileHeader(self, proto):
+    for proto_file in proto.imports:
+      ts_path = os.path.relpath(proto_file, os.path.dirname(proto.proto_file))
+      ts_path = self.writer.convertExt(ts_path)
+      self.writer.writeline('/// <refrence path="%s" />' % ts_path)
+    self.writer.writeline()
+    self.writer.writeline('namespace %s {' % proto.proto_pkg)
+
   def compileMsg(self, msg, fields):
     self.beforeMsg(msg)
     for field in fields:
@@ -12,38 +20,38 @@ class TsCompiler(Compiler):
 
   def beforeMsg(self, msg):
     if msg.comment:
-      self.writer.writeline('/**')
-      self.writer.writeline(msg.comment)
-      self.writer.writeline(' */')
-    self.writer.writeline('export interface %s {' % msg.name)
+      self.writer.writeline('  /**')
+      self.writer.writeline('  ' + msg.comment)
+      self.writer.writeline('   */')
+    self.writer.writeline('  export interface %s {' % msg.name)
 
   def afterMsg(self, msg):
-    self.writer.writeline('}')
+    self.writer.writeline('  }')
     self.writer.writeline()
 
   def compileMsgField(self, field):
     if field.comment:
-      self.writer.writeline('  /**')
-      self.writer.writeline(field.comment)
-      self.writer.writeline('   */')
+      self.writer.writeline('    /**')
+      self.writer.writeline('    ' + field.comment)
+      self.writer.writeline('     */')
     field_type, default_value = self.type_resolver.resolveType(field)
-    self.writer.writeline('  %s = %s;' % (field.name, field_type))
+    self.writer.writeline('    %s : %s;' % (field.name, field_type))
 
   def compileEnum(self, enum, fields):
     self.beforeEnum(enum)
     for field in fields:
-      self.writer.writeline('  %s = %d;' % (field.name, field.number))
+      self.writer.writeline('    %s = %d;' % (field.name, field.number))
     self.afterEnum(enum)
 
   def beforeEnum(self, enum):
     if enum.comment:
-      self.writer.writeline('/**')
+      self.writer.writeline('  /**')
       self.writer.writeline(enum.comment)
-      self.writer.writeline(' */')
-    self.writer.writeline('enum %s {' % enum.name)
+      self.writer.writeline('   */')
+    self.writer.writeline('  enum %s {' % enum.name)
 
   def afterEnum(self, enum):
-    self.writer.writeline('}')
+    self.writer.writeline('  }')
     self.writer.writeline()
 
 
@@ -61,14 +69,12 @@ class TsResolver(TypeResolver):
     field_type = field.type
     if field_type.kind == TypeKind.BASE:
       type_name, default_value = self.resolveBaseType(field_type.name)
-    else:
-      data_def = field_type.ref
-      if isinstance(data_def, Enum):
-        type_name, default_value = self.resolveBaseType('int32')
-      else:
-        type_name = canonical_name(data_def)
-        default_value = 'null'
+    elif field_type.kind == TypeKind.REF:
+      type_name = field_type.ref.proto.proto_pkg + '.' + field_type.ref.name
+      default_value = 'null'
     if field.isRepeated():
+      if field_type.kind == TypeKind.REF and isinstance(field_type.ref, Enum):
+        type_name = 'number'
       type_name = 'Array<%s>' % type_name
       default_value = 'null'
     return (type_name, default_value)
@@ -81,7 +87,11 @@ class TsResolver(TypeResolver):
 class TsWriter(Writer):
   '''每个proto一个文件'''
 
-  def onProto(self, proto):
-    subpath = os.path.splitext(proto.proto_file)[0] + self.file_ext
+  def onProto(self, proto, compiler):
+    subpath = self.convertExt(proto.proto_file)
     path = os.path.join(self.out_dir, subpath)
     self._prepare(path, proto)
+    compiler.compileHeader(proto)
+
+  def convertExt(self, filepath):
+    return os.path.splitext(filepath)[0] + self.file_ext

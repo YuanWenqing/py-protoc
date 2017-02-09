@@ -13,7 +13,7 @@ if __name__ == '__main__':
   proto_dir = os.path.join(rootdir, 'example/proto')
   out_dir = os.path.join(rootdir, 'example/out/typescript')
 
-  writer = TsWriter(out_dir, '.js')
+  writer = TsWriter(out_dir, '.ts')
   resolver = TsResolver()
   compiler = TsCompiler(proto_dir, writer, resolver)
   compiler.compileDir('.')

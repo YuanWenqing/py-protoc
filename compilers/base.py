@@ -40,7 +40,7 @@ class Compiler:
     f = os.path.normpath(f)
     proto = load(self.proto_dir, f)
     resolve(proto)
-    self.writer.onProto(proto)
+    self.writer.onProto(proto, self)
     for msg in proto.messages:
       if msg.isDeprecated():
         continue
@@ -72,7 +72,7 @@ class Writer:
     self.file_ext = file_ext
     self.outf = None
 
-  def onProto(self, proto):
+  def onProto(self, proto, compiler):
     pass
 
   def onDataDef(self, data_def):
@@ -116,5 +116,5 @@ class TypeResolver:
     pass
 
 def canonical_name(data_def):
-  pkg = data_def.proto.getProtoPkg()
+  pkg = data_def.proto.proto_pkg
   return pkg.upper() + data_def.name

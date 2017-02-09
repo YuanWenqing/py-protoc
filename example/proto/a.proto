@@ -14,6 +14,7 @@ option java_outer_classname = "AModel";
 // a1
 // a2
 message Amsg1 {
+    reserved 11;
     // str前的注释
     string str = 1;
     int32 int_32 = 2; // int32后的注释
@@ -26,6 +27,7 @@ message Amsg1 {
     Amsg2 amsg2 = 8;
     repeated Amsg2 amsg2_list = 9;
     repeated string str_list = 10;
+    repeated bp.Benum benum_list = 12;
 }
 
 message Amsg2 {
