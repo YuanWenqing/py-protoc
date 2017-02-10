@@ -1,0 +1,18 @@
+// syntax
+syntax = "proto3";
+// package
+package ap;
+
+// import
+import "sub/b.proto";
+import "a.proto";
+
+// java_package
+option java_package = "com.example.proto.a";
+// java_outer_classname
+option java_outer_classname = "CModel";
+
+message Cmsg {
+  Amsg1 amsg = 1;
+  bp.Benum benum = 2;
+}

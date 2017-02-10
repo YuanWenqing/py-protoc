@@ -8,6 +8,7 @@ class TsCompiler(Compiler):
     for proto_file in proto.imports:
       ts_path = os.path.relpath(proto_file, os.path.dirname(proto.proto_file))
       ts_path = self.writer.convertExt(ts_path)
+      ts_path = './' + ts_path
       self.writer.writeline('/// <refrence path="%s" />' % ts_path)
     self.writer.writeline()
     self.writer.writeline('namespace %s {' % proto.proto_pkg)
