@@ -49,16 +49,17 @@ class ClientCompiler:
       else:
         out_dir = os.path.join(self.out_root, app)
       files = self.__getInputProtos(app)
-      os.system('rm -r %s' % out_dir)
       getattr(self, app)(out_dir, files)
 
   def android(self, out_dir, files):
+    os.system('rm -r %s' % out_dir)
     resolver = AndroidResolver()
     writer = AndroidWriter(out_dir, '.java')
     compiler = AndroidCompiler(self.loader, writer, resolver)
     self.compilers.append((compiler, files))
 
   def ios(self, out_dir, files):
+    os.system('rm -r %s' % out_dir)
     resolver = IosResolver()
     writer = IosWriter(out_dir, '.h')
     compiler = IosHCompiler(self.loader, writer, resolver)
@@ -68,6 +69,7 @@ class ClientCompiler:
     self.compilers.append((compiler, files))
 
   def typescript(self, out_dir, files):
+    os.system('rm -r %s' % out_dir)
     resolver = TypeScriptResolver()
     writer = TypeScriptWriter(out_dir, '.ts')
     compiler = TypeScriptCompiler(self.loader, writer, resolver)
