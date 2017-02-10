@@ -20,33 +20,42 @@ class ClientCompiler:
     self.path_root = os.path.dirname(os.path.abspath(conf_file))
     self.cf = ConfigParser.ConfigParser()
     self.cf.read(conf_file)
-    proto_dir = self.cf.get('proto', 'proto_dir')
-    proto_dir = os.path.join(self.path_root, proto_dir)
-    self.loader = Loader(proto_dir)
-    out_root = self.cf.get('proto', 'out_root')
-    self.out_root = os.path.join(self.path_root, out_root)
+    self.proto_dir = self.cf.get('proto', 'proto_dir')
+    self.proto_dir = os.path.join(self.path_root, self.proto_dir)
+    self.loader = Loader(self.proto_dir)
+    self.out_root = self.cf.get('proto', 'out_root')
+    self.out_root = os.path.join(self.path_root, self.out_root)
+    self.apps = self.cf.get('proto', 'app').split(',')
 
     self.compilers = []
 
   def __getInputProtos(self, section):
     files = []
     for f in self.cf.get(section, 'input_proto').split(','):
-      f = os.path.join(self.path_root, f)
+      f = os.path.join(self.proto_dir, f)
       if f not in files:
         files.append(f)
     return files
 
   def config(self):
+    for app in self.apps:
+      getattr(self, app)()
+
+  def android(self):
     # android
-    out_dir = os.path.join(self.out_root, 'android')
-    files = self.__getInputProtos('android')
+    section = 'android'
+    out_dir = os.path.join(self.out_root, section)
+    files = self.__getInputProtos(section)
     resolver = AndroidResolver()
     writer = AndroidWriter(out_dir, '.java')
     compiler = AndroidCompiler(self.loader, writer, resolver)
     self.compilers.append((compiler, files))
+
+  def ios(self):
     # ios
-    out_dir = os.path.join(self.out_root, 'ios')
-    files = self.__getInputProtos('ios')
+    section = 'ios'
+    out_dir = os.path.join(self.out_root, section)
+    files = self.__getInputProtos(section)
     resolver = IosResolver()
     writer = IosWriter(out_dir, '.h')
     compiler = IosHCompiler(self.loader, writer, resolver)
@@ -54,9 +63,12 @@ class ClientCompiler:
     writer = IosWriter(out_dir, '.m')
     compiler = IosMCompiler(self.loader, writer, resolver)
     self.compilers.append((compiler, files))
+
+  def typescript(self):
     # typescript
-    out_dir = os.path.join(self.out_root, 'typescript')
-    files = self.__getInputProtos('typescript')
+    section = 'typescript'
+    out_dir = os.path.join(self.out_root, section)
+    files = self.__getInputProtos(section)
     resolver = TypeScriptResolver()
     writer = TypeScriptWriter(out_dir, '.ts')
     compiler = TypeScriptCompiler(self.loader, writer, resolver)
