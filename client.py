@@ -39,23 +39,17 @@ class ClientCompiler:
 
   def config(self):
     for app in self.apps:
-      getattr(self, app)()
+      out_dir = os.path.join(self.out_root, app)
+      files = self.__getInputProtos(app)
+      getattr(self, app)(out_dir, files)
 
-  def android(self):
-    # android
-    section = 'android'
-    out_dir = os.path.join(self.out_root, section)
-    files = self.__getInputProtos(section)
+  def android(self, out_dir, files):
     resolver = AndroidResolver()
     writer = AndroidWriter(out_dir, '.java')
     compiler = AndroidCompiler(self.loader, writer, resolver)
     self.compilers.append((compiler, files))
 
-  def ios(self):
-    # ios
-    section = 'ios'
-    out_dir = os.path.join(self.out_root, section)
-    files = self.__getInputProtos(section)
+  def ios(self, out_dir, files):
     resolver = IosResolver()
     writer = IosWriter(out_dir, '.h')
     compiler = IosHCompiler(self.loader, writer, resolver)
@@ -64,11 +58,7 @@ class ClientCompiler:
     compiler = IosMCompiler(self.loader, writer, resolver)
     self.compilers.append((compiler, files))
 
-  def typescript(self):
-    # typescript
-    section = 'typescript'
-    out_dir = os.path.join(self.out_root, section)
-    files = self.__getInputProtos(section)
+  def typescript(self, out_dir, files):
     resolver = TypeScriptResolver()
     writer = TypeScriptWriter(out_dir, '.ts')
     compiler = TypeScriptCompiler(self.loader, writer, resolver)
