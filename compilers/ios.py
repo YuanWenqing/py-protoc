@@ -32,7 +32,7 @@ class IosHCompiler(IosCompiler):
     # declare
     if msg.comment:
       self.writer.writeline('/**')
-      self.writer.writeline(msg.comment)
+      self.writer.writeline(' * ' + msg.comment)
       self.writer.writeline(' */')
     self.writer.writeline('@interface %s : XG_BaseModel' % msg_name)
 
@@ -43,7 +43,7 @@ class IosHCompiler(IosCompiler):
   def compileMsgField(self, field):
     if field.comment:
       self.writer.writeline('/**')
-      self.writer.writeline(field.comment)
+      self.writer.writeline(' * ' + field.comment)
       self.writer.writeline(' */')
     type_name, ref = self.type_resolver.resolveType(field)
     self.writer.writeline('@property(nonatomic, %s) %s * %s;' % (ref, type_name, field.name))
@@ -53,7 +53,7 @@ class IosHCompiler(IosCompiler):
     for i, field in enumerate(fields):
       if field.comment:
         self.writer.writeline('  /**')
-        self.writer.writeline(field.comment)
+        self.writer.writeline('   * ' + field.comment)
         self.writer.writeline('   */')
       s = '  %s = %d' % (field.name, field.number)
       if i < len(fields) - 1:
@@ -66,7 +66,7 @@ class IosHCompiler(IosCompiler):
     self.writer.writeline()
     if enum.comment:
       self.writer.writeline('/**')
-      self.writer.writeline(enum.comment)
+      self.writer.writeline(' * ' + enum.comment)
       self.writer.writeline(' */')
     self.writer.writeline('typedef enum {')
 
@@ -113,7 +113,7 @@ class IosMCompiler(IosCompiler):
     # declare
     if msg.comment:
       self.writer.writeline('/**')
-      self.writer.writeline(msg.comment)
+      self.writer.writeline(' * ' + msg.comment)
       self.writer.writeline(' */')
     self.writer.writeline('@implementation %s' % msg_name)
 
@@ -156,7 +156,7 @@ class IosMCompiler(IosCompiler):
     self.writer.writeline()
     if enum.comment:
       self.writer.writeline('/**')
-      self.writer.writeline(enum.comment)
+      self.writer.writeline(' * ' + enum.comment)
       self.writer.writeline(' */')
 
 class IosResolver(TypeResolver):

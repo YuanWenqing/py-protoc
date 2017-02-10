@@ -35,7 +35,7 @@ class NamingCompiler(Compiler):
     value = v_pre + field.name
     if field.comment:
       self.writer.writeline('  /**')
-      self.writer.writeline(field.comment)
+      self.writer.writeline('   * ' + field.comment)
       self.writer.writeline('   */')
     self.writer.writeline('    String %s = "%s";' % (key, value))
     if field.type.kind == TypeKind.REF and isinstance(field.type.ref, Message):

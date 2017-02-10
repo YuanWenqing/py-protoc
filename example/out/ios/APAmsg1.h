@@ -5,20 +5,20 @@
 @class APAmsg2;
 
 /**
-a1
+ * a1
 a2
  */
 @interface APAmsg1 : XG_BaseModel
 /**
-str前的注释
+ * str前的注释
  */
 @property(nonatomic, strong) NSString * str;
 /**
-int32后的注释
+ * int32后的注释
  */
 @property(nonatomic, strong) NSNumber * int_32;
 /**
-int64前的注释1
+ * int64前的注释1
 int64后的注释2
  */
 @property(nonatomic, strong) NSNumber * int_64;

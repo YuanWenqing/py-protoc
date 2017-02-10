@@ -15,7 +15,7 @@ class AndroidCompiler(Compiler):
     self.writer.writeline()
     if msg.comment:
       self.writer.writeline('/**')
-      self.writer.writeline(msg.comment)
+      self.writer.writeline(' * ' + msg.comment)
       self.writer.writeline(' */')
     self.writer.writeline('public class %s {' % msg.name)
 
@@ -26,7 +26,7 @@ class AndroidCompiler(Compiler):
   def compileMsgField(self, field):
     if field.comment:
       self.writer.writeline('  /**')
-      self.writer.writeline(field.comment)
+      self.writer.writeline('   * ' + field.comment)
       self.writer.writeline('   */')
     field_type, default_value = self.type_resolver.resolveType(field)
     self.writer.writeline('  public %s %s = %s;' % (field_type, field.name, default_value))
@@ -36,7 +36,7 @@ class AndroidCompiler(Compiler):
     for i, field in enumerate(fields):
       if field.comment:
         self.writer.writeline('  /**')
-        self.writer.writeline(field.comment)
+        self.writer.writeline('   * ' + field.comment)
         self.writer.writeline('   */')
       s = '  %s(%d)' % (field.name, field.number)
       if i < len(fields) - 1:
@@ -60,7 +60,7 @@ class AndroidCompiler(Compiler):
     self.writer.writeline()
     if enum.comment:
       self.writer.writeline('/**')
-      self.writer.writeline(enum.comment)
+      self.writer.writeline(' * ' + enum.comment)
       self.writer.writeline(' */')
     self.writer.writeline('public enum %s {' % enum.name)
 

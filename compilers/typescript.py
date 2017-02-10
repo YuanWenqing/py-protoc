@@ -26,7 +26,7 @@ class TypeScriptCompiler(Compiler):
   def beforeMsg(self, msg):
     if msg.comment:
       self.writer.writeline('  /**')
-      self.writer.writeline('  ' + msg.comment)
+      self.writer.writeline('   * ' + msg.comment)
       self.writer.writeline('   */')
     self.writer.writeline('  export interface %s {' % msg.name)
 
@@ -37,7 +37,7 @@ class TypeScriptCompiler(Compiler):
   def compileMsgField(self, field):
     if field.comment:
       self.writer.writeline('    /**')
-      self.writer.writeline('    ' + field.comment)
+      self.writer.writeline('     *' + field.comment)
       self.writer.writeline('     */')
     field_type, default_value = self.type_resolver.resolveType(field)
     self.writer.writeline('    %s : %s;' % (field.name, field_type))
@@ -51,7 +51,7 @@ class TypeScriptCompiler(Compiler):
   def beforeEnum(self, enum):
     if enum.comment:
       self.writer.writeline('  /**')
-      self.writer.writeline(enum.comment)
+      self.writer.writeline('   * ' + enum.comment)
       self.writer.writeline('   */')
     self.writer.writeline('  export enum %s {' % enum.name)
 

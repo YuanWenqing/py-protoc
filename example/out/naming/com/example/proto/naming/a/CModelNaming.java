@@ -6,15 +6,15 @@ public interface CModelNaming {
   interface CmsgNaming {
     String AMSG = "amsg";
   /**
-str前的注释
+   * str前的注释
    */
     String AMSG_DOT_STR = "amsg.str";
   /**
-int32后的注释
+   * int32后的注释
    */
     String AMSG_DOT_INT_32 = "amsg.int_32";
   /**
-int64前的注释1
+   * int64前的注释1
 int64后的注释2
    */
     String AMSG_DOT_INT_64 = "amsg.int_64";

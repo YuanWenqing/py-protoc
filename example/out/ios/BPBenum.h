@@ -4,12 +4,12 @@
 
 typedef enum {
   /**
-b0 before
+   * b0 before
 b0 after
    */
   B0 = 0,
   /**
-b1 after
+   * b1 after
    */
   B1 = 1
 } BPBenum;

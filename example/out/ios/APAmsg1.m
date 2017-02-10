@@ -5,7 +5,7 @@
 #import "APAmsg2.h"
 
 /**
-a1
+ * a1
 a2
  */
 @implementation APAmsg1
