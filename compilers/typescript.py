@@ -2,7 +2,7 @@
 
 from base import *
 
-class TsCompiler(Compiler):
+class TypeScriptCompiler(Compiler):
 
   def compileHeader(self, proto):
     for proto_file in proto.imports:
@@ -56,7 +56,7 @@ class TsCompiler(Compiler):
     self.writer.writeline()
 
 
-class TsResolver(TypeResolver):
+class TypeScriptResolver(TypeResolver):
   BASE_TYPE_MAP = {
     'int64': ('number', '0'),
     'int32': ('number', '0'),
@@ -82,10 +82,10 @@ class TsResolver(TypeResolver):
 
   def resolveBaseType(self, base_type):
     '''处理protobuf中的base type到指定语言的映射'''
-    return TsResolver.BASE_TYPE_MAP[base_type]
+    return TypeScriptResolver.BASE_TYPE_MAP[base_type]
 
 
-class TsWriter(Writer):
+class TypeScriptWriter(Writer):
   '''每个proto一个文件'''
 
   def onProto(self, proto, compiler):

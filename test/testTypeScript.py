@@ -14,7 +14,7 @@ if __name__ == '__main__':
   out_dir = os.path.join(rootdir, 'example/out/typescript')
 
   loader = Loader(proto_dir)
-  writer = TsWriter(out_dir, '.ts')
-  resolver = TsResolver()
-  compiler = TsCompiler(loader, writer, resolver)
+  writer = TypeScriptWriter(out_dir, '.ts')
+  resolver = TypeScriptResolver()
+  compiler = TypeScriptCompiler(loader, writer, resolver)
   compiler.compileDir(proto_dir)

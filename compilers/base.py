@@ -32,6 +32,7 @@ class Compiler:
     self.compile(arr)
 
   def compileFile(self, filepath):
+    print '. compile %s' % filepath
     proto = self.loader.loadAbspath(filepath)
     self.writer.onProto(proto, self)
     for msg in proto.messages:
