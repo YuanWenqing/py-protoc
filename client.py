@@ -32,6 +32,9 @@ class ClientCompiler:
   def __getInputProtos(self, section):
     files = []
     for f in self.cf.get(section, 'input_proto').split(','):
+      f = f.strip()
+      if len(f) == 0:
+        continue
       f = os.path.join(self.proto_dir, f)
       if f not in files:
         files.append(f)

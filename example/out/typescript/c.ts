@@ -1,7 +1,7 @@
 // generated from c.proto by py-protoc, NEVER CHANGE!!
 
-/// <refrence path="./a.ts" />
-/// <refrence path="./sub/b.ts" />
+/// <reference path="./a.ts" />
+/// <reference path="./sub/b.ts" />
 
 namespace ap {
   export interface Cmsg {

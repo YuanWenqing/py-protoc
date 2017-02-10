@@ -1,6 +1,6 @@
 // generated from a.proto by py-protoc, NEVER CHANGE!!
 
-/// <refrence path="./sub/b.ts" />
+/// <reference path="./sub/b.ts" />
 
 namespace ap {
   /**
