@@ -10,7 +10,8 @@ def p_error(p):
 
 
 def p_start(p):
-  """start : header definition"""
+  """start : header definition tail
+          | header tail"""
   proto = Protobuf()
   for header in p[1]:
     proto.addHeader(header)
@@ -19,6 +20,12 @@ def p_start(p):
     proto.addDataDef(data_def)
   # TODO: resolve import and check type ref
   p[0] = proto
+
+
+def p_tail(p):
+  '''tail : comment
+          |'''
+  p[0] = []
 
 
 def p_comment(p):
