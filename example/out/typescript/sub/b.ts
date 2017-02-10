@@ -2,9 +2,9 @@
 
 
 namespace bp {
-  enum Benum {
-    B0 = 0;
-    B1 = 1;
+  export enum Benum {
+    B0 = 0,
+    B1 = 1,
   }
 
 }

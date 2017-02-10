@@ -13,6 +13,7 @@ from parse.loader import *
 from compilers.android import *
 from compilers.ios import *
 from compilers.typescript import *
+from compilers.naming import *
 
 class ClientCompiler:
   def __init__(self, conf_file):
@@ -66,6 +67,12 @@ class ClientCompiler:
     resolver = TypeScriptResolver()
     writer = TypeScriptWriter(out_dir, '.ts')
     compiler = TypeScriptCompiler(self.loader, writer, resolver)
+    self.compilers.append((compiler, files))
+
+  def naming(self, out_dir, files):
+    resolver = NamingResolver()
+    writer = NamingWriter(out_dir, '.java')
+    compiler = NamingCompiler(self.loader, writer, resolver)
     self.compilers.append((compiler, files))
 
   def do(self):
