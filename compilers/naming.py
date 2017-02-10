@@ -34,9 +34,9 @@ class NamingCompiler(Compiler):
     key = k_pre + field.name.upper()
     value = v_pre + field.name
     if field.comment:
-      self.writer.writeline('  /**')
-      self.writer.writeline('   * ' + field.comment)
-      self.writer.writeline('   */')
+      self.writer.writeline('    /**')
+      self.writer.writeline('     * ' + field.comment)
+      self.writer.writeline('     */')
     self.writer.writeline('    String %s = "%s";' % (key, value))
     if field.type.kind == TypeKind.REF and isinstance(field.type.ref, Message):
       self.__recurse(field.type.ref, key + '_DOT_', value + '.')
