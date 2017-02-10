@@ -9,6 +9,7 @@ class Compiler:
     self.loader = loader
     self.writer = writer
     self.type_resolver = type_resolver
+    self.outputed = set()
 
   def addLine(self, line):
     if line:
@@ -32,8 +33,15 @@ class Compiler:
     self.compile(arr)
 
   def compileFile(self, filepath):
-    print '. compile %s' % filepath
     proto = self.loader.loadAbspath(filepath)
+    for import_proto in proto.import_protos:
+      self.__output(import_proto)
+    self.__output(proto)
+
+  def __output(self, proto):
+    filepath = os.path.join(proto.proto_dir, proto.proto_file)
+    if filepath in self.outputed:
+      return
     self.writer.beforeProto(proto, self)
     for msg in proto.messages:
       if msg.isDeprecated():
@@ -48,6 +56,8 @@ class Compiler:
       self.compileEnum(enum, self.__filterValidFields(enum))
       self.writer.afterDataDef(enum)
     self.writer.afterProto(proto, self)
+    self.outputed.add(filepath)
+    print '. compile %s' % filepath
 
   def __filterValidFields(self, data_def):
     fields = []

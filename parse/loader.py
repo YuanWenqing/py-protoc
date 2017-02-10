@@ -49,6 +49,7 @@ class Loader:
       import_proto = self.loadRelpath(item)
       proto.datadefs.update(import_proto.datadefs)
       proto.imported_defs.update(import_proto.datadefs)
+      proto.import_protos.append(import_proto)
     for msg in proto.messages:
       for field in msg.fields:
         if field.type.kind == TypeKind.REF:

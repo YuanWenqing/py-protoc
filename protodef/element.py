@@ -136,6 +136,7 @@ class Protobuf:
 
     self.messages = []
     self.enums = []
+    self.import_protos = []
     self.datadefs = {}
     self.imported_defs = {}
 
