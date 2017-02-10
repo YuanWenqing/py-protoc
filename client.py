@@ -43,7 +43,11 @@ class ClientCompiler:
 
   def config(self):
     for app in self.apps:
-      out_dir = os.path.join(self.out_root, app)
+      if self.cf.has_option(app, 'out_dir'):
+        out_dir = self.cf.get(app, 'out_dir')
+        out_dir = os.path.join(self.path_root, out_dir)
+      else:
+        out_dir = os.path.join(self.out_root, app)
       files = self.__getInputProtos(app)
       os.system('rm -r %s' % out_dir)
       getattr(self, app)(out_dir, files)

@@ -1,6 +1,6 @@
 // generated from c.proto by py-protoc, NEVER CHANGE!!
 
-package com.example.proto.a;
+package com.example.proto.data.a;
 
 public interface CModelNaming {
   interface CmsgNaming {

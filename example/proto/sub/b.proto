@@ -2,7 +2,7 @@ syntax = "proto3";
 package bp;
 
 
-option java_package = "com.example.proto.b";
+option java_package = "com.example.proto.data.b";
 option java_outer_classname = "BModel";
 
 enum Benum {

@@ -7,7 +7,7 @@ package ap;
 import "sub/b.proto";
 
 // java_package
-option java_package = "com.example.proto.a";
+option java_package = "com.example.proto.data.a";
 // java_outer_classname
 option java_outer_classname = "AModel";
 
