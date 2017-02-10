@@ -5,7 +5,8 @@ from base import *
 class NamingCompiler(Compiler):
 
   def compileHeader(self, proto):
-    self.writer.writeline('package %s;' % proto.getJavaPkg())
+    javaPkg = convertPkg(proto.getJavaPkg())
+    self.writer.writeline('package %s;' % javaPkg)
     self.writer.writeline()
     self.writer.writeline('public interface %sNaming {' % proto.getOption('java_outer_classname').value)
 
@@ -52,7 +53,9 @@ class NamingWriter(Writer):
   def beforeProto(self, proto, compiler):
     javaClass = proto.getOption('java_outer_classname').value
     javaClass += 'Naming'
-    subpath = proto.getJavaPkg().replace('.', os.path.sep)
+    javaPkg = proto.getJavaPkg()
+    javaPkg = convertPkg(javaPkg)
+    subpath = javaPkg.replace('.', os.path.sep)
     path = os.path.join(self.out_dir, subpath, javaClass + self.file_ext)
     self._prepare(path, proto)
     compiler.compileHeader(proto)
@@ -60,3 +63,5 @@ class NamingWriter(Writer):
   def afterProto(self, proto, compiler):
     compiler.compileTail(proto)
 
+def convertPkg(pkg):
+  return pkg.replace('proto.data', 'proto.naming')
