@@ -1,17 +1,12 @@
 # coding: utf8
 
-import os, sys
-
-rootdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if rootdir not in sys.path:
-  sys.path.append(rootdir)
-
-from parse.loader import *
+import os
+from protodef.element import *
 
 class Compiler:
   '''所有编译Compiler的基类'''
-  def __init__(self, proto_dir, writer, type_resolver):
-    self.proto_dir = proto_dir
+  def __init__(self, loader, writer, type_resolver):
+    self.loader = loader
     self.writer = writer
     self.type_resolver = type_resolver
 
@@ -21,25 +16,23 @@ class Compiler:
     self.output += '\n'
 
   def compile(self, arr):
-    for item in arr:
-      path = os.path.join(self.proto_dir, item)
+    for path in arr:
       if os.path.isdir(path):
-        self.compileDir(item)
+        self.compileDir(path)
       else:
-        self.compileFile(item)
+        self.compileFile(path)
 
-  def compileDir(self, d):
-    path = os.path.join(self.proto_dir, d)
-    path = os.path.normpath(path)
+  def compileDir(self, dirpath):
     arr = []
-    for f in os.listdir(path):
-      arr.append(os.path.join(d, f))
+    for f in os.listdir(dirpath):
+      if f.startswith('.'):
+        continue
+      path = os.path.join(dirpath, f)
+      arr.append(path)
     self.compile(arr)
 
-  def compileFile(self, f):
-    f = os.path.normpath(f)
-    proto = load(self.proto_dir, f)
-    resolve(proto)
+  def compileFile(self, filepath):
+    proto = self.loader.loadAbspath(filepath)
     self.writer.onProto(proto, self)
     for msg in proto.messages:
       if msg.isDeprecated():
