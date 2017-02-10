@@ -45,7 +45,7 @@ class TypeScriptCompiler(Compiler):
   def compileEnum(self, enum, fields):
     self.beforeEnum(enum)
     for field in fields:
-      self.writer.writeline('    %s = %d;' % (field.name, field.number))
+      self.writer.writeline('    %s = %d,' % (field.name, field.number))
     self.afterEnum(enum)
 
   def beforeEnum(self, enum):
@@ -53,7 +53,7 @@ class TypeScriptCompiler(Compiler):
       self.writer.writeline('  /**')
       self.writer.writeline(enum.comment)
       self.writer.writeline('   */')
-    self.writer.writeline('  enum %s {' % enum.name)
+    self.writer.writeline('  export enum %s {' % enum.name)
 
   def afterEnum(self, enum):
     self.writer.writeline('  }')
