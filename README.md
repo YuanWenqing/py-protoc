@@ -25,6 +25,12 @@ protobuf本身的编译器protoc可以提供java后端需要的java类，而对�
  * web：我们使用typescript来保证js端数据结构的约束，所以生成的js model面向的也是typescript。
  * db：在java server端我们自己实现的orm框架中，我们需要处理java类的字段和db表的列之间的对应关系，为了保证数据结构的字段修改在逻辑中及时体现，编译器会额外输出每个类的字段名常量定义（即Example中的各种Naming类），从而保证代码逻辑中不必手写字段名的字符串常量。
 
+完成情况：
+* [x] android
+* [x] ios
+* [x] typescript
+* [ ] naming
+
 ## 参考
  * 最初用于我们项目的编译器是通过文本匹配和正则等方式进行“手工”解析的，在迁移到这个单独项目时，我参考了[proto_parser](https://github.com/LiuRoy/proto_parser)项目，改为使用ply进行相关的词法、语法解析。
 
