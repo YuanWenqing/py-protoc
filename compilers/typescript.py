@@ -13,6 +13,10 @@ class TypeScriptCompiler(Compiler):
     self.writer.writeline()
     self.writer.writeline('namespace %s {' % proto.proto_pkg)
 
+  def compileTail(self, proto):
+    self.writer.writeline('}')
+    self.writer.writeline()
+
   def compileMsg(self, msg, fields):
     self.beforeMsg(msg)
     for field in fields:
@@ -88,11 +92,14 @@ class TypeScriptResolver(TypeResolver):
 class TypeScriptWriter(Writer):
   '''每个proto一个文件'''
 
-  def onProto(self, proto, compiler):
+  def beforeProto(self, proto, compiler):
     subpath = self.convertExt(proto.proto_file)
     path = os.path.join(self.out_dir, subpath)
     self._prepare(path, proto)
     compiler.compileHeader(proto)
+
+  def afterProto(self, proto, compiler):
+    compiler.compileTail(proto)
 
   def convertExt(self, filepath):
     return os.path.splitext(filepath)[0] + self.file_ext

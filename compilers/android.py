@@ -117,7 +117,7 @@ class AndroidResolver(TypeResolver):
 class AndroidWriter(Writer):
   '''每个data_def一个文件'''
 
-  def onDataDef(self, data_def):
+  def beforeDataDef(self, data_def):
     subpath = data_def.proto.getJavaPkg().replace('.', os.path.sep)
     path = os.path.join(self.out_dir, subpath, data_def.name + self.file_ext)
     self._prepare(path, data_def.proto)

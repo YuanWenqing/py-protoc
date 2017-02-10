@@ -34,17 +34,20 @@ class Compiler:
   def compileFile(self, filepath):
     print '. compile %s' % filepath
     proto = self.loader.loadAbspath(filepath)
-    self.writer.onProto(proto, self)
+    self.writer.beforeProto(proto, self)
     for msg in proto.messages:
       if msg.isDeprecated():
         continue
-      self.writer.onDataDef(msg)
+      self.writer.beforeDataDef(msg)
       self.compileMsg(msg, self.__filterValidFields(msg))
+      self.writer.afterDataDef(msg)
     for enum in proto.enums:
       if enum.isDeprecated():
         continue
-      self.writer.onDataDef(enum)
+      self.writer.beforeDataDef(enum)
       self.compileEnum(enum, self.__filterValidFields(enum))
+      self.writer.afterDataDef(enum)
+    self.writer.afterProto(proto, self)
 
   def __filterValidFields(self, data_def):
     fields = []
@@ -66,10 +69,16 @@ class Writer:
     self.file_ext = file_ext
     self.outf = None
 
-  def onProto(self, proto, compiler):
+  def beforeProto(self, proto, compiler):
     pass
 
-  def onDataDef(self, data_def):
+  def afterProto(self, proto, compiler):
+    pass
+
+  def beforeDataDef(self, data_def):
+    pass
+
+  def afterDataDef(self, data_def):
     pass
 
   def done(self):
