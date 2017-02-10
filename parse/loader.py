@@ -29,7 +29,7 @@ class Loader:
       return self.loaded[rel_path]
     # read
     filepath = os.path.join(self.proto_dir, rel_path)
-    print '. load %s' % filepath
+    #print '. load %s' % filepath
     with open(filepath) as pf:
       data = pf.read()
     # parse
