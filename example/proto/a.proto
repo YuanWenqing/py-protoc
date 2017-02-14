@@ -29,7 +29,7 @@ message Amsg1 {
     repeated string str_list = 10;
     repeated bp.Benum benum_list = 12;
     map<string, int32> int_map = 13;
-    map<int32, ap.Amsg2> amsg2_map = 14;
+    map<int32, Amsg2> amsg2_map = 14;
 }
 
 message Amsg2 {

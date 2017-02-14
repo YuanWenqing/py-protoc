@@ -52,7 +52,14 @@ class Loader:
       proto.import_protos.append(import_proto)
     for msg in proto.messages:
       for field in msg.fields:
-        if field.type.kind == TypeKind.REF:
-          if field.type.name not in proto.datadefs:
-            raise Exception('Message %s: unresolved type %s in `%s`' % (msg.name, field.type.name, field))
-          field.type.ref = proto.datadefs[field.type.name]
+        try:
+          self.__ref(field.type, proto.datadefs)
+        except KeyError, e:
+          raise Exception('Message %s: unresolved type %s in `%s`' % (msg.name, field.type.name, field), e)
+
+  def __ref(self, field_type, datadefs):
+    if field_type.kind == TypeKind.REF:
+      field_type.ref = datadefs[field_type.name]
+    elif field_type.kind == TypeKind.MAP:
+      self.__ref(field_type.key_type, datadefs)
+      self.__ref(field_type.value_type, datadefs)
