@@ -11,7 +11,7 @@ class TypeScriptCompiler(Compiler):
       ts_path = './' + ts_path
       self.writer.writeline('/// <reference path="%s" />' % ts_path)
     self.writer.writeline()
-    self.writer.writeline('namespace %s {' % proto.proto_pkg)
+    self.writer.writeline('export namespace %s {' % proto.proto_pkg)
 
   def compileTail(self, proto):
     self.writer.writeline('}')
