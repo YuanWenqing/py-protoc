@@ -55,10 +55,12 @@ class FieldType:
     self.ref = None
 
   def __str__(self):
-    if self.kind == TypeKind.MAP:
+    if self.kind == TypeKind.BASE:
+      return self.name
+    elif self.kind == TypeKind.REF:
+      return self.ref.whole_name
+    elif self.kind == TypeKind.MAP:
       return 'map<%s, %s>' % (self.key_type, self.value_type)
-    else:
-      return '%s[%s]' % (self.name, self.kind)
 
 class MessageField(Field):
   '''message中的field定义'''
@@ -96,6 +98,7 @@ class DataDef:
     self.name = name
     self.fields = []
     self.comment = None
+    self.whole_name = None
 
   def addField(self, field):
     self.fields.append(field)
@@ -164,23 +167,22 @@ class Protobuf:
     return self.getOption('java_package').value
 
   def addDataDef(self, data_def):
-    data_name = data_def.name
-    data_name = self.proto_pkg + '.' + data_name
-    self.datadefs[data_name] = data_def
+    data_def.whole_name = self.proto_pkg + '.' + data_def.name
+    self.datadefs[data_def.whole_name] = data_def
     if isinstance(data_def, Message):
       for field in data_def.fields:
-        self.__canonicalName(field.type)
+        self.__completeName(field.type)
       self.messages.append(data_def)
     else:
       self.enums.append(data_def)
 
-  def __canonicalName(self, field_type):
+  def __completeName(self, field_type):
     if field_type.kind == TypeKind.REF:
       if '.' not in field_type.name:
         field_type.name = self.proto_pkg + '.' + field_type.name
     elif field_type.kind == TypeKind.MAP:
-      self.__canonicalName(field_type.key_type)
-      self.__canonicalName(field_type.value_type)
+      self.__completeName(field_type.key_type)
+      self.__completeName(field_type.value_type)
 
   def getDataDef(self, data_name):
     return self.datadefs[data_name]
