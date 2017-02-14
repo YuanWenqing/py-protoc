@@ -49,13 +49,16 @@ class FieldType:
   def __init__(self, type_kind, type_name, key_type=None, value_type=None):
     self.kind = type_kind
     self.name = type_name
+    self.key_type = key_type
+    self.value_type = value_type
+
     self.ref = None
 
-    self.key_type = None
-    self.value_type = None
-
   def __str__(self):
-    return '%s[%s]' % (self.name, self.kind)
+    if self.kind == TypeKind.MAP:
+      return 'map<%s, %s>' % (self.key_type, self.value_type)
+    else:
+      return '%s[%s]' % (self.name, self.kind)
 
 class MessageField(Field):
   '''message中的field定义'''
@@ -63,10 +66,10 @@ class MessageField(Field):
   def __init__(self, field_type, field_name, field_number):
     Field.__init__(self, field_name, field_number)
     self.type = field_type
-    self.decorations = set()
+    self.decorations = list()
 
   def addDecoration(self, decoration):
-    self.decorations.add(decoration)
+    self.decorations.append(decoration)
 
   def isRepeated(self):
     return 'repeated' in self.decorations
@@ -74,7 +77,8 @@ class MessageField(Field):
   def __str__(self):
     s = '%d:' % self.index
     if len(self.decorations) > 0:
-      s = s + (' %s' % self.decorations)
+      for dw in self.decorations:
+        s = s + ' ' + dw
     s = s + (' %s %s=%d' % (self.type, self.name, self.number))
     if self.comment:
       s = s + (' #%s' % self.comment.replace('\n', '\\n'))
