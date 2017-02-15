@@ -37,7 +37,7 @@ class TypeScriptCompiler(Compiler):
   def compileMsgField(self, field):
     if field.comment:
       self.writer.writeline('    /**')
-      self.writer.writeline('     *' + field.comment)
+      self.writer.writeline('     * ' + field.comment)
       self.writer.writeline('     */')
     field_type, default_value = self.type_resolver.resolveField(field)
     self.writer.writeline('    %s : %s;' % (field.name, field_type))
