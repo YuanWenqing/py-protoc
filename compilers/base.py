@@ -35,29 +35,51 @@ class Compiler:
   def compileFile(self, filepath):
     proto = self.loader.loadAbspath(filepath)
     for import_proto in proto.import_protos:
-      self.__output(import_proto)
-    self.__output(proto)
+      self.compileProto(import_proto)
+    self.compileProto(proto)
 
-  def __output(self, proto):
+  def compileProto(self, proto):
     filepath = os.path.join(proto.proto_dir, proto.proto_file)
     if filepath in self.outputed:
       return
     self.writer.beforeProto(proto, self)
-    for msg in proto.messages:
+    self.compileMsgs(proto.messages)
+    self.compileEnums(proto.enums)
+    self.writer.afterProto(proto, self)
+    self.outputed.add(filepath)
+    print '. compile %s' % filepath
+
+  def compileMsgs(self, messages):
+    self.beforeMsgs(messages)
+    for msg in messages:
       if msg.isDeprecated():
         continue
       self.writer.beforeDataDef(msg)
       self.compileMsg(msg, self.__filterValidFields(msg))
       self.writer.afterDataDef(msg)
-    for enum in proto.enums:
+    self.afterMsgs(messages)
+
+  def beforeMsgs(self, messages):
+    pass
+
+  def afterMsgs(self, messages):
+    pass
+
+  def compileEnums(self, enums):
+    self.beforeEnums(enums)
+    for enum in enums:
       if enum.isDeprecated():
         continue
       self.writer.beforeDataDef(enum)
       self.compileEnum(enum, self.__filterValidFields(enum))
       self.writer.afterDataDef(enum)
-    self.writer.afterProto(proto, self)
-    self.outputed.add(filepath)
-    print '. compile %s' % filepath
+    self.afterEnums(enums)
+
+  def beforeEnums(self, enums):
+    pass
+
+  def afterEnums(self, enums):
+    pass
 
   def __filterValidFields(self, data_def):
     fields = []
