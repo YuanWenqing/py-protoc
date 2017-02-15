@@ -2,6 +2,10 @@
 
 from base import *
 
+def canonical_name(data_def):
+  pkg = data_def.proto.proto_pkg
+  return pkg.upper() + data_def.name
+
 class IosCompiler(Compiler):
   def resolveImport(self, fields):
     imports = list()
@@ -12,7 +16,12 @@ class IosCompiler(Compiler):
         if type_name not in imports:
           imports.append(type_name)
       elif field_type.kind == TypeKind.MAP:
-        raise Exception('not support map')
+        type_name = canonical_name(field_type.key_type.ref)
+        if type_name not in imports:
+          imports.append(type_name)
+        type_name = canonical_name(field_type.value_type.ref)
+        if type_name not in imports:
+          imports.append(type_name)
     return imports
 
 class IosHCompiler(IosCompiler):

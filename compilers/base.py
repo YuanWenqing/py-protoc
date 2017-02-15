@@ -128,6 +128,3 @@ class TypeResolver:
     '''处理protobuf中的base type，返回`(type_text, default_value_text)`'''
     pass
 
-def canonical_name(data_def):
-  pkg = data_def.proto.proto_pkg
-  return pkg.upper() + data_def.name
