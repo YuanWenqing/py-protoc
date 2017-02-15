@@ -15,6 +15,9 @@ class TypeScriptCompiler(Compiler):
 
   def compileTail(self, proto):
     self.writer.writeline('}')
+    if len(proto.enums) > 0:
+      self.writer.writeline()
+      self.writer.writeline('export default %s;' % proto.proto_pkg)
     self.writer.writeline()
 
   def compileMsg(self, msg, fields):

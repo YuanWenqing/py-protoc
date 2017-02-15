@@ -9,3 +9,5 @@ namespace bp {
 
 }
 
+export default bp;
+
