@@ -40,7 +40,7 @@ class TypeScriptCompiler(Compiler):
       self.writer.writeline('     * ' + field.comment)
       self.writer.writeline('     */')
     field_type, default_value = self.type_resolver.resolveField(field)
-    self.writer.writeline('    %s : %s;' % (field.name, field_type))
+    self.writer.writeline('    %s ?: %s;' % (field.name, field_type))
 
   def compileEnum(self, enum, fields):
     self.beforeEnum(enum)

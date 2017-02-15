@@ -5,8 +5,8 @@
 
 namespace ap {
   export interface Cmsg {
-    amsg : ap.Amsg1;
-    benum : bp.Benum;
+    amsg ?: ap.Amsg1;
+    benum ?: bp.Benum;
   }
 
 }
