@@ -1,13 +1,11 @@
 // generated from c.proto by py-protoc, NEVER CHANGE!!
 
-/// <reference path="./a.ts" />
-/// <reference path="./sub/b.ts" />
+import * as ap0 from "./a";
+import * as bp1 from "./sub/b";
 
-namespace ap {
-  export interface Cmsg {
-    amsg ?: ap.Amsg1;
-    benum ?: bp.Benum;
-  }
-
+export interface Cmsg {
+  amsg ?: ap0.Amsg1;
+  benum ?: bp1.Benum;
 }
+
 
