@@ -10,19 +10,17 @@ class IosCompiler(Compiler):
   def resolveImport(self, fields):
     imports = list()
     for field in fields:
-      field_type = field.type
-      if field_type.kind == TypeKind.REF:
-        type_name = canonical_name(field_type.ref)
-        if type_name not in imports:
-          imports.append(type_name)
-      elif field_type.kind == TypeKind.MAP:
-        type_name = canonical_name(field_type.key_type.ref)
-        if type_name not in imports:
-          imports.append(type_name)
-        type_name = canonical_name(field_type.value_type.ref)
-        if type_name not in imports:
-          imports.append(type_name)
+      self.__addImport(imports, field.type)
     return imports
+
+  def __addImport(self, imports, field_type):
+    if field_type.kind == TypeKind.REF:
+      type_name = canonical_name(field_type.ref)
+      if type_name not in imports:
+        imports.append(type_name)
+    elif field_type.kind == TypeKind.MAP:
+      self.__addImport(imports, field_type.key_type)
+      self.__addImport(imports, field_type.value_type)
 
 class IosHCompiler(IosCompiler):
 
@@ -94,20 +92,24 @@ class IosMCompiler(IosCompiler):
   def compileMsg(self, msg, fields):
     imports = self.resolveImport(fields)
     self.beforeMsg(msg, imports)
-    repeated_ref_fields = []
+    container_fields = []
     for field in fields:
-      if not field.isRepeated():
-        continue
-      if field.type.kind != TypeKind.REF:
-        continue
-      repeated_ref_fields.append(field)
-    if len(repeated_ref_fields) > 0:
+      if field.isRepeated() and field.type.kind == TypeKind.REF:
+        container_fields.append(field)
+      elif field.type.kind == TypeKind.MAP:
+        container_fields.append(field)
+    if len(container_fields) > 0:
       self.writer.writeline("+ (NSDictionary *)modelContainerPropertyGenericClass {")
       self.writer.writeline("  return @{")
-      for i, field in enumerate(repeated_ref_fields):
-        type_name = canonical_name(field.type.ref)
-        line = '''    @"%s" : [%s class]''' % (field.name, type_name)
-        if i < len(repeated_ref_fields) - 1:
+      for i, field in enumerate(container_fields):
+        line = None
+        if field.type.kind == TypeKind.MAP:
+          type_name = self.type_resolver.resolveType(field.type.value_type)[0]
+          line = '    @"%s" : @"%s"' % (field.name, type_name)
+        elif field.type.kind == TypeKind.REF:
+          type_name = self.type_resolver.resolveType(field.type)[0]
+          line = '    @"%s" : NSClassFromString(@"%s")' % (field.name, type_name)
+        if i < len(container_fields) - 1:
           line = line + ','
         self.writer.writeline(line)
       self.writer.writeline("  };")
@@ -182,11 +184,15 @@ class IosResolver(TypeResolver):
 
   def resolveField(self, field):
     '''处理field的type，返回`(type_text, ref)`'''
-    field_type = field.type
     if field.isRepeated():
       type_name = 'NSMutableArray'
       ref = 'strong'
-    elif field_type.kind == TypeKind.BASE:
+    else:
+      type_name, ref = self.resolveType(field.type)
+    return type_name, ref
+
+  def resolveType(self, field_type):
+    if field_type.kind == TypeKind.BASE:
       type_name, ref = self.resolveBaseType(field_type.name)
     elif field_type.kind == TypeKind.REF:
       data_def = field_type.ref
@@ -196,7 +202,8 @@ class IosResolver(TypeResolver):
       else:
         ref = 'strong'
     elif field_type.kind == TypeKind.MAP:
-      raise Exception('not support map')
+      type_name = 'NSMutableDictionary'
+      ref = 'strong'
     return type_name, ref
 
   def resolveBaseType(self, base_type):

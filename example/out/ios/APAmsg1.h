@@ -30,5 +30,7 @@ int64后的注释2
 @property(nonatomic, strong) NSMutableArray * amsg2_list;
 @property(nonatomic, strong) NSMutableArray * str_list;
 @property(nonatomic, strong) NSMutableArray * benum_list;
+@property(nonatomic, strong) NSMutableDictionary * int_map;
+@property(nonatomic, strong) NSMutableDictionary * amsg2_map;
 @end
 
