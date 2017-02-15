@@ -6,6 +6,6 @@
 
 @interface APCmsg : XG_BaseModel
 @property(nonatomic, strong) APAmsg1 * amsg;
-@property(nonatomic, assign) BPBenum * benum;
+@property(nonatomic, assign) BPBenum benum;
 @end
 
