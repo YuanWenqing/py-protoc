@@ -11,7 +11,7 @@ class TypeScriptCompiler(Compiler):
       ts_path = './' + ts_path
       self.writer.writeline('/// <reference path="%s" />' % ts_path)
     self.writer.writeline()
-    self.writer.writeline('export namespace %s {' % proto.proto_pkg)
+    self.writer.writeline('namespace %s {' % proto.proto_pkg)
 
   def compileTail(self, proto):
     self.writer.writeline('}')
@@ -71,20 +71,28 @@ class TypeScriptResolver(TypeResolver):
   }
 
   def resolveField(self, field):
-    field_type = field.type
+    if field.isRepeated():
+      type_name, default_value = self.resolveType(field.type)
+      if field.type.kind == TypeKind.REF and isinstance(field.type.ref, Enum):
+        type_name = 'number'
+      type_name = 'Array<%s>' % type_name
+      default_value = 'null'
+    else:
+      type_name, default_value = self.resolveType(field.type)
+    return (type_name, default_value)
+
+  def resolveType(self, field_type):
     if field_type.kind == TypeKind.BASE:
       type_name, default_value = self.resolveBaseType(field_type.name)
     elif field_type.kind == TypeKind.REF:
       type_name = field_type.ref.proto.proto_pkg + '.' + field_type.ref.name
       default_value = 'null'
     elif field_type.kind == TypeKind.MAP:
-      raise Exception('not support map')
-    if field.isRepeated():
-      if field_type.kind == TypeKind.REF and isinstance(field_type.ref, Enum):
-        type_name = 'number'
-      type_name = 'Array<%s>' % type_name
+      key_type = self.resolveType(field_type.key_type)[0]
+      value_type = self.resolveType(field_type.value_type)[0]
+      type_name = 'Map<%s, %s>' % (key_type, value_type)
       default_value = 'null'
-    return (type_name, default_value)
+    return type_name, default_value
 
   def resolveBaseType(self, base_type):
     '''处理protobuf中的base type到指定语言的映射'''

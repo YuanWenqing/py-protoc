@@ -29,6 +29,8 @@ int64后的注释2
     amsg2_list : Array<ap.Amsg2>;
     str_list : Array<string>;
     benum_list : Array<number>;
+    int_map : Map<string, number>;
+    amsg2_map : Map<number, ap.Amsg2>;
   }
 
   export interface Amsg2 {
