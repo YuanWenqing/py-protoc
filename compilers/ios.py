@@ -41,7 +41,7 @@ class IosHCompiler(IosCompiler):
     for data_def in imports:
       type_name = canonical_name(data_def)
       if isinstance(data_def, Enum):
-        self.writer.writeline('#import "%s.h";' % type_name)
+        self.writer.writeline('#import "%s.h"' % type_name)
       else:
         self.writer.writeline('@class %s;' % type_name)
     self.writer.writeline()
