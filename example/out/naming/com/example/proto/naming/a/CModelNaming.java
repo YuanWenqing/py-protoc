@@ -5,18 +5,18 @@ package com.example.proto.naming.a;
 public interface CModelNaming {
   interface CmsgNaming {
     String AMSG = "amsg";
-  /**
-   * str前的注释
-   */
+    /**
+     * str前的注释
+     */
     String AMSG_DOT_STR = "amsg.str";
-  /**
-   * int32后的注释
-   */
+    /**
+     * int32后的注释
+     */
     String AMSG_DOT_INT_32 = "amsg.int_32";
-  /**
-   * int64前的注释1
+    /**
+     * int64前的注释1
 int64后的注释2
-   */
+     */
     String AMSG_DOT_INT_64 = "amsg.int_64";
     String AMSG_DOT_FLOAT_ = "amsg.float_";
     String AMSG_DOT_DOUBLE_ = "amsg.double_";
@@ -28,6 +28,8 @@ int64后的注释2
     String AMSG_DOT_AMSG2_LIST_DOT_ID = "amsg.amsg2_list.id";
     String AMSG_DOT_STR_LIST = "amsg.str_list";
     String AMSG_DOT_BENUM_LIST = "amsg.benum_list";
+    String AMSG_DOT_INT_MAP = "amsg.int_map";
+    String AMSG_DOT_AMSG2_MAP = "amsg.amsg2_map";
     String BENUM = "benum";
   }
 

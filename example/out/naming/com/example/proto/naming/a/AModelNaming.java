@@ -4,18 +4,18 @@ package com.example.proto.naming.a;
 
 public interface AModelNaming {
   interface Amsg1Naming {
-  /**
-   * str前的注释
-   */
+    /**
+     * str前的注释
+     */
     String STR = "str";
-  /**
-   * int32后的注释
-   */
+    /**
+     * int32后的注释
+     */
     String INT_32 = "int_32";
-  /**
-   * int64前的注释1
+    /**
+     * int64前的注释1
 int64后的注释2
-   */
+     */
     String INT_64 = "int_64";
     String FLOAT_ = "float_";
     String DOUBLE_ = "double_";
@@ -27,6 +27,8 @@ int64后的注释2
     String AMSG2_LIST_DOT_ID = "amsg2_list.id";
     String STR_LIST = "str_list";
     String BENUM_LIST = "benum_list";
+    String INT_MAP = "int_map";
+    String AMSG2_MAP = "amsg2_map";
   }
 
   interface Amsg2Naming {
