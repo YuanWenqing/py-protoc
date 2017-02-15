@@ -6,6 +6,10 @@ def canonical_name(data_def):
   pkg = data_def.proto.proto_pkg
   return pkg.upper() + data_def.name
 
+class IosTypeRef:
+  STRONG = 'strong'
+  ASSIGN = 'assign'
+
 class IosCompiler(Compiler):
   def resolveImport(self, fields):
     imports = list()
@@ -58,7 +62,10 @@ class IosHCompiler(IosCompiler):
       self.writer.writeline(' * ' + field.comment)
       self.writer.writeline(' */')
     type_name, ref = self.type_resolver.resolveField(field)
-    self.writer.writeline('@property(nonatomic, %s) %s %s;' % (ref, type_name, field.name))
+    if ref == IosTypeRef.STRONG:
+      self.writer.writeline('@property(nonatomic, %s) %s * %s;' % (ref, type_name, field.name))
+    elif ref == IosTypeRef.ASSIGN:
+      self.writer.writeline('@property(nonatomic, %s) %s %s;' % (ref, type_name, field.name))
 
   def compileEnum(self, enum, fields):
     self.beforeEnum(enum)
@@ -97,10 +104,12 @@ class IosMCompiler(IosCompiler):
     self.beforeMsg(msg, imports)
     container_fields = []
     for field in fields:
-      if field.isRepeated() and field.type.kind == TypeKind.REF:
-        container_fields.append(field)
+      if field.isRepeated():
+        if field.type.kind == TypeKind.REF and isinstance(field.type.ref, Message):
+            container_fields.append(field)
       elif field.type.kind == TypeKind.MAP:
-        container_fields.append(field)
+        if field.type.value_type.kind == TypeKind.REF and isinstance(field.type.value_type.ref, Message):
+          container_fields.append(field)
     if len(container_fields) > 0:
       self.writer.writeline("+ (NSDictionary *)modelContainerPropertyGenericClass {")
       self.writer.writeline("  return @{")
@@ -187,16 +196,15 @@ class IosResolver(TypeResolver):
     'float': ('NSNumber', 'strong'),
     'double': ('NSNumber', 'strong')
   }
+  IOS_TYPES = set(['NSNumber', 'NSString'])
 
   def resolveField(self, field):
     '''处理field的type，返回`(type_text, ref)`'''
     if field.isRepeated():
-      type_name = 'NSMutableArray *'
+      type_name = 'NSMutableArray'
       ref = 'strong'
     else:
       type_name, ref = self.resolveType(field.type)
-      if not isinstance(field.type.ref, Enum):
-        type_name = type_name + ' *'
     return type_name, ref
 
   def resolveType(self, field_type):
@@ -206,12 +214,12 @@ class IosResolver(TypeResolver):
       data_def = field_type.ref
       type_name = canonical_name(data_def)
       if isinstance(data_def, Enum):
-        ref = 'assign'
+        ref = IosTypeRef.ASSIGN
       else:
-        ref = 'strong'
+        ref = IosTypeRef.STRONG
     elif field_type.kind == TypeKind.MAP:
       type_name = 'NSMutableDictionary'
-      ref = 'strong'
+      ref = IosTypeRef.STRONG
     return type_name, ref
 
   def resolveBaseType(self, base_type):

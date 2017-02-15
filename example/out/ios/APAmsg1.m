@@ -11,8 +11,6 @@ a2
 + (NSDictionary *)modelContainerPropertyGenericClass {
   return @{
     @"amsg2_list" : NSClassFromString(@"APAmsg2"),
-    @"benum_list" : NSClassFromString(@"BPBenum"),
-    @"int_map" : @"NSNumber",
     @"amsg2_map" : @"APAmsg2"
   };
 }
