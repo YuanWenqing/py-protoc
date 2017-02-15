@@ -31,7 +31,7 @@ keywords = (
   'bool',
   'string',
   'bytes',
-  # 'map',
+  'map',
   # 'service',
   # 'rpc',
   # 'returns'

@@ -28,7 +28,7 @@ class AndroidCompiler(Compiler):
       self.writer.writeline('  /**')
       self.writer.writeline('   * ' + field.comment)
       self.writer.writeline('   */')
-    field_type, default_value = self.type_resolver.resolveType(field)
+    field_type, default_value = self.type_resolver.resolveField(field)
     self.writer.writeline('  public %s %s = %s;' % (field_type, field.name, default_value))
 
   def compileEnum(self, enum, fields):
@@ -92,27 +92,41 @@ class AndroidResolver(TypeResolver):
     'double': 'Double',
   }
 
-  def resolveType(self, field):
-    field_type = field.type
+  def resolveField(self, field):
+    type_name, default_value = self.resolveType(field.type)
+    if field.isRepeated():
+      type_name = self.__box(type_name)
+      type_name = 'java.util.List<%s>' % type_name
+      default_value = 'null'
+    return (type_name, default_value)
+
+  def resolveType(self, field_type):
     if field_type.kind == TypeKind.BASE:
       type_name, default_value = self.resolveBaseType(field_type.name)
-    else:
+    elif field_type.kind == TypeKind.REF:
       data_def = field_type.ref
       if isinstance(data_def, Enum):
         type_name, default_value = self.resolveBaseType('int32')
       else:
         type_name = data_def.proto.getJavaPkg() + "." + data_def.name
         default_value = 'null'
-    if field.isRepeated():
-      if type_name in AndroidResolver.BOX_MAP:
-        type_name = AndroidResolver.BOX_MAP[type_name]
-      type_name = 'java.util.List<%s>' % type_name
+    elif field_type.kind == TypeKind.MAP:
+      key_type = self.resolveType(field_type.key_type)[0]
+      value_type = self.resolveType(field_type.value_type)[0]
+      key_type = self.__box(key_type)
+      value_type = self.__box(value_type)
+      type_name = 'java.util.Map<%s, %s>' % (key_type, value_type)
       default_value = 'null'
-    return (type_name, default_value)
+    return type_name, default_value
 
   def resolveBaseType(self, base_type):
     '''处理protobuf中的base type到指定语言的映射'''
     return AndroidResolver.BASE_TYPE_MAP[base_type]
+
+  def __box(self, type_name):
+    if type_name in AndroidResolver.BOX_MAP:
+      return AndroidResolver.BOX_MAP[type_name]
+    return type_name
 
 class AndroidWriter(Writer):
   '''每个data_def一个文件'''

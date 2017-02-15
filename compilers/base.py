@@ -120,7 +120,7 @@ class Writer:
 class TypeResolver:
   '''处理type的映射和默认值'''
 
-  def resolveType(self, field):
+  def resolveField(self, field):
     '''处理field的type，返回`(type_text, default_value_text)`'''
     pass
 

@@ -39,7 +39,7 @@ class TypeScriptCompiler(Compiler):
       self.writer.writeline('    /**')
       self.writer.writeline('     *' + field.comment)
       self.writer.writeline('     */')
-    field_type, default_value = self.type_resolver.resolveType(field)
+    field_type, default_value = self.type_resolver.resolveField(field)
     self.writer.writeline('    %s : %s;' % (field.name, field_type))
 
   def compileEnum(self, enum, fields):
@@ -70,13 +70,15 @@ class TypeScriptResolver(TypeResolver):
     'double': ('number', '0')
   }
 
-  def resolveType(self, field):
+  def resolveField(self, field):
     field_type = field.type
     if field_type.kind == TypeKind.BASE:
       type_name, default_value = self.resolveBaseType(field_type.name)
     elif field_type.kind == TypeKind.REF:
       type_name = field_type.ref.proto.proto_pkg + '.' + field_type.ref.name
       default_value = 'null'
+    elif field_type.kind == TypeKind.MAP:
+      raise Exception('not support map')
     if field.isRepeated():
       if field_type.kind == TypeKind.REF and isinstance(field_type.ref, Enum):
         type_name = 'number'

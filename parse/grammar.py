@@ -184,8 +184,8 @@ def p_ref_type(p):
 
 
 def p_definition_type(p):
-  """definition_type : base_type"""
-             # | container_type"""
+  """definition_type : base_type
+              | container_type"""
   p[0] = p[1]
 
 
@@ -208,18 +208,17 @@ def p_base_type(p):
   p[0] = FieldType(TypeKind.BASE, p[1])
 
 
-# def p_container_type(p):
-#   """container_type : map_type"""
-#   p[0] = p[1]
+def p_container_type(p):
+  """container_type : map_type"""
+  p[0] = p[1]
 
 
-# def p_map_type(p):
-#   """map_type : MAP '<' base_type ',' base_type '>'
-#          | MAP '<' base_type ',' ref_type '>'"""
-#   if p[3] == 'bytes':
-#     raise ProtoGrammarError(
-#       'grammar error at line {}: key type cannot be bytes'.format(p.lineno))
-#   p[0] = FieldType(TypeKind.MAP, p[1], p[3], p[5])
+def p_map_type(p):
+  """map_type : MAP '<' base_type ',' base_type '>'
+         | MAP '<' base_type ',' ref_type '>'"""
+  if p[3] == 'bytes':
+    raise ProtoGrammarError('grammar error at line {}: type of key in map cannot be bytes'.format(p.lineno))
+  p[0] = FieldType(TypeKind.MAP, p[1], p[3], p[5])
 
 
 def p_enum(p):
