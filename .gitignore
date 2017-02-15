@@ -89,5 +89,3 @@ ENV/
 .ropeproject
 
 # ply
-parser.out
-*/parser.out
