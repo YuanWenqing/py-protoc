@@ -1,7 +1,7 @@
 // generated from a.proto by py-protoc, NEVER CHANGE!!
 
 #import "XG_BaseModel.h"
-@class BPBenum;
+#import "BPBenum.h";
 @class APAmsg2;
 
 /**

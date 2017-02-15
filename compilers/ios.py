@@ -15,9 +15,8 @@ class IosCompiler(Compiler):
 
   def __addImport(self, imports, field_type):
     if field_type.kind == TypeKind.REF:
-      type_name = canonical_name(field_type.ref)
-      if type_name not in imports:
-        imports.append(type_name)
+      if field_type.ref not in imports:
+        imports.append(field_type.ref)
     elif field_type.kind == TypeKind.MAP:
       self.__addImport(imports, field_type.key_type)
       self.__addImport(imports, field_type.value_type)
@@ -35,8 +34,12 @@ class IosHCompiler(IosCompiler):
     msg_name = canonical_name(msg)
     # import
     self.writer.writeline('#import "XG_BaseModel.h"')
-    for type_name in imports:
-      self.writer.writeline('@class %s;' % type_name)
+    for data_def in imports:
+      type_name = canonical_name(data_def)
+      if isinstance(data_def, Enum):
+        self.writer.writeline('#import "%s.h";' % type_name)
+      else:
+        self.writer.writeline('@class %s;' % type_name)
     self.writer.writeline()
     # declare
     if msg.comment:
@@ -120,7 +123,10 @@ class IosMCompiler(IosCompiler):
     msg_name = canonical_name(msg)
     # import
     self.writer.writeline('#import "%s.h"' % msg_name)
-    for type_name in imports:
+    for data_def in imports:
+      if isinstance(data_def, Enum):
+        continue
+      type_name = canonical_name(data_def)
       self.writer.writeline('#import "%s.h"' % type_name)
     self.writer.writeline()
     # declare

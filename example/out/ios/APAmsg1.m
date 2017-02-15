@@ -1,7 +1,6 @@
 // generated from a.proto by py-protoc, NEVER CHANGE!!
 
 #import "APAmsg1.h"
-#import "BPBenum.h"
 #import "APAmsg2.h"
 
 /**

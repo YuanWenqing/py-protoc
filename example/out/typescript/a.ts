@@ -9,15 +9,15 @@ a2
    */
   export interface Amsg1 {
     /**
-     *str前的注释
+     * str前的注释
      */
     str : string;
     /**
-     *int32后的注释
+     * int32后的注释
      */
     int_32 : number;
     /**
-     *int64前的注释1
+     * int64前的注释1
 int64后的注释2
      */
     int_64 : number;

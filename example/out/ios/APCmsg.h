@@ -2,7 +2,7 @@
 
 #import "XG_BaseModel.h"
 @class APAmsg1;
-@class BPBenum;
+#import "BPBenum.h";
 
 @interface APCmsg : XG_BaseModel
 @property(nonatomic, strong) APAmsg1 * amsg;
