@@ -11,6 +11,8 @@ class IosCompiler(Compiler):
         type_name = canonical_name(field_type.ref)
         if type_name not in imports:
           imports.append(type_name)
+      elif field_type.kind == TypeKind.MAP:
+        raise Exception('not support map')
     return imports
 
 class IosHCompiler(IosCompiler):
@@ -177,13 +179,15 @@ class IosResolver(TypeResolver):
       ref = 'strong'
     elif field_type.kind == TypeKind.BASE:
       type_name, ref = self.resolveBaseType(field_type.name)
-    else:
+    elif field_type.kind == TypeKind.REF:
       data_def = field_type.ref
       type_name = canonical_name(data_def)
       if isinstance(data_def, Enum):
         ref = 'assign'
       else:
         ref = 'strong'
+    elif field_type.kind == TypeKind.MAP:
+      raise Exception('not support map')
     return type_name, ref
 
   def resolveBaseType(self, base_type):

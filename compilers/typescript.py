@@ -77,6 +77,8 @@ class TypeScriptResolver(TypeResolver):
     elif field_type.kind == TypeKind.REF:
       type_name = field_type.ref.proto.proto_pkg + '.' + field_type.ref.name
       default_value = 'null'
+    elif field_type.kind == TypeKind.MAP:
+      raise Exception('not support map')
     if field.isRepeated():
       if field_type.kind == TypeKind.REF and isinstance(field_type.ref, Enum):
         type_name = 'number'

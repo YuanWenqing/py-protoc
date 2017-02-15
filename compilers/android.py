@@ -96,13 +96,15 @@ class AndroidResolver(TypeResolver):
     field_type = field.type
     if field_type.kind == TypeKind.BASE:
       type_name, default_value = self.resolveBaseType(field_type.name)
-    else:
+    elif field_type.kind == TypeKind.REF:
       data_def = field_type.ref
       if isinstance(data_def, Enum):
         type_name, default_value = self.resolveBaseType('int32')
       else:
         type_name = data_def.proto.getJavaPkg() + "." + data_def.name
         default_value = 'null'
+    elif field_type.kind == TypeKind.MAP:
+      raise Exception('not support map')
     if field.isRepeated():
       if type_name in AndroidResolver.BOX_MAP:
         type_name = AndroidResolver.BOX_MAP[type_name]
