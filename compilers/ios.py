@@ -47,7 +47,7 @@ class IosHCompiler(IosCompiler):
       self.writer.writeline('/**')
       self.writer.writeline(' * ' + field.comment)
       self.writer.writeline(' */')
-    type_name, ref = self.type_resolver.resolveType(field)
+    type_name, ref = self.type_resolver.resolveField(field)
     self.writer.writeline('@property(nonatomic, %s) %s * %s;' % (ref, type_name, field.name))
 
   def compileEnum(self, enum, fields):
@@ -171,7 +171,7 @@ class IosResolver(TypeResolver):
     'double': ('NSNumber', 'strong')
   }
 
-  def resolveType(self, field):
+  def resolveField(self, field):
     '''处理field的type，返回`(type_text, ref)`'''
     field_type = field.type
     if field.isRepeated():
