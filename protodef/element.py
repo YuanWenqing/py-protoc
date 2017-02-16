@@ -138,7 +138,7 @@ class Protobuf:
     self.proto_pkg = None
 
     self.headers = {}
-    self.imports = {}
+    self.imports = []
     self.options = {}
 
     self.messages = []
@@ -149,7 +149,7 @@ class Protobuf:
 
   def addHeader(self, header):
     if header.type == HeaderKind.IMPORT:
-      self.imports[header.name] = header
+      self.imports.append(header.name)
     elif header.type == HeaderKind.OPTION:
       self.options[header.name] = header
     else:
@@ -192,7 +192,7 @@ class Protobuf:
     if len(self.headers) > 0:
       s = '%s\n>>>>> Header <<<<<\n%s' % (s, self.__arr2str(self.headers.values()))
     if len(self.imports) > 0:
-      s = '%s\n>>>>> Import <<<<<\n%s' % (s, self.__arr2str(self.imports.values()))
+      s = '%s\n>>>>> Import <<<<<\n%s' % (s, self.__arr2str(self.imports))
     if len(self.options) > 0:
       s = '%s\n>>>>> Option <<<<<\n%s' % (s, self.__arr2str(self.options.values()))
     if len(self.messages) > 0:
