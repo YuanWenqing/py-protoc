@@ -9,4 +9,5 @@ enum Benum {
   // b0 before
   B0 = 0; // b0 after
   B1 = 1; // b1 after
+  // comment
 }

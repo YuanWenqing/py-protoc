@@ -121,7 +121,7 @@ def p_definition_unit(p):
 
 
 def p_message(p):
-  """message : MESSAGE IDENTIFIER '{' msg_fields '}'"""
+  """message : MESSAGE IDENTIFIER '{' msg_fields DEFINITION_END"""
   message = Message(p[2])
   for index, field in enumerate(p[4]):
     field.index = index
@@ -130,12 +130,12 @@ def p_message(p):
 
 
 def p_msg_fields(p):
-  """msg_fields : msg_field_ msg_fields
+  """msg_fields : msg_fields msg_field_
          | """
   if len(p) == 1:
     p[0] = []
-  else:
-    p[0] = [p[1]] + p[2]
+  elif len(p) == 3:
+    p[0] = p[1] + [p[2]]
 
 
 def p_msg_field_(p):
@@ -222,7 +222,7 @@ def p_map_type(p):
 
 
 def p_enum(p):
-  """enum : ENUM IDENTIFIER '{' enum_fields '}'"""
+  """enum : ENUM IDENTIFIER '{' enum_fields DEFINITION_END"""
   enum = Enum(p[2])
   for index, field in enumerate(p[4]):
     field.index = index
@@ -231,12 +231,12 @@ def p_enum(p):
 
 
 def p_enum_fields(p):
-  """enum_fields : enum_field_ enum_fields
+  """enum_fields : enum_fields enum_field_
          | """
   if len(p) == 1:
     p[0] = []
   else:
-    p[0] = [p[1]] + p[2]
+    p[0] = p[1] + [p[2]]
 
 
 def p_enum_field_(p):

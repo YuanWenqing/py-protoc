@@ -44,7 +44,8 @@ tokens = (
   'SINGLE_COMMENT',
   'MULTI_COMMENT',
   'RESERVED_LINE',
-  'LINE_END'
+  'LINE_END',
+  'DEFINITION_END'
 ) + tuple(map(lambda kw: kw.upper(), keywords))
 
 t_ignore = ' \t\r'
@@ -53,6 +54,12 @@ t_ignore = ' \t\r'
 def t_error(t):
   raise ProtoLexerError('illegal token {} at line {}'.format(
     t.value, t.lineno))
+
+
+def t_DEFINITION_END(t):
+  r'((\s*\/\/[^\n]*)\n+)*\s*\}'
+  t.lexer.lineno += t.value.count('\n')
+  return t
 
 
 def t_SINGLE_COMMENT(t):
@@ -78,6 +85,7 @@ def t_LINE_END(t):
   else:
     t.value = None
   return t
+
 
 def t_newline(t):
   r'\n+'
