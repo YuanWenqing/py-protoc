@@ -21,7 +21,7 @@ public final class BModel {
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
      * <pre>
-     * b0 before
+     * b0 before &#64;zh(中文b0)
      * </pre>
      *
      * <code>B0 = 0;</code>
@@ -29,7 +29,7 @@ public final class BModel {
     B0(0),
     /**
      * <pre>
-     * b1 after
+     * b1 after &#64;en(english b1) &#64;zh(中文b1)
      * </pre>
      *
      * <code>B1 = 1;</code>
@@ -40,7 +40,7 @@ public final class BModel {
 
     /**
      * <pre>
-     * b0 before
+     * b0 before &#64;zh(中文b0)
      * </pre>
      *
      * <code>B0 = 0;</code>
@@ -48,7 +48,7 @@ public final class BModel {
     public static final int B0_VALUE = 0;
     /**
      * <pre>
-     * b1 after
+     * b1 after &#64;en(english b1) &#64;zh(中文b1)
      * </pre>
      *
      * <code>B1 = 1;</code>

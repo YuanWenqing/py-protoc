@@ -143,6 +143,8 @@ class TsEnumVisualCompiler(TypeScriptCompiler):
   def compileEnum(self, enum, fields):
     self.beforeEnum(enum)
     for field in fields:
+      if not field.comment:
+        continue
       for line in field.comment.split('\n'):
         m = re.match(self.pattern, line, re.IGNORECASE)
         if m:
