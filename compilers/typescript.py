@@ -141,7 +141,7 @@ class TsEnumVisualCompiler(TypeScriptCompiler):
     pass
 
   def compileEnum(self, enum, fields):
-    self.beforeEnum(enum)
+    l = []
     for field in fields:
       if not field.comment:
         continue
@@ -149,8 +149,13 @@ class TsEnumVisualCompiler(TypeScriptCompiler):
         m = re.match(self.pattern, line, re.IGNORECASE)
         if m:
           name = m.group(1)
-          self.writer.writeline('  "%s" = %d,' % (name, field.number))
+          l.append((name, field.number))
           break
+    if len(l) == 0:
+      return
+    self.beforeEnum(enum)
+    for k, v in l:
+      self.writer.writeline('  "%s" = %d,' % (k, v))
     self.afterEnum(enum)
 
   def beforeEnum(self, enum):
