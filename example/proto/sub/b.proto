@@ -6,8 +6,8 @@ option java_package = "com.example.proto.data.b";
 option java_outer_classname = "BModel";
 
 enum Benum {
-  // b0 before
-  B0 = 0; // b0 after
-  B1 = 1; // b1 after
+  // b0 before @zh(中文b0)
+  B0 = 0; // b0 after @en(english b0) @zh(中文b0 again)
+  B1 = 1; // b1 after @en(english b1) @zh(中文b1)
   // comment
 }
