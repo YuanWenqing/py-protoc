@@ -4,6 +4,11 @@ from base import *
 
 class NamingCompiler(Compiler):
 
+  def skip(self, proto):
+    if len(proto.messages) == 0:
+      return True
+    return False
+
   def compileHeader(self, proto):
     javaPkg = convertPkg(proto.getJavaPkg())
     self.writer.writeline('package %s;' % javaPkg)

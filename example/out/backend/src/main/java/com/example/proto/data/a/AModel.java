@@ -191,10 +191,20 @@ public final class AModel {
         java.lang.String key);
 
     /**
+     * <pre>
+     * line1
+     * line2
+     * </pre>
+     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
     int getAmsg2MapCount();
     /**
+     * <pre>
+     * line1
+     * line2
+     * </pre>
+     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
     boolean containsAmsg2Map(
@@ -206,11 +216,21 @@ public final class AModel {
     java.util.Map<java.lang.Integer, com.example.proto.data.a.AModel.Amsg2>
     getAmsg2Map();
     /**
+     * <pre>
+     * line1
+     * line2
+     * </pre>
+     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
     java.util.Map<java.lang.Integer, com.example.proto.data.a.AModel.Amsg2>
     getAmsg2MapMap();
     /**
+     * <pre>
+     * line1
+     * line2
+     * </pre>
+     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
 
@@ -218,6 +238,11 @@ public final class AModel {
         int key,
         com.example.proto.data.a.AModel.Amsg2 defaultValue);
     /**
+     * <pre>
+     * line1
+     * line2
+     * </pre>
+     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
 
@@ -783,6 +808,11 @@ public final class AModel {
       return internalGetAmsg2Map().getMap().size();
     }
     /**
+     * <pre>
+     * line1
+     * line2
+     * </pre>
+     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
 
@@ -799,6 +829,11 @@ public final class AModel {
       return getAmsg2MapMap();
     }
     /**
+     * <pre>
+     * line1
+     * line2
+     * </pre>
+     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
 
@@ -806,6 +841,11 @@ public final class AModel {
       return internalGetAmsg2Map().getMap();
     }
     /**
+     * <pre>
+     * line1
+     * line2
+     * </pre>
+     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
 
@@ -818,6 +858,11 @@ public final class AModel {
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
+     * <pre>
+     * line1
+     * line2
+     * </pre>
+     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
 
@@ -2468,6 +2513,11 @@ public final class AModel {
         return internalGetAmsg2Map().getMap().size();
       }
       /**
+       * <pre>
+       * line1
+       * line2
+       * </pre>
+       *
        * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
        */
 
@@ -2484,6 +2534,11 @@ public final class AModel {
         return getAmsg2MapMap();
       }
       /**
+       * <pre>
+       * line1
+       * line2
+       * </pre>
+       *
        * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
        */
 
@@ -2491,6 +2546,11 @@ public final class AModel {
         return internalGetAmsg2Map().getMap();
       }
       /**
+       * <pre>
+       * line1
+       * line2
+       * </pre>
+       *
        * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
        */
 
@@ -2503,6 +2563,11 @@ public final class AModel {
         return map.containsKey(key) ? map.get(key) : defaultValue;
       }
       /**
+       * <pre>
+       * line1
+       * line2
+       * </pre>
+       *
        * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
        */
 
@@ -2522,6 +2587,11 @@ public final class AModel {
         return this;
       }
       /**
+       * <pre>
+       * line1
+       * line2
+       * </pre>
+       *
        * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
        */
 
@@ -2540,6 +2610,11 @@ public final class AModel {
         return internalGetMutableAmsg2Map().getMutableMap();
       }
       /**
+       * <pre>
+       * line1
+       * line2
+       * </pre>
+       *
        * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
        */
       public Builder putAmsg2Map(
@@ -2551,6 +2626,11 @@ public final class AModel {
         return this;
       }
       /**
+       * <pre>
+       * line1
+       * line2
+       * </pre>
+       *
        * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
        */
 

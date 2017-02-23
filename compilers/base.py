@@ -1,6 +1,7 @@
 # coding: utf8
 
 import os
+# for sub class
 from protodef.element import *
 
 class Compiler:
@@ -42,12 +43,18 @@ class Compiler:
     filepath = os.path.join(proto.proto_dir, proto.proto_file)
     if filepath in self.outputed:
       return
+    if self.skip(proto):
+      return
     self.writer.beforeProto(proto, self)
     self.compileMsgs(proto.messages)
     self.compileEnums(proto.enums)
     self.writer.afterProto(proto, self)
     self.outputed.add(filepath)
     print '. compile %s' % filepath
+
+  def skip(self, proto):
+    # default not skip any proto
+    return False
 
   def compileMsgs(self, messages):
     self.beforeMsgs(messages)
