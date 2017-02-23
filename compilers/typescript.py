@@ -1,6 +1,7 @@
 # coding: utf8
 
 from base import *
+import re
 
 class TypeScriptCompiler(Compiler):
 
@@ -9,7 +10,6 @@ class TypeScriptCompiler(Compiler):
     self.type_resolver.alias_map[proto.proto_file] = None
     for i, import_proto in enumerate(proto.import_protos):
       ts_path = os.path.relpath(import_proto.proto_file, os.path.dirname(proto.proto_file))
-      # ts_path = self.writer.convertExt(ts_path)
       ts_path = os.path.splitext(ts_path)[0]
       ts_path = './' + ts_path
       alias = import_proto.proto_pkg + str(i)
@@ -114,7 +114,7 @@ class TypeScriptWriter(Writer):
   '''每个proto一个文件'''
 
   def beforeProto(self, proto, compiler):
-    subpath = self.convertExt(proto.proto_file)
+    subpath = self.convertFilename(proto.proto_file) + self.file_ext
     path = os.path.join(self.out_dir, subpath)
     self._prepare(path, proto)
     compiler.compileHeader(proto)
@@ -122,5 +122,50 @@ class TypeScriptWriter(Writer):
   def afterProto(self, proto, compiler):
     compiler.compileTail(proto)
 
-  def convertExt(self, filepath):
-    return os.path.splitext(filepath)[0] + self.file_ext
+  def convertFilename(self, filepath):
+    return os.path.splitext(filepath)[0]
+
+class TsEnumVisualCompiler(TypeScriptCompiler):
+  def __init__(self, loader, writer, type_resolver, annotation):
+    TypeScriptCompiler.__init__(self, loader, writer, type_resolver)
+    self.annotation = annotation
+    self.pattern = '.*@%s\(([^\)]+)\).*' % annotation
+
+  def skip(self, proto):
+    if len(proto.enums) == 0:
+      return True
+    return False
+
+  def compileMsgs(self, messages):
+    # not compile msgs
+    pass
+
+  def compileEnum(self, enum, fields):
+    self.beforeEnum(enum)
+    for field in fields:
+      for line in field.comment.split('\n'):
+        m = re.match(self.pattern, line, re.IGNORECASE)
+        if m:
+          name = m.group(1)
+          self.writer.writeline('  "%s" = %d,' % (name, field.number))
+          break
+    self.afterEnum(enum)
+
+  def beforeEnum(self, enum):
+    if enum.comment:
+      self.writer.writeline('/**')
+      self.writer.writeline(' * ' + enum.comment)
+      self.writer.writeline(' */')
+    self.writer.writeline('export enum %s {' % enum.name)
+
+  def afterEnum(self, enum):
+    self.writer.writeline('}')
+    self.writer.writeline()
+
+class TsEnumVisualWriter(TypeScriptWriter):
+  def __init__(self, out_dir, file_ext, lang):
+    TypeScriptWriter.__init__(self, out_dir, file_ext)
+    self.lang = lang
+
+  def convertFilename(self, filepath):
+    return TypeScriptWriter.convertFilename(self, filepath) + '_'+ self.lang.lower()

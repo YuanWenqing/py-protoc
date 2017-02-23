@@ -74,6 +74,14 @@ class ClientCompiler:
     writer = TypeScriptWriter(out_dir, '.ts')
     compiler = TypeScriptCompiler(self.loader, writer, resolver)
     self.compilers.append((compiler, files))
+    # zh visual
+    writer = TsEnumVisualWriter(out_dir, '.ts', 'Zh')
+    compiler = TsEnumVisualCompiler(self.loader, writer, resolver, 'zh')
+    self.compilers.append((compiler, files))
+    # en visual
+    writer = TsEnumVisualWriter(out_dir, '.ts', 'En')
+    compiler = TsEnumVisualCompiler(self.loader, writer, resolver, 'en')
+    self.compilers.append((compiler, files))
 
   def naming(self, out_dir, files):
     resolver = NamingResolver()
