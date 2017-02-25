@@ -21,7 +21,7 @@ class NamingCompiler(Compiler):
 
   def compileMsg(self, msg, fields):
     self.beforeMsg(msg)
-    self.__recurse(msg, '', '')
+    self.__recurse(msg, RecurseContext())
     self.afterMsg(msg)
 
   def beforeMsg(self, msg):
@@ -31,23 +31,54 @@ class NamingCompiler(Compiler):
     self.writer.writeline('  }')
     self.writer.writeline()
 
-  def __recurse(self, msg, k_pre, v_pre):
+  def __recurse(self, msg, ctx):
+    if ctx.hasVisited(msg):
+      return
+    ctx.begVisit(msg)
     for field in msg.fields:
-      self.__recurseField(field, k_pre, v_pre)
+      self.__recurseField(field, ctx)
+    ctx.endVisit()
 
-  def __recurseField(self, field, k_pre, v_pre):
-    key = k_pre + field.name.upper()
-    value = v_pre + field.name
+  def __recurseField(self, field, ctx):
+    key = ctx.k_pre + field.name.upper()
+    value = ctx.v_pre + field.name
     if field.comment:
       self.writer.writeline('    /**')
       self.writer.writeline('     * ' + field.comment)
       self.writer.writeline('     */')
     self.writer.writeline('    String %s = "%s";' % (key, value))
     if field.type.kind == TypeKind.REF and isinstance(field.type.ref, Message):
-      self.__recurse(field.type.ref, key + '_DOT_', value + '.')
+      ctx.push(key + '_DOT_', value + '.')
+      self.__recurse(field.type.ref, ctx)
+      ctx.pop()
 
   def compileEnum(self, enum, fields):
     pass
+
+class RecurseContext:
+  def __init__(self):
+    self.msg_path = []
+    self.pre_path = [('', '')]
+    self.k_pre = ''
+    self.v_pre = ''
+
+  def hasVisited(self, msg):
+    return msg.full_name in self.msg_path
+
+  def begVisit(self, msg):
+    self.msg_path.append(msg.full_name)
+
+  def endVisit(self):
+    self.msg_path.pop()
+
+  def push(self, k, v):
+    self.pre_path.append((k, v))
+    self.k_pre = k
+    self.v_pre = v
+
+  def pop(self):
+    self.pre_path.pop()
+    self.k_pre, self.v_pre = self.pre_path[-1]
 
 class NamingResolver(TypeResolver):
   pass

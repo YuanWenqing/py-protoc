@@ -58,7 +58,7 @@ class FieldType:
     if self.kind == TypeKind.BASE:
       return self.name
     elif self.kind == TypeKind.REF:
-      return self.ref.whole_name
+      return self.ref.full_name
     elif self.kind == TypeKind.MAP:
       return 'map<%s, %s>' % (self.key_type, self.value_type)
 
@@ -98,7 +98,7 @@ class DataDef:
     self.name = name
     self.fields = []
     self.comment = None
-    self.whole_name = None
+    self.full_name = None
 
   def addField(self, field):
     self.fields.append(field)
@@ -167,8 +167,8 @@ class Protobuf:
     return self.getOption('java_package').value
 
   def addDataDef(self, data_def):
-    data_def.whole_name = self.proto_pkg + '.' + data_def.name
-    self.datadefs[data_def.whole_name] = data_def
+    data_def.full_name = self.proto_pkg + '.' + data_def.name
+    self.datadefs[data_def.full_name] = data_def
     if isinstance(data_def, Message):
       for field in data_def.fields:
         self.__completeName(field.type)
