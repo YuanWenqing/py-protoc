@@ -32,7 +32,20 @@ class ClientCompiler:
 
   def __getInputProtos(self, section):
     files = []
-    for f in self.cf.get(section, 'input_proto').split(','):
+    files.extend(self.__parseFiles(self.cf.get(section, 'input_proto')))
+    n = 2
+    while True:
+      opt = 'input_proto.%d' % n
+      if self.cf.has_option(section, opt):
+        files.extend(self.__parseFiles(self.cf.get(section, opt)))
+        n += 1
+      else:
+        break
+    return files
+
+  def __parseFiles(self, text):
+    files = []
+    for f in text.split(','):
       f = f.strip()
       if len(f) == 0:
         continue
