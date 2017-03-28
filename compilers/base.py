@@ -1,6 +1,7 @@
 # coding: utf8
 
 import os
+import re
 # for sub class
 from protodef.element import *
 
@@ -15,17 +16,21 @@ class Compiler:
 
   def addSkip(self, files):
     for f in files:
-      self.skip_files.append(os.path.abspath(f))
+      f = f.replace('*', '[^/]*')
+      p = re.compile(f)
+      self.skip_files.append(p)
 
   def skipFile(self, filepath):
-    filepath = os.path.abspath(filepath)
-    for f in self.skip_files:
-      if not os.path.exists(f):
-        continue
-      if filepath.startswith(f + '/'):
+    relpath = os.path.relpath(filepath, self.loader.proto_dir)
+    for p in self.skip_files:
+      if p.match(relpath):
         return True
-      if filepath == f:
-        return True
+      # if not os.path.exists(f):
+      #   continue
+      # if filepath.startswith(f + '/'):
+      #   return True
+      # if filepath == f:
+      #   return True
     return False
 
   def addLine(self, line):

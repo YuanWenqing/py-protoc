@@ -45,7 +45,8 @@ class ClientCompiler:
     self.compilers = []
 
   def __getInputProtos(self, section):
-    return self.__getAllFiles(section, 'input_proto')
+    files = self.__getAllFiles(section, 'input_proto')
+    return [os.path.join(self.proto_dir, f) for f in files]
 
   def __getSkipProtos(self, section):
     return self.__getAllFiles(section, 'skip_proto')
@@ -71,7 +72,6 @@ class ClientCompiler:
       f = f.strip()
       if len(f) == 0:
         continue
-      f = os.path.join(self.proto_dir, f)
       if f not in files:
         files.append(f)
     return files
