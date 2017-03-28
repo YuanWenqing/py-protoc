@@ -31,11 +31,19 @@ class ClientCompiler:
     self.compilers = []
 
   def __getInputProtos(self, section):
+    return self.__getAllFiles(section, 'input_proto')
+
+  def __getSkipProtos(self, section):
+    return self.__getAllFiles(section, 'skip_proto')
+
+  def __getAllFiles(self, section, base_opt):
     files = []
-    files.extend(self.__parseFiles(self.cf.get(section, 'input_proto')))
+    if not self.cf.has_option(section, base_opt):
+      return files
+    files.extend(self.__parseFiles(self.cf.get(section, base_opt)))
     n = 2
     while True:
-      opt = 'input_proto.%d' % n
+      opt = '%s.%d' % (base_opt, n)
       if self.cf.has_option(section, opt):
         files.extend(self.__parseFiles(self.cf.get(section, opt)))
         n += 1
@@ -62,6 +70,7 @@ class ClientCompiler:
       else:
         out_dir = os.path.join(self.out_root, app)
       files = self.__getInputProtos(app)
+      skip_files = self.__getSkipProtos(app)
       getattr(self, app)(out_dir, files)
 
   def android(self, out_dir, files):
