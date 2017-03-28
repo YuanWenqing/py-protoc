@@ -191,20 +191,10 @@ public final class AModel {
         java.lang.String key);
 
     /**
-     * <pre>
-     * line1
-     * line2
-     * </pre>
-     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
     int getAmsg2MapCount();
     /**
-     * <pre>
-     * line1
-     * line2
-     * </pre>
-     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
     boolean containsAmsg2Map(
@@ -216,21 +206,11 @@ public final class AModel {
     java.util.Map<java.lang.Integer, com.example.proto.data.a.AModel.Amsg2>
     getAmsg2Map();
     /**
-     * <pre>
-     * line1
-     * line2
-     * </pre>
-     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
     java.util.Map<java.lang.Integer, com.example.proto.data.a.AModel.Amsg2>
     getAmsg2MapMap();
     /**
-     * <pre>
-     * line1
-     * line2
-     * </pre>
-     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
 
@@ -238,16 +218,21 @@ public final class AModel {
         int key,
         com.example.proto.data.a.AModel.Amsg2 defaultValue);
     /**
-     * <pre>
-     * line1
-     * line2
-     * </pre>
-     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
 
     com.example.proto.data.a.AModel.Amsg2 getAmsg2MapOrThrow(
         int key);
+
+    /**
+     * <pre>
+     * line1
+     * line2
+     * </pre>
+     *
+     * <code>optional bytes byte_str = 15;</code>
+     */
+    com.google.protobuf.ByteString getByteStr();
   }
   /**
    * <pre>
@@ -276,6 +261,7 @@ public final class AModel {
       amsg2List_ = java.util.Collections.emptyList();
       strList_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       benumList_ = java.util.Collections.emptyList();
+      byteStr_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @java.lang.Override
@@ -416,6 +402,11 @@ public final class AModel {
               amsg2Map = input.readMessage(
                   Amsg2MapDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
               amsg2Map_.getMutableMap().put(amsg2Map.getKey(), amsg2Map.getValue());
+              break;
+            }
+            case 122: {
+
+              byteStr_ = input.readBytes();
               break;
             }
           }
@@ -808,11 +799,6 @@ public final class AModel {
       return internalGetAmsg2Map().getMap().size();
     }
     /**
-     * <pre>
-     * line1
-     * line2
-     * </pre>
-     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
 
@@ -829,11 +815,6 @@ public final class AModel {
       return getAmsg2MapMap();
     }
     /**
-     * <pre>
-     * line1
-     * line2
-     * </pre>
-     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
 
@@ -841,11 +822,6 @@ public final class AModel {
       return internalGetAmsg2Map().getMap();
     }
     /**
-     * <pre>
-     * line1
-     * line2
-     * </pre>
-     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
 
@@ -858,11 +834,6 @@ public final class AModel {
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
-     * <pre>
-     * line1
-     * line2
-     * </pre>
-     *
      * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
      */
 
@@ -875,6 +846,20 @@ public final class AModel {
         throw new java.lang.IllegalArgumentException();
       }
       return map.get(key);
+    }
+
+    public static final int BYTE_STR_FIELD_NUMBER = 15;
+    private com.google.protobuf.ByteString byteStr_;
+    /**
+     * <pre>
+     * line1
+     * line2
+     * </pre>
+     *
+     * <code>optional bytes byte_str = 15;</code>
+     */
+    public com.google.protobuf.ByteString getByteStr() {
+      return byteStr_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -944,6 +929,9 @@ public final class AModel {
             .setValue(entry.getValue())
             .build();
         output.writeMessage(14, amsg2Map);
+      }
+      if (!byteStr_.isEmpty()) {
+        output.writeBytes(15, byteStr_);
       }
     }
 
@@ -1027,6 +1015,10 @@ public final class AModel {
         size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(14, amsg2Map);
       }
+      if (!byteStr_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(15, byteStr_);
+      }
       memoizedSize = size;
       return size;
     }
@@ -1074,6 +1066,8 @@ public final class AModel {
           other.internalGetIntMap());
       result = result && internalGetAmsg2Map().equals(
           other.internalGetAmsg2Map());
+      result = result && getByteStr()
+          .equals(other.getByteStr());
       return result;
     }
 
@@ -1126,6 +1120,8 @@ public final class AModel {
         hash = (37 * hash) + AMSG2_MAP_FIELD_NUMBER;
         hash = (53 * hash) + internalGetAmsg2Map().hashCode();
       }
+      hash = (37 * hash) + BYTE_STR_FIELD_NUMBER;
+      hash = (53 * hash) + getByteStr().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1308,6 +1304,8 @@ public final class AModel {
         bitField0_ = (bitField0_ & ~0x00000400);
         internalGetMutableIntMap().clear();
         internalGetMutableAmsg2Map().clear();
+        byteStr_ = com.google.protobuf.ByteString.EMPTY;
+
         return this;
       }
 
@@ -1367,6 +1365,7 @@ public final class AModel {
         result.intMap_.makeImmutable();
         result.amsg2Map_ = internalGetAmsg2Map();
         result.amsg2Map_.makeImmutable();
+        result.byteStr_ = byteStr_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1484,6 +1483,9 @@ public final class AModel {
             other.internalGetIntMap());
         internalGetMutableAmsg2Map().mergeFrom(
             other.internalGetAmsg2Map());
+        if (other.getByteStr() != com.google.protobuf.ByteString.EMPTY) {
+          setByteStr(other.getByteStr());
+        }
         onChanged();
         return this;
       }
@@ -2513,11 +2515,6 @@ public final class AModel {
         return internalGetAmsg2Map().getMap().size();
       }
       /**
-       * <pre>
-       * line1
-       * line2
-       * </pre>
-       *
        * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
        */
 
@@ -2534,11 +2531,6 @@ public final class AModel {
         return getAmsg2MapMap();
       }
       /**
-       * <pre>
-       * line1
-       * line2
-       * </pre>
-       *
        * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
        */
 
@@ -2546,11 +2538,6 @@ public final class AModel {
         return internalGetAmsg2Map().getMap();
       }
       /**
-       * <pre>
-       * line1
-       * line2
-       * </pre>
-       *
        * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
        */
 
@@ -2563,11 +2550,6 @@ public final class AModel {
         return map.containsKey(key) ? map.get(key) : defaultValue;
       }
       /**
-       * <pre>
-       * line1
-       * line2
-       * </pre>
-       *
        * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
        */
 
@@ -2587,11 +2569,6 @@ public final class AModel {
         return this;
       }
       /**
-       * <pre>
-       * line1
-       * line2
-       * </pre>
-       *
        * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
        */
 
@@ -2610,11 +2587,6 @@ public final class AModel {
         return internalGetMutableAmsg2Map().getMutableMap();
       }
       /**
-       * <pre>
-       * line1
-       * line2
-       * </pre>
-       *
        * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
        */
       public Builder putAmsg2Map(
@@ -2626,17 +2598,56 @@ public final class AModel {
         return this;
       }
       /**
-       * <pre>
-       * line1
-       * line2
-       * </pre>
-       *
        * <code>map&lt;int32, .ap.Amsg2&gt; amsg2_map = 14;</code>
        */
 
       public Builder putAllAmsg2Map(
           java.util.Map<java.lang.Integer, com.example.proto.data.a.AModel.Amsg2> values) {
         getMutableAmsg2Map().putAll(values);
+        return this;
+      }
+
+      private com.google.protobuf.ByteString byteStr_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * line1
+       * line2
+       * </pre>
+       *
+       * <code>optional bytes byte_str = 15;</code>
+       */
+      public com.google.protobuf.ByteString getByteStr() {
+        return byteStr_;
+      }
+      /**
+       * <pre>
+       * line1
+       * line2
+       * </pre>
+       *
+       * <code>optional bytes byte_str = 15;</code>
+       */
+      public Builder setByteStr(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        byteStr_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * line1
+       * line2
+       * </pre>
+       *
+       * <code>optional bytes byte_str = 15;</code>
+       */
+      public Builder clearByteStr() {
+        
+        byteStr_ = getDefaultInstance().getByteStr();
+        onChanged();
         return this;
       }
       public final Builder setUnknownFields(
@@ -3220,7 +3231,7 @@ public final class AModel {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\007a.proto\022\002ap\032\013sub/b.proto\"\256\003\n\005Amsg1\022\013\n\003" +
+      "\n\007a.proto\022\002ap\032\013sub/b.proto\"\300\003\n\005Amsg1\022\013\n\003" +
       "str\030\001 \001(\t\022\016\n\006int_32\030\002 \001(\005\022\016\n\006int_64\030\003 \001(" +
       "\003\022\016\n\006float_\030\004 \001(\002\022\017\n\007double_\030\005 \001(\001\022\r\n\005bo" +
       "ol_\030\006 \001(\010\022\031\n\006b_enum\030\007 \001(\0162\t.bp.Benum\022\030\n\005" +
@@ -3228,12 +3239,12 @@ public final class AModel {
       "(\0132\t.ap.Amsg2\022\020\n\010str_list\030\n \003(\t\022\035\n\nbenum" +
       "_list\030\014 \003(\0162\t.bp.Benum\022&\n\007int_map\030\r \003(\0132" +
       "\025.ap.Amsg1.IntMapEntry\022*\n\tamsg2_map\030\016 \003(" +
-      "\0132\027.ap.Amsg1.Amsg2MapEntry\032-\n\013IntMapEntr" +
-      "y\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\005:\0028\001\032:\n\rAms",
-      "g2MapEntry\022\013\n\003key\030\001 \001(\005\022\030\n\005value\030\002 \001(\0132\t" +
-      ".ap.Amsg2:\0028\001J\004\010\013\020\014\"\023\n\005Amsg2\022\n\n\002id\030\001 \001(\t" +
-      "B\"\n\030com.example.proto.data.aB\006AModelb\006pr" +
-      "oto3"
+      "\0132\027.ap.Amsg1.Amsg2MapEntry\022\020\n\010byte_str\030\017" +
+      " \001(\014\032-\n\013IntMapEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005valu",
+      "e\030\002 \001(\005:\0028\001\032:\n\rAmsg2MapEntry\022\013\n\003key\030\001 \001(" +
+      "\005\022\030\n\005value\030\002 \001(\0132\t.ap.Amsg2:\0028\001J\004\010\013\020\014\"\023\n" +
+      "\005Amsg2\022\n\n\002id\030\001 \001(\tB\"\n\030com.example.proto." +
+      "data.aB\006AModelb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3253,7 +3264,7 @@ public final class AModel {
     internal_static_ap_Amsg1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ap_Amsg1_descriptor,
-        new java.lang.String[] { "Str", "Int32", "Int64", "Float", "Double", "Bool", "BEnum", "Amsg2", "Amsg2List", "StrList", "BenumList", "IntMap", "Amsg2Map", });
+        new java.lang.String[] { "Str", "Int32", "Int64", "Float", "Double", "Bool", "BEnum", "Amsg2", "Amsg2List", "StrList", "BenumList", "IntMap", "Amsg2Map", "ByteStr", });
     internal_static_ap_Amsg1_IntMapEntry_descriptor =
       internal_static_ap_Amsg1_descriptor.getNestedTypes().get(0);
     internal_static_ap_Amsg1_IntMapEntry_fieldAccessorTable = new

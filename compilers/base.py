@@ -51,6 +51,7 @@ class Compiler:
 
   def compileFile(self, filepath):
     if self.skipFile(filepath):
+      print '! skip %s' % filepath
       return
     proto = self.loader.loadAbspath(filepath)
     for import_proto in proto.import_protos:
