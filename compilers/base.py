@@ -17,6 +17,17 @@ class Compiler:
     for f in files:
       self.skip_files.append(os.path.abspath(f))
 
+  def skipFile(self, filepath):
+    filepath = os.path.abspath(filepath)
+    for f in self.skip_files:
+      if not os.path.exists(f):
+        continue
+      if filepath.startswith(f + '/'):
+        return True
+      if filepath == f:
+        return True
+    return False
+
   def addLine(self, line):
     if line:
       self.output = self.output + line
@@ -39,6 +50,8 @@ class Compiler:
     self.compile(arr)
 
   def compileFile(self, filepath):
+    if self.skipFile(filepath):
+      return
     proto = self.loader.loadAbspath(filepath)
     for import_proto in proto.import_protos:
       self.compileProto(import_proto)
