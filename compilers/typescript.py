@@ -72,7 +72,8 @@ class TypeScriptResolver(TypeResolver):
     'string': ('string', '""'),
     'bool': ('boolean', 'false'),
     'float': ('number', '0'),
-    'double': ('number', '0')
+    'double': ('number', '0'),
+    'bytes': ('string', '""')
   }
 
   def __init__(self):

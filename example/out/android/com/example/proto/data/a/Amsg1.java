@@ -30,5 +30,6 @@ int64后的注释2
   public java.util.List<Integer> benum_list = null;
   public java.util.Map<String, Integer> int_map = null;
   public java.util.Map<Integer, com.example.proto.data.a.Amsg2> amsg2_map = null;
+  public String byte_str = "";
 }
 

@@ -30,6 +30,7 @@ int64后的注释2
   benum_list ?: Array<number>;
   int_map ?: Map<string, number>;
   amsg2_map ?: Map<number, Amsg2>;
+  byte_str ?: string;
 }
 
 export interface Amsg2 {

@@ -194,7 +194,8 @@ class IosResolver(TypeResolver):
     'string': ('NSString', 'strong'),
     'bool': ('NSNumber', 'strong'),
     'float': ('NSNumber', 'strong'),
-    'double': ('NSNumber', 'strong')
+    'double': ('NSNumber', 'strong'),
+    'bytes': ('NSString', 'strong')
   }
   IOS_TYPES = set(['NSNumber', 'NSString'])
 

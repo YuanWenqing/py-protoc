@@ -29,6 +29,7 @@ int64后的注释2
     String BENUM_LIST = "benum_list";
     String INT_MAP = "int_map";
     String AMSG2_MAP = "amsg2_map";
+    String BYTE_STR = "byte_str";
   }
 
   interface Amsg2Naming {

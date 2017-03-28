@@ -81,7 +81,8 @@ class AndroidResolver(TypeResolver):
     'string': ('String', '""'),
     'bool': ('boolean', 'false'),
     'float': ('float', '0F'),
-    'double': ('double', '0')
+    'double': ('double', '0'),
+    'bytes': ('String', '""')
   }
   BOX_MAP = {
     'long': 'Long',
