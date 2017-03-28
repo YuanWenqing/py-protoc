@@ -11,6 +11,10 @@ class Compiler:
     self.writer = writer
     self.type_resolver = type_resolver
     self.outputed = set()
+    self.skip_files = []
+
+  def addSkip(self, files):
+    self.skip_files.extend(files)
 
   def addLine(self, line):
     if line:

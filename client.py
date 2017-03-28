@@ -15,6 +15,20 @@ from compilers.ios import *
 from compilers.typescript import *
 from compilers.naming import *
 
+class CompileTask:
+  def __init__(self, out_dir):
+    self.out_dir = out_dir
+    self.input_files = []
+    self.skip_files = []
+
+  def input(self, files):
+    self.input_files.extend(files)
+    return self
+
+  def skip(self, files):
+    self.skip_files.extend(files)
+    return self
+
 class ClientCompiler:
   def __init__(self, conf_file):
     self.conf_file = conf_file
@@ -69,52 +83,54 @@ class ClientCompiler:
         out_dir = os.path.join(self.path_root, out_dir)
       else:
         out_dir = os.path.join(self.out_root, app)
-      files = self.__getInputProtos(app)
-      skip_files = self.__getSkipProtos(app)
-      getattr(self, app)(out_dir, files)
+      task = CompileTask(out_dir)
+      task.input(self.__getInputProtos(app))
+      task.skip(self.__getSkipProtos(app))
+      getattr(self, app)(task)
 
-  def android(self, out_dir, files):
-    os.system('rm -r %s' % out_dir)
+  def android(self, task):
+    os.system('rm -r %s' % task.out_dir)
     resolver = AndroidResolver()
-    writer = AndroidWriter(out_dir, '.java')
+    writer = AndroidWriter(task.out_dir, '.java')
     compiler = AndroidCompiler(self.loader, writer, resolver)
-    self.compilers.append((compiler, files))
+    self.compilers.append((compiler, task))
 
-  def ios(self, out_dir, files):
-    os.system('rm -r %s' % out_dir)
+  def ios(self, task):
+    os.system('rm -r %s' % task.out_dir)
     resolver = IosResolver()
-    writer = IosWriter(out_dir, '.h')
+    writer = IosWriter(task.out_dir, '.h')
     compiler = IosHCompiler(self.loader, writer, resolver)
-    self.compilers.append((compiler, files))
-    writer = IosWriter(out_dir, '.m')
+    self.compilers.append((compiler, task))
+    writer = IosWriter(task.out_dir, '.m')
     compiler = IosMCompiler(self.loader, writer, resolver)
-    self.compilers.append((compiler, files))
+    self.compilers.append((compiler, task))
 
-  def typescript(self, out_dir, files):
-    os.system('rm -r %s' % out_dir)
+  def typescript(self, task):
+    os.system('rm -r %s' % task.out_dir)
     resolver = TypeScriptResolver()
-    writer = TypeScriptWriter(out_dir, '.ts')
+    writer = TypeScriptWriter(task.out_dir, '.ts')
     compiler = TypeScriptCompiler(self.loader, writer, resolver)
-    self.compilers.append((compiler, files))
+    self.compilers.append((compiler, task))
     # zh visual
-    writer = TsEnumVisualWriter(out_dir, '.ts', 'Zh')
+    writer = TsEnumVisualWriter(task.out_dir, '.ts', 'Zh')
     compiler = TsEnumVisualCompiler(self.loader, writer, resolver, 'zh')
-    self.compilers.append((compiler, files))
+    self.compilers.append((compiler, task))
     # en visual
-    writer = TsEnumVisualWriter(out_dir, '.ts', 'En')
+    writer = TsEnumVisualWriter(task.out_dir, '.ts', 'En')
     compiler = TsEnumVisualCompiler(self.loader, writer, resolver, 'en')
-    self.compilers.append((compiler, files))
+    self.compilers.append((compiler, task))
 
-  def naming(self, out_dir, files):
+  def naming(self, task):
     resolver = NamingResolver()
-    writer = NamingWriter(out_dir, '.java')
+    writer = NamingWriter(task.out_dir, '.java')
     compiler = NamingCompiler(self.loader, writer, resolver)
-    self.compilers.append((compiler, files))
+    self.compilers.append((compiler, task))
 
   def do(self):
-    for compiler, files in self.compilers:
+    for compiler, task in self.compilers:
       print '> run %s' % compiler.__class__.__name__
-      compiler.compile(files)
+      compiler.addSkip(task.skip_files)
+      compiler.compile(task.input_files)
 
 if __name__ == '__main__':
   optParser = OptionParser()
