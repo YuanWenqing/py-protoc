@@ -4,10 +4,10 @@ from base import *
 
 class NamingCompiler(Compiler):
 
-  def skip(self, proto):
+  def skipProto(self, proto):
     if len(proto.messages) == 0:
       return True
-    return False
+    return Compiler.skipProto(self, proto)
 
   def compileHeader(self, proto):
     javaPkg = convertPkg(proto.getJavaPkg())

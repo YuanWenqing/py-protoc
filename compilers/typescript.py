@@ -132,10 +132,10 @@ class TsEnumVisualCompiler(TypeScriptCompiler):
     self.annotation = annotation
     self.pattern = '.*@%s\(([^\)]+)\).*' % annotation
 
-  def skip(self, proto):
+  def skipProto(self, proto):
     if len(proto.enums) == 0:
       return True
-    return False
+    return Compiler.skipProto(self, proto)
 
   def compileMsgs(self, messages):
     # not compile msgs

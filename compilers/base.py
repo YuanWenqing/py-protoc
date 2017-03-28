@@ -14,7 +14,8 @@ class Compiler:
     self.skip_files = []
 
   def addSkip(self, files):
-    self.skip_files.extend(files)
+    for f in files:
+      self.skip_files.append(os.path.abspath(f))
 
   def addLine(self, line):
     if line:
@@ -47,7 +48,7 @@ class Compiler:
     filepath = os.path.join(proto.proto_dir, proto.proto_file)
     if filepath in self.outputed:
       return
-    if self.skip(proto):
+    if self.skipProto(proto):
       return
     self.writer.beforeProto(proto, self)
     self.compileMsgs(proto.messages)
@@ -56,7 +57,7 @@ class Compiler:
     self.outputed.add(filepath)
     print '. compile %s' % filepath
 
-  def skip(self, proto):
+  def skipProto(self, proto):
     # default not skip any proto
     return False
 
