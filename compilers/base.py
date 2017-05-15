@@ -83,7 +83,7 @@ class Compiler:
   def compileMsgs(self, messages):
     self.beforeMsgs(messages)
     for msg in messages:
-      if msg.isDeprecated():
+      if msg.isDeprecated or msg.ignored():
         continue
       self.writer.beforeDataDef(msg)
       self.compileMsg(msg, self.__filterValidFields(msg))
@@ -99,7 +99,7 @@ class Compiler:
   def compileEnums(self, enums):
     self.beforeEnums(enums)
     for enum in enums:
-      if enum.isDeprecated():
+      if enum.isDeprecated or enum.ignored():
         continue
       self.writer.beforeDataDef(enum)
       self.compileEnum(enum, self.__filterValidFields(enum))
@@ -115,7 +115,7 @@ class Compiler:
   def __filterValidFields(self, data_def):
     fields = []
     for field in data_def.fields:
-      if field.isDeprecated():
+      if field.isDeprecated or field.ignored():
         continue
       fields.append(field)
     return fields

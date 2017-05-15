@@ -30,6 +30,9 @@ class Field:
   def isDeprecated(self):
     return self.comment != None and self.comment.find('@deprecated') >= 0
 
+  def ignored(self):
+    return self.comment != None and self.comment.find('@ignore') >= 0
+
   def __str__(self):
     s = '%d: %s=%d' % (self.index, self.name, self.number)
     if self.comment:
@@ -106,6 +109,9 @@ class DataDef:
 
   def isDeprecated(self):
     return self.comment != None and self.comment.find('@deprecated') >= 0
+
+  def ignored(self):
+    return self.comment != None and self.comment.find('@ignore') >= 0
 
   def __str__(self):
     if self.comment:
